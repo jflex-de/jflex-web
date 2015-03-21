@@ -36,7 +36,7 @@ To deploy, email Gerwin.
 
 ## License
 
-Creative Commons, see [LICENSE.md](LICENSE.md)
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Licensed under <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
 
 [1]: https://www.haskell.org/platform/
