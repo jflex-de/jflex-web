@@ -19,7 +19,7 @@ to get the Hakyll[2] web site generator.
 
 ## Build
 
-    cabal build
+    ghc --make site
     ./site watch
 
 Point your web browser at http://127.0.0.1:8000 to see the local version.
