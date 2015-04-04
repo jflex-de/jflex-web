@@ -14,7 +14,7 @@ You can then run
 
     cabal install hakyll
 
-to get the Hakyll[2] web site generator. 
+to get the [Hakyll][2] web site generator.
 
 
 ## Build
