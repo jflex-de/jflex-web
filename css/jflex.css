@@ -41,6 +41,11 @@ body {
     top: -8px;
 }
 
+h1 {
+  margin-top: 50px;
+  margin-bottom: 20px;
+}
+
 code, pre {
   word-break: normal;
   word-wrap: normal;	

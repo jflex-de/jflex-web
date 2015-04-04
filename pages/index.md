@@ -49,7 +49,7 @@ Jamison. It can also be used together with other parser generators like
 
 ----------------------------
 
-##Is it free?
+## Is it free?
 Yes. It is released under a permissive open-source BSD-style license and available for [download](download.html). See also [Copyright, License & Warranty](copying.html). 
 
 ----------------------------
