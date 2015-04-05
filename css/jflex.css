@@ -17,28 +17,13 @@ body {
   width: auto;  
 }
 
-#follow {
-	margin-top: -70px;
-	text-align: right;
+.front {
+  margin-top: 3em;  
 }
 
-#tweet {
-	margin-top: -70px;
-	text-align: right;
-}
-
-#ccimg {
-	border: 0;
-}
-
-#rss {
-    position: relative;
-    top: -6px;
-}
-
-#rss2 {
-    position: relative;
-    top: -8px;
+.front img {
+  width: 221;
+  height: 180;
 }
 
 .mailitems ul {

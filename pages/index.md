@@ -2,11 +2,16 @@
 title: JFlex - The Fast Scanner Generator for Java
 ---
 
+<div class="container front"><div class="row">
+<div class="col-sm-4"><img src="jflex-black.png" alt="JFlex Logo" width=221 height=180/></div>
+<div class="col-sm-8">  
 # JFlex 1.6.1
 
 The current stable version is [JFlex 1.6.1](download.html) released on Mar 16, 2015
 
 The current maven jflex plugin is [version 1.6.1](download.html).
+</div>
+</div></div>
 
 ----------------------------
 
@@ -28,9 +33,10 @@ The current maven jflex plugin is [version 1.6.1](download.html).
 R&eacute;gis D&eacute;camps. It integrates JFlex into the [Maven][4] software
 project management tool.
 
-----------------------------
 
 <a name="about"></a>
+
+----------------------------
 
 ## What is it?
 
