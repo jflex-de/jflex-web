@@ -41,6 +41,38 @@ body {
     top: -8px;
 }
 
+.mailitems ul {
+  margin-top: 1.5em;
+}
+
+.mailitems ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.mailitems li {  
+  display: inline;
+  text-align: center;  
+}
+
+.mailitems .name {
+  margin: 0 1px 1.5em 0px;
+  padding: 1ex 2em 1ex 2em;
+  background-color: #E0E0E0;
+  width: 12em;
+  display: block;
+  float: left;
+}
+
+.mailitems a {
+  margin: 0 1px 1.5em 1px;
+  padding: 1ex 2em 1ex 2em;
+  background-color: #E0E0E0;
+  width: 12em;
+  display: block;
+  float: left;
+}
+
 h1 {
   margin-top: 50px;
   margin-bottom: 20px;
