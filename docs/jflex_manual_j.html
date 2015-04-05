@@ -1,0 +1,1843 @@
+<HTML>
+  <HEAD>
+    <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=sjis">
+    <META NAME="Author" CONTENT="Gerwin Klein">
+    <TITLE>JFlex User's Manual</TITLE>
+  </HEAD>
+  <BODY>
+    
+    <CENTER><A NAME="TOP"></A><A HREF="http://jflex.de/"><IMG SRC="logo.png" BORDER=0 HEIGHT=160 WIDTH=577></A></CENTER>
+
+    <CENTER>&nbsp;</CENTER>
+    
+    <CENTER>
+      <H1>
+        JFlex User's Manual</H1></CENTER>
+    
+    <CENTER>Version 1.1.2, October 12, 1998</CENTER>
+
+    <CENTER><A HREF="http://www.informatik.tu-muenchen.de/~kleing/">Gerwin Klein</A></CENTER>
+
+    <HR WIDTH="100%">
+
+      <DIV ALIGN=RIGHT>
+        <TABLE>
+          <TR><TH>日本語訳</TH><TH>(Translated by)</TH><TH>担当</TH></TR>
+          <TR><TD><A HREF="mailto:nakajima@ad.cs.toyo.ac.jp">中島 祐一</A></TD><TD>(Yuichi NAKAJIMA)</TD><TD><A HREF="#Intro">1</A>, <A HREF="#Installing">2</A>, <A HREF="#Porting">6</A>, <A HREF="#CUPWork">7</A></TD></TR>
+          <TR><TD>池田 幸雄</TD><TD>(Yukio IKEDA)</TD><TD><A HREF="#Example">3</A></TD></TR>
+          <TR><TD>山崎 勝彦</TD><TD>(Katsuhiko YAMAZAKI)</TD><TD><A HREF="#SpecUsercode">4.1</A>, <A HREF="#SpecOptions">4.2</A></TD></TR>
+          <TR><TD>大宅 宏二</TD><TD>(Koji OOYA)</TD><TD><A HREF="#Specifications">4.3</A></TD></TR> 
+        </TABLE>
+      </DIV>
+
+    <HR WIDTH="100%">
+
+    <H3>
+      <A NAME="TOC"></A><A HREF="#TOC">目次</A></H3>
+
+<UL><B>&nbsp; 1&nbsp; <A HREF="#Intro">イントロダクション</A></B>
+<BR><B>&nbsp; 2&nbsp; <A HREF="#Installing">JFlexのインストール</A></B>
+<BR><B>&nbsp; 3&nbsp; <A HREF="#Example">JFLexの使用法 ― 例</A></B>
+<BR><B>&nbsp; 4&nbsp; <A HREF="#Specifications">レキサの仕様書</A></B>
+<UL><B>4.1&nbsp; <A HREF="#SpecUsercode">ユーザコード</A></B>
+<BR><B>4.2&nbsp; <A HREF="#SpecOptions">オプションと宣言</A></B>
+<UL><A HREF="#ClassOptions">クラスオプションとユーザクラスコード</A>
+<BR><A HREF="#ScanningMethod">スキャニングメソッド</A>
+<BR><A HREF="#EOF">ファイルの終端(EOF)</A>
+<BR><A HREF="#Standalone">スタンドアロンスキャナ</A>
+<BR><A HREF="#CupMode">CUPとの適合性</A>
+<BR><A HREF="#CodeGeneration">コードの生成</A>
+<BR><A HREF="#CharacterSets">文字集合</A>
+<BR><A HREF="#Counting">行数、文字数、桁数の計測</A>
+<BR><A HREF="#Obsolete">もはや使われないJLexのオプション</A>
+<BR><A HREF="#StateDecl">状態の宣言</A>
+<BR><A HREF="#MacroDefs">マクロの定義</A></UL>
+<B>4.3&nbsp; <A HREF="#Specifications">字句規則</A></B>
+<UL><A HREF="#Grammar">構文</A>
+<BR><A HREF="#Semantics">意味論</A>
+<BR><A HREF="#HowMatched">どのようにして入力はマッチされるか</A>
+<BR><a href="#ScannerMethods">アクションでアクセス可能なスキャナメソッドと変数</a></UL>
+</UL>
+<B>&nbsp; 5&nbsp; <A HREF="#performance">性能について二言三言</A></B>
+<BR><B>&nbsp; 6&nbsp; <A HREF="#Porting">JLexからの移植</A></B>
+<BR><B>&nbsp; 7&nbsp; <A HREF="#CUPWork">協調動作：JFlexとCUP</A></B>
+<BR><B>&nbsp; 8&nbsp; <A HREF="#Bugs">バグ</A></B>
+<BR><B>&nbsp; 9&nbsp; <A HREF="#References">参考文献</A></B>
+<BR><B>10&nbsp; <A HREF="#Copyright">権利とライセンス</A></B></UL>
+
+
+
+
+
+<HR WIDTH="100%">
+
+<H2>
+<A NAME="Intro"></A>1 イントロダクション</H2>
+JFlexはJavaで書かれたJava用の字句解析ルーチン生成系(lexical analyzer generator)である。そのJFlexは、Princeton UniversityのElliot Berkによって開発された非常に有用なツール<A HREF="#REFJLex">JLex</A>の書き直しでもある。Vern Paxonが彼のC/C++ツール<A HREF="#REFflex">flex [5]</A>について述べているように、JFlexはそれでもいかなるコードも共有していない。
+
+<P>JFlexの主要な設計上の目標は以下の通りである：
+<UL>
+<LI>
+<B>完全なUnicodeのサポート</B></LI>
+
+<LI>
+<B>生成されたスキャナ(scannar)が高速</B>（手書きやこれらをJLexで生成したものよりも高速）</LI>
+
+<LI>
+<B>スキャナの生成が高速</B></LI>
+
+<LI>
+<B>便利な仕様書の構文</B></LI>
+
+<LI>
+<B>プラットホーム非依存</B></LI>
+
+<LI>
+<B>JLexとの互換性</B></LI>
+</UL>
+
+<H4>
+version 1.1 の新機能</H4>
+JFlexのversion 1.1は（version 1.0に）次の新機能を追加した：
+<UL>
+
+<LI>
+  正規表現における空白文字 <tt>" "</tt>（スペース）や <tt>"\t"</tt>（タブ） ― セクション <a href="#Grammar">［構文］</a> を参照
+</LI>
+
+<LI>
+  flex形式の繰り返し表現 <tt>r{n}</tt> と <tt>r{n,m}</tt> ― セクション <a href="#Semantics">［意味論］</a> を参照
+</LI>
+
+<LI>
+  大文字か小文字かに依存しないスキャナのための <a href="#caseless"><tt>%caseless</tt></a> スイッチ
+</LI>
+
+<LI>
+  ファイルの終端で自動的に入力ストリームを閉じるための <a href="#eofclose"><tt>%eofclose</tt></a> スイッチ
+</LI>
+
+<LI>
+  入力ストリームを閉じるためのメソッド <a href="#ScannerMethods"><tt>void yyclose()</tt></a>
+</LI>
+
+<LI>
+  現在の字句状態(lexical state)のためのメソッド <a href="#ScannerMethods"><tt>int yystate()</tt></a>
+</LI>
+
+<LI>
+  マッチしたテキストの再読み込み部分に関するメソッド <a href="#ScannerMethods"><tt>void yypushback(int number)</tt></a>
+</LI>
+
+<LI>
+  生成の処理で上書きされるファイルのバックアップ
+</LI>
+
+<LI>
+  よりよいエラー報告(error reporting)
+</LI>
+
+<LI>
+  ファイル名がコマンドラインで指定されないときのGUI
+</LI>
+
+</UL>
+
+<H4>
+このマニュアルについて</H4>
+このマニュアルは文書を与えるが、ツールJFlexの完全な記述ではない。それは、あなたが字句解析(lexical analysis)の問題に熟知していることを仮定している。<A HREF="#REFAppel">[2]</A>, <A HREF="#REFAho">[1]</A>, <A HREF="#REFMaurer">[11]</A> はこの話題について良いイントロダクションを提供する。
+
+<P>このマニュアルの次のセクションは、JFlexの<A HREF="#Installing">［インストールの方法］</A>を記述する。もしあなたがJLexを使って作業をしたことがないか、JLexとJFlexのスキャナの仕様書を比較したいのであれば、セクション3 <A HREF="#Example">［JFlexを使った作業 ― 例］</A> を読むべきである。全てのオプションと完全な仕様書の構文は、セクション <A HREF="#Specifications">［レキサの仕様書］</A> に示される。もしあなたが性能の考察やJLex/JFlexの速度の比較に関心があるなら、<A HREF="#performance">［性能について二言三言］</A> はまさに当を得たものとなるであろう。それらの古いJLexの仕様書を使おうとする人々は、JFlexでは修正されたポータブルではない、または標準的ではない、JLexのふるまいについて起こり得る問題を避けるために、<A HREF="#Porting">［JLexからの移植］</A> を調べるべきである。<A HREF="#Bugs">［バグ］</A> は現在知られているバグの一覧を与える。マニュアルはJFlexを書くために使われた<A HREF="#References">［参考文献］</A>に続き、<A HREF="#Copyright">［権利とライセンス］</A> についての記述で結論づける。
+
+<P>
+<HR WIDTH="100%">
+
+<H2>
+<A NAME="Installing"></A>2 JFlexのインストール</H2>
+JFlexをインストールするには、以下の３つのステップに従ってください：
+<OL>
+<LI>
+あなたがダウンロードしたファイルを、JFlexをインストールしたいディレクトリに（Unixなら <TT>tar/unzip</TT> を、W95/98なら<A HREF="http://www.winzip.com">WinZip</A>を使って）展開します。
+<BR>たとえば <TT>C:\</TT> に展開したなら、以下のようなディレクトリ構造が作られているはずです（カッコ内はそのディレクトリの内容を表します）：
+<PRE>
+  C:\JFlex\                          
+        +--bin\                     (スタートスクリプト) 
+        +--doc\                     (FAQとこのマニュアル)
+        +--examples\ 
+                 +--java\           (完全なJava 1.1用のレキサの仕様書) 
+                 +--simple\         (簡単なスキャナ)
+                 +--standalone\     (簡単なスタンドアロンスキャナ) 
+        +--lib\                     (コンパイル済みのクラス) 
+        +--src\ 
+            +--JFlex\               (JFlexのソースコード) 
+            +--JFlex\gui            (JFlexのUIクラスのソースコード)
+            +--java_cup\runtime\    (java_cup.runtimeクラスのソースコード) 
+</PRE>
+</LI>
+<LI>
+Unixなら <B><TT>bin/jflex</TT></B> を、W95/98なら <B><TT>bin\jflex.bat</TT></B>
+を編集します（上の例では、<TT>C:\JFlex\bin\jflex.bat</TT> になります）。そして、</LI>
+
+<UL>
+<LI>
+<B><TT>JAVA_HOME</TT></B> は、JavaのJDKがインストールされているディレクトリを表します</LI>
+
+<BR>（たとえば <TT>C:\java</TT> であれば、<TT>C:\java\lib\classes.zip</TT> が標準Javaクラスのファイルです）そして、
+<LI>
+<B><TT>JFLEX_HOME</TT></B> は、JFlexのあるディレクトリ（例では：<TT>C:\JFlex</TT>）です</LI>
+</UL>
+&nbsp;
+
+<LI>
+あなたのパスに、JFlexの <tt>bin/</tt> ディレクトリを追加します。
+（そのディレクトリにはスタートスクリプトが入っています。例では <TT>C:\JFlex\bin</TT> です）。</LI>
+</OL>
+これで、以下のコマンドを使ってJFlexを動作させることができます：
+<OL><TT>jflex &lt;inputfile></TT></OL>
+代わりに、<TT>CLASSPATH</TT> にファイル <TT>lib\JFlex.zip</TT> を含めることで、ステップ２と３をとばすことも可能です。
+<BR>そのときに、JFlexを動かすには以下のようにします：
+<UL><TT>java JFlex.Main &lt;inputfile></TT></UL>
+入力ファイル(inputfile)はどちらの場合も省略可能です。もしコマンドラインでファイル名を入れなければ、JFlexはウィンドウを開いてファイル名を尋ねます。
+<P>
+
+<HR WIDTH="100%">
+<H2>
+<A NAME="Example"></A>3 JFlexの使用法 ― 例</H2>
+
+JFlexを使ったレキサの仕様書がどのようなものを表すのかを例示するために、この節ではJava言語に対するJFlexの仕様書の一部を取り扱う。この例では、Javaプログラムの字句構造全体は記述していないが、小さく単純化された部分だけは記述してある（キーワード、オペレータ、コメントおよび2種類のリテラル）。それはまた、LALRパーザジェネレータ <A HREF="#REFCUP">CUP [8]</A> とインタフェースする方法も示しており、それゆえに、CUPの文法の終端トークンに対する整定数が宣言される（CUPによって生成された）<tt>sym</tt> クラスを使用する。JFlexには "<tt>examples</tt>" ディレクトリが存在する。そこには小さなstandaloneスキャナーがあり、それはあなたに実例を与えるためにCUPのような他のツールを必要としない。また、"<tt>examples</tt>" ディレクトリには、<a href = "mailto:cananian@alumni.princeton.edu">C. Scott Ananian</a> が <A HREF="#REFCUP">CUP [8]</A> のwebsiteから得たJava1.1用ののCUPパーザの仕様書とともに、Javaプログラムの字句構造の完全なJFlexの仕様書が含まれている。（JFlexスキャナとインタフェースを行うために修正された）。両方の仕様書は、<a href="#RefLangSpec">Java言語の仕様書 [7]</a> と厳密に接続されている。
+
+<P>
+<HR WIDTH="100%">
+<PRE><A NAME="CodeTop"></A><TT>/* JFlex example: part of Java 1.0/1.1 language lexer specification */
+<A HREF="#ExampleUserCode">import java_cup.runtime.*;
+
+</A><A HREF="#ExampleOptions">%%</A></TT>
+<A NAME="CodeOptions"></A></PRE>
+
+<PRE><TT><A HREF="#ExampleOptions">%class Lexer
+%unicode
+%cup
+%line
+%column</A></TT></PRE>
+
+<PRE><A NAME="CodeScannerCode"></A><TT><A HREF="#ExampleScannerCode">%{
+&nbsp; StringBuffer string = new StringBuffer();
+
+&nbsp; private Symbol symbol(int type) {
+&nbsp;&nbsp;&nbsp; return new Symbol(type, yyline, yycolumn);
+&nbsp; }
+&nbsp; private Symbol symbol(int type, Object value) {
+&nbsp;&nbsp;&nbsp; return new Symbol(type, yyline, yycolumn, value);
+&nbsp; }
+%}
+
+<A NAME="CodeMacros"></A></A><A HREF="#ExampleMacros">LineTerminator = \r|\n|\r\n
+InputCharacter = [^\r\n]
+WhiteSpace = {LineTerminator} | [ \t\f]
+
+/* comments */
+Comment = {TraditionalComment}|{EndOfLineComment}|{DocumentationComment}
+
+TraditionalComment = "/*" [^*] {CommentContent} "*"+ "/"
+EndOfLineComment = "//" {InputCharacter}* {LineTerminator}
+DocumentationComment = "/**" {CommentContent} "*"+ "/"
+
+CommentContent = ( [^*] | \*+ [^/*] )*
+
+Identifier = [:jletter:] [:jletterdigit:]*
+
+DecIntegerLiteral = 0 | [1-9][0-9]*
+
+<A NAME="CodeStateDecl"></A></A><A HREF="#ExampleStateDecl">%state STRING
+
+</A><A HREF="#ExampleLexRules">%%
+
+</A>/* keywords */
+<A NAME="CodeRulesYYINITIAL"></A><A HREF="#ExampleRulesYYINITIAL">&lt;YYINITIAL> "abstract"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.ABSTRACT); }
+&lt;YYINITIAL> "boolean"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.BOOLEAN); }
+&lt;YYINITIAL> "break"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.BREAK); }
+</A>&nbsp;
+<A NAME="CodeRulesBunch"></A><A NAME="CodeRulesYYBEGIN"></A><A HREF="#ExampleRulesBunch">&lt;YYINITIAL> {
+</A>&nbsp; /* identifiers */&nbsp;
+&nbsp; {Identifier}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.IDENTIFIER); }
+&nbsp;
+&nbsp; /* literals */
+&nbsp; {DecIntegerLiteral}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.INTEGER_LITERAL); }
+<A HREF="#ExampleRulesYYbegin">&nbsp; \"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { string.setLength(0); yybegin(STRING); }
+
+</A>&nbsp; /* operators */
+&nbsp; "="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.EQ); }
+&nbsp; "=="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.EQEQ); }
+&nbsp; "+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(sym.PLUS); }
+
+&nbsp; /* comments */
+&nbsp; {Comment}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { /* ignore */ }
+&nbsp;
+&nbsp; /* whitespace */
+&nbsp; {WhiteSpace}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { /* ignore */ }
+}
+
+<A NAME="CodeRulesYYtext"></A><A HREF="#ExampleRulesStateBunch">&lt;STRING> {
+</A>&nbsp; \"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { yybegin(YYINITIAL); return symbol(sym.STRINGLITERAL, string.toString()); }
+<A HREF="#ExampleRulesYYtext">&nbsp; [^\n\r\"\\]+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { string.append( yytext() ); }
+</A>&nbsp; \\t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { string.append('\t'); }
+&nbsp; \\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { string.append('\n'); }</TT></PRE>
+
+<PRE><TT>&nbsp; \\r&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { string.append('\r'); }
+&nbsp; \\\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { string.append('\"'); }
+&nbsp; \\\\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { string.append('\\'); }
+}
+
+
+/* error fallback */
+<A NAME="CodeRulesAllStates"></A><A HREF="#ExampleRuleLast">.|\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { throw new Error("Illegal character &lt;"+yytext()+">"); }</A></TT></PRE>
+
+<HR WIDTH="100%">
+
+<P>JLexと同様に、仕様書は <TT>%%</TT> で分割された３つの部分から成り立っている：&nbsp;
+<a href="#ExampleUserCode">ユーザコード</a>、
+<a href="#ExampleOptions">オプションおよび宣言</a>、
+<a href="#ExampleLexRules">字句規則</a>。
+<H4>
+<A NAME="ExampleUserCode"></A>ユーザコード</H4>
+最初の節 "ユーザコード" を見てみると、'<TT>%%</TT>' で始まる最初の行からのtextは、生成されたレキサの先頭にそのままコピーされている。<tt>package</tt> と <tt>import</tt> のステートメントのほかに、ここですべきことは通常ほとんどない。
+<H4>
+<A NAME="ExampleOptions"></A>オプションと宣言</H4>
+2つ目の節 "オプションと宣言" は、もっと興味深い。それは、オプションの集合、生成されたスキャナクラスに含まれるコード、字句状態、マクロ宣言から成り立っている。JFlexの各オプションは、仕様書の行頭になければならず、'<tt>%</tt>' で始まる。この例では次のオプションが使われている：
+<UL>
+<LI>
+<TT><A HREF="#CodeOptions">%class Lexer</A></TT> は、生成されたクラスに "Lexer"  という名前を与え、"<TT>Lexer.java</TT>" というファイルにコードを書き込むことをJFlexに知らせる。</LI>
+
+<LI>
+<TT><A HREF="#CodeOptions">%unicode</A></TT> は、スキャナがその上で動作する文字の集合を定義する。</LI>
+
+<LI>
+<TT><A HREF="#CodeOptions">%cup</A></TT> は、CUPで生成されたパーザとのインタフェースを行うCUP適合モードに切り替える。</LI>
+
+<LI>
+<TT><A HREF="#CodeOptions">%line</A></TT> は、行数の計測をonにする（現在の行数は、変数 <tt>yyline</tt> によってアクセスできる）。</LI>
+
+<LI>
+<TT><A HREF="#CodeOptions">%column</A></TT> は、桁数の計測をonにする（現在の桁数は、<tt>yycolumn</tt> によってアクセスできる）。</LI>
+</UL>
+<A NAME="ExampleScannerCode"></A><TT><A HREF="#CodeScannerCode">'%{' ... '%}'</A></TT> に含まれるコードは、生成されたレキサのクラスのソースにそのままコピーされる。この方法で、スキャナアクションの中で使われるメンバ変数や関数を宣言できる。私たちの例では、文字列リテラルの一部を格納する <TT>StringBuffer</TT> "<TT>string</TT>" と、現在のトークンの位置情報で <TT>java_cup.runtime.Symbol</TT> オブジェクトを作成する2つのヘルパー関数(helper function) "<TT>symbol</TT>" を宣言している。（パーザジェネレータCUPとインターフェイスを行う方法については <A HREF="#CUPWork">[JFlex and CUP]</A> を参照）。JFlexのオプションとして、'<TT>%{</TT>' と '<TT>%}</TT>' は、行頭になければならない。
+
+<P><A NAME="ExampleMacros"></A>
+仕様書はマクロ宣言に続く。マクロは、レキサの仕様書を理解しやすくするための、正規表現の省略形である。マクロの定義は、マクロの識別子とそれに続く '<TT>=</TT>'、その識別子を表す正規表現、によって成り立っている。この正規表現は、それ自身マクロの使用を含んでいてもよい。これは仕様書スタイルのような文法を可能にするが、マクロはただの省略形であって非終端ではない ― 繰り返しや相互再帰はできない。マクロ定義の中のサイクルは、JFlexによる生成時に発見され報告される。
+
+<P>ここで、例のマクロをいくつか詳細にする：
+<UL>
+<LI>
+<TT><A HREF="#CodeMacros">LineTerminator</A></TT> は、ASCII CRか、ASCII LFか、CRに続くLFにマッチする正規表現を表す。</LI>
+
+<LI>
+<TT><A HREF="#CodeMacros">InputCharacter</A></TT> は、CRかLFではないすべての文字を表す。</LI>
+
+<LI>
+<TT><A HREF="#CodeMacros">TraditionalComment</A></TT> は、"<TT>/*</TT>"、'<TT>*</TT>' ではない文字、マクロ <TT>CommentContent</TT> にマッチするすべてのもの、任意の数の "*"、"/" という連続した文字列にマッチする表現である。</LI>
+
+<LI>
+<TT><A HREF="#CodeMacros">CommentContent</A></TT> は、"<TT>*</TT>" を除く0個以上の任意の文字か、任意の数の "<TT>*</TT>" に続く "<TT>/</TT>" でない文字にマッチする。</LI>
+
+<LI>
+<TT><A HREF="#CodeMacros">Identifier</A></TT> は、"<TT>jletter</TT>" クラスの文字で始まり、それに続く0個以上の "<TT>jletterdigit</TT>" クラスの文字である各文字列にマッチする。"<TT>jletter</TT>" と "<TT>jletterdigit</TT>" は前もって定義された文字のクラスである。"<TT>jletter</TT>" は、Javaの関数 <TT>Character.isJavaIdentifierStart</TT> が <tt>true</tt> を返すすべての文字を含み、"<TT>jletterdigit</TT>" は、<TT>Character.isJavaIdentifierpart</TT> が <tt>true</tt> を返すすべての文字を含む。もしUnicode対応のスキャナを生成するのであれば、それらのクラスはかなり大きくなり、生成過程をかなり減速するだろう ― 生成されたスキャナの速度は、しかしながら、影響を受けない。この話題についてより多くの情報については、セクション <A HREF="#predefCharCl">[predefined character classes]</A> を参照。</LI>
+</UL>
+<A NAME="ExampleStateDecl"></A>レキサの仕様書の２つ目のセクションの最後の部分は、字句状態の宣言である："<TT><A HREF="#CodeStateDecl">%state STRING</A></TT>" は、仕様書の "字句規則" 部で使用できる字句状態 "<TT>STRING</TT>" を宣言する。状態の宣言は、"<TT>%state</TT>" で始まり、続いてスペースやコンマで区切られた状態の識別子のリストからなる行である。"<TT>%state</TT>" で始まる１つ以上の行を書くことができる。
+<H4>
+<A NAME="ExampleLexRules"></A>字句規則</H4>
+JFlexの仕様書の "字句規則" セクションは、正規表現とスキャナが関連づけられた正規表現にマッチするときに実行されるアクション（Javaのコード）を含んでいる。スキャナがその入力を読むと、すべての正規表現と接触を保ち、最長のマッチを持つ表現のアクションがアクティブになる。上の私たちの仕様書では、例として入力 "<TT>breaker</TT>" を使うと、キーワード "<TT><A HREF="#CodeRulesYYINITIAL">break</A></TT>" とそれに続く識別子 "<TT>er</TT>" ではなく、<TT><A HREF="#CodeMacros">Identifier</A></TT> に対する正規表現にマッチする。なぜならば、規則 <TT>{Identifier}</TT> は、仕様書の中のいかなる他の規則よりも、一度にこの入力のより長い部分とマッチするからである（すなわち、その規則はその入力の全体とマッチする）。もし、２つの正規表現両方が、ある特定の入力の最長一致(longest match)を持っているなら、スキャナは仕様書の最初に現れる表現のアクションを選択する。この方法で、私たちは入力 "<TT>break</TT>" について、識別子 "<TT>break</TT>" ではなく、キーワード "<TT>break</TT>" を得ることができる。
+
+<P>正規表現のマッチに加えて、仕様書を定式化(formulate)するために字句状態を使うことができる。字句状態は開始条件(start condition)のような働きをする。もし、スキャナが字句状態 <TT>STRING</TT> にあるなら、開始条件 <TT>&lt;STRING></TT> を前に持つ表現のみがマッチされる。ある正規表現の開始条件は、１つ以上の字句状態を含むことができる。字句状態 "<TT>YYINITIAL</TT>" は前もって定義されており、レキサがスキャニングを開始するときの状態でもある。もしある正規表現が開始条件を持たないのであれば、それは <B>すべての</B> 字句状態にマッチする。
+
+<P><A NAME="ExampleRulesStateBunch"></A>同じ開始条件を持った表現の一群を持つことがよくあるので、JFlexではUnixツールの <TT>flex</TT> と同様の省略形が可能である：
+<BR><TT>&lt;STRING> {</TT>
+<BR><TT>&nbsp; expr1&nbsp;&nbsp; { action1 }</TT>
+<BR><TT>&nbsp; expr2&nbsp;&nbsp; { action2 }</TT>
+<BR><TT>}</TT>
+<BR>は、<TT>expr1</TT> と <TT>expr2</TT> の両方が開始条件 <tt>&lt;STRING></tt> を持つことを意味する。
+
+<P><A NAME="ExampleRulesYYINITIAL"></A>私たちの例の最初の３つの規則は、開始条件 <TT>&lt;YYINITIAL></TT> を前に持つ正規表現の構文の実例である。
+
+<P><TT><A HREF="#CodeRulesYYINITIAL">&lt;YYINITIAL> "abstract"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ return symbol(sym.ABSTRACT); }</A></TT>
+<BR>は、スキャナがその開始条件 "<TT>YYINITIAL</TT>" にあるときのみ、入力 "<TT>abstract</TT>" にマッチする。文字列 "<TT>abstract</TT>" がマッチされたとき、スキャナ関数はCUPのシンボル <TT>sym.ABSTRACT</TT> を返す。もしあるアクションが値を返さないのであれば、スキャニングの処理は、アクション実行後、ただちに再開される。
+
+<P><A NAME="ExampleRulesBunch"></A>
+<BR><TT><A HREF="#CodeRulesBunch">&lt;YYINITIAL> {</A></TT>
+<BR><TT><A HREF="#CodeRulesBunch">...</A></TT>
+<BR><TT><A HREF="#CodeRulesBunch">}</A></TT>
+<BR>に囲まれた規則は、省略構文の実例であり、状態 <TT>YYINITIAL</TT> においてのみマッチされる。
+
+<P><A NAME="ExampleRulesYYbegin"></A>これらの規則の、特に興味深いのは
+<BR><TT><A HREF="#CodeRulesYYBEGIN">&nbsp; \"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ string.setLength(0); yybegin(STRING); }</A></TT>
+<BR>である。
+
+<P>もし、スキャナが状態 <TT>YYINITIAL</TT> でダブルクォーテーションにマッチするならば、私たちは文字列リテラルの開始を認識する。それゆえに、その文字列リテラルの内容を保持する <TT>StringBuffer</TT> をクリアし、字句状態 <TT>STRING</TT> に切り替えることを <TT>yybegin(STRING)</TT> を使ってスキャナに知らせる。パーザに値を返していないため、スキャナーはすぐに処理を続行する。
+
+<P><A NAME="ExampleRulesYYtext"></A>字句状態 <TT>STRING</TT> では、マッチした入力を参照するためのもう一つの規則を例示している：
+<BR><TT><A HREF="#CodeRulesYYtext">&nbsp; [^\n\r\"\\]+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ string.append( yytext() ); }</A></TT>
+
+<P>表現 <TT><A HREF="#CodeRulesYYtext">[^\n\r\"\\]+</A></TT> は、次のバックスラッシュ（<TT>\n</TT> のようなエスケープシーケンスを意味する）、ダブルクォーテーション（文字列の終りを意味する）、もしくは行の終端(line terminator)（文字列リテラルの中で起こってはいけない）までの入力ですべての文字にマッチする。入力のマッチされた部分は、<TT><A HREF="#CodeRulesYYtext">yytext()</A></TT> を使って参照され、解析された文字列リテラルの内容に追加される。
+
+<P><A NAME="ExampleRuleLast"></A>例の仕様書の最後の字句規則は、エラーフォールバック(error fallback)として使われる。それは、もう一つの規則でマッチされなかったすべての状態ですべての規則にマッチする。それは、最も低い優先順位を持ち（最後の規則であるため）、ただ１文字だけとマッチするため、他のいかなる規則とも衝突しない。
+<BR>&nbsp;
+<H4>
+How to get it going:</H4>
+
+<UL>
+<LI>
+JFlexをインストール（セクション <A HREF="#Installing">[Installing JFlex]</A> を参照）</LI>
+
+<LI>
+もしあなたが仕様書ファイルを書いた（もしくは <TT>examples</TT> ディレクトリから選択した）のであれば、それをセーブする（たとえば <TT>java-lang.flex</TT> という名前で）</LI>
+
+<LI>
+以下のようにしてJFLexを実行する</LI>
+
+<UL><TT>jflex java-lang.flex</TT>
+<BR>&nbsp;</UL>
+
+<LI>
+JFlexは、スキャナの生成について進行状況を報告し、あなたの仕様書ファイルのディレクトリに生成されたコードを書き出すはずである</LI>
+
+<LI>
+生成された <TT>.java</TT> ファイルとあなたのクラスをコンパイルする（もしCUPを使うなら、まず最初にパーザクラスを生成する）</LI>
+
+<LI>
+これでおしまい。</LI>
+</UL>
+
+<HR WIDTH="100%">
+<H2>
+<A NAME="Specifications"></A>4 レキサの仕様書</H2>
+上で示したように、JFlexの字句仕様ファイルは <TT>%%</TT> で始まる行によって分割される３つの部分からなる：
+
+<P><TT><A HREF="#SpecUsercode">ユーザコード</A></TT>
+<BR><TT>%%</TT>
+<BR><TT><A HREF="#SpecOptions">オプションと宣言</A></TT>
+<BR><TT>%%</TT>
+<BR><TT><A HREF="#LexRules">字句規則</A></TT>
+
+<P>仕様書のすべての部分において、<TT>/* コメント文 */</TT> という形式のコメントと、<TT>//</TT> で始まるJava形式の行末コメントが考慮されている。JFlexのコメントは入れ子になる ― そのため、<TT>/*</TT> の数と <TT>*/</TT> の数はつり合わせるべきである。
+<H3>
+<A NAME="SpecUsercode"></A>ユーザコード</H3>
+第１の部分はユーザコードであり、それはスキャナクラスが宣言される前に、生成されたレキサのソースファイルの先頭にそのままコピーされる。上の例で示したように、これは <TT>package</TT> 宣言と <TT>import</TT> ステートメントを置くための場所である。可能ではあるが、このセクションに（トークンクラスのような）自身のヘルパークラスを置くことは、好ましいJavaのプログラミングスタイルだとは思えない。それらのクラスは、その代わりにそれらヘルパークラス自身の <TT>.java</TT> ファイルから得るべきである。
+<H3>
+<A NAME="SpecOptions"></A>オプションと宣言</H3>
+レキサの仕様書の第２の部分は、あなたの生成されたレキサをカスタマイズするための<a href="#SpecOptDirectives">オプション</a>と（JFlexの命令とJavaのコードをレキサの別々の部分に含むために）、レキサの仕様書ファイルの第３のセクション <a href = "#LexRules">[字句規則]</a> で使うための<a href="#StateDecl">字句状態</a>と<a href ="#MacroDefs">マクロ定義</a>の宣言を含んでいる。
+
+<BR>&nbsp;<A NAME="SpecOptDirectives"></A>
+<BR>JFlexの各命令は、行頭に置かれ、文字 <TT>'%'</TT> で始まっていなければならない。１つ以上のパラメータを持った命令は、次のように記述される：
+<UL><TT>%class "classname"</TT></UL>
+は、<TT>%class</TT> で行を開始し、１つのスペースが続き、生成されるスキャナのクラスの名前が続くことを意味している（ダブルクォーテーション内は改行をしてはならない。仕様書 <A HREF="#CodeOptions">[例]</A> を参照）。
+<BR>&nbsp;
+<H4>
+<A NAME="ClassOptions"></A>クラスオプションとユーザクラスコード</H4>
+これらのオプションは、生成されたスキャナクラスの名前、コンストラクタ、
+関係する部分に注目する。
+<UL>
+<LI>
+<B><TT>%class "classname"</TT></B></LI>
+
+<BR>は、生成されたクラスに名前 "<TT>classname</TT>" を与え、生成されたコードをファイル "<TT>classname.java</TT>" に書くことをJFlexに知らせる。そのコードは、仕様書のファイルが存在するディレクトリに書かれるだろう。もし仕様書に <TT>%class</TT> 命令が一つも存在しなければ、生成されたクラスは "<TT>Yylex</TT>" という名前を得て、"<TT>Yylex.java</TT>" というファイルに書かれるはずである。仕様書内の <TT>%class</TT> 命令は1つだけでなければならない。
+<BR>&nbsp;
+<LI>
+<B><TT>%implements "interface 1"[, "interface 2", ..]</TT></B></LI>
+
+<BR>は、記述されたインターフェイス(interface)を生成されたクラスに実装(implements)する。もし、１つ以上の <tt>%implements</tt> 宣言が存在するのであれば、記述されたすべてのインターフェイスが実装されるだろう。
+<BR>&nbsp;
+<LI>
+<B><TT>%public</TT></B></LI>
+
+<BR>は、生成されたクラスをpublicにする（デフォルトでは、そのクラスはそれ自身のパッケージの中だけでアクセス可能である)。
+<BR>&nbsp;
+<LI>
+<B><TT>%{</TT></B></LI>
+<BR><B><TT>...</TT></B>
+<BR><B><TT>%}</TT></B>
+<BR><TT>%{</TT> と <TT>%}</TT> で囲まれたコードは、生成されたクラスにそのままコピーされる。ここで、生成されたスキャナの中に、あなた自身のメンバ変数と関数を定義することができる。すべてのオプションのように、<TT>%{</TT> と <TT>%}</TT> の両方とも、仕様書の行頭になければならない。もし１つ以上のクラスコード命令 <TT>%{...%}</TT> が存在するなら、そのコードは仕様書の中に現れる順番で連結される。
+<BR>&nbsp;
+<LI>
+<B><TT>%init{</TT></B></LI>
+
+<BR><B><TT>...</TT></B>
+<BR><B><TT>%init}</TT></B>
+<BR><TT>%init{</TT> と <TT>%init}</TT> で囲まれたコードは、生成されたクラスにそのままコピーされる。ここで、<TT>%{...%}</TT> 命令の中で宣言されたメンバ変数を初期化することができる。もし１つ以上の初期化オプションが存在するなら、そのコードは仕様書の中に現れる順番で連結される。
+<BR>&nbsp;
+<LI>
+<B><TT>%initthrow{</TT></B></LI>
+
+<BR><B><TT>"exception1"[, "exception2", ...]</TT></B>
+<BR><B><TT>%initthrow}</TT></B>
+<BR>は、記述された例外をコンストラクタの <tt>throws</tt> 節で宣言されるようにする。もし１つ以上の <tt>%initthrow{...%initthrow}</tt> 命令が仕様書の中に存在するなら、記述されたすべての例外が宣言されるだろう。</UL>
+
+<H4>
+<A NAME="ScanningMethod"></A>スキャニングメソッド</H4>
+このセクションでは、スキャニングメソッドをカスタマイズする方法を示す。あなたはそのメソッドの名前と戻り値型を定義することができ、仕様書のアクションの１つで投げられる例外の宣言が可能である。もし戻り値型が記述されなければ、スキャニングメソッドはクラス <TT>Yytoken</TT> の値を返すように宣言されるだろう。
+<UL>
+<LI>
+<B><TT>%function "name"</TT></B></LI>
+
+<BR>は、スキャニングメソッドが記述された名前を得るようにする。もし仕様書の中で <TT>%function</TT> 宣言が与えられなければ、スキャニングメソッドは "<TT>yylex</TT>" という名前を得る。
+<BR>&nbsp;
+<LI>
+<B><TT>%integer</TT></B></LI>
+
+<BR>は、スキャニングメソッドがJavaの型 <TT>int</TT> として宣言されるようにする。仕様書の中のアクションは、そのため、トークンとして <TT>int</TT> の値を返すことができる。この設定のもとでデフォルトのEOF(end of file)の値は <TT>YYEOF</TT> であり、それは生成されたクラスの <TT>public static final int</TT> メンバである。
+<BR>&nbsp;
+<LI>
+<B><TT>%intwrap</TT></B></LI>
+
+<BR>は、スキャニングメソッドがJavaのラップ(wrapper)型 <TT>Integer</TT> として宣言されるようにする。仕様書の中のアクションは、そのため、トークンとして <tt>Integer</tt> の値を返すことができる。この設定のもとでデフォルトのEOFの値は <TT>null</TT> である。
+<BR>&nbsp;
+<LI>
+<B><TT>%type "typename"</TT></B></LI>
+
+<BR>は、スキャニングメソッドが記述された型の値を返すように宣言されるようにする。仕様書の中のアクションは、そのため、トークンとして <tt>typename</tt> 型の値を返すことができる。もし <TT>typename</TT> が <TT>java.lang.Object</TT> のサブクラスでなければ、あなたは <a href="#eofval"><TT>%eofval{...%eofval}</TT></a> 命令を使って別のEOFの値を記述しなければならない（訳註：Javaのすべてのクラスは、言語仕様上 <TT>java.lang.Object</TT> の（直接、あるいは間接の）サブクラスである。だから、実際にはこのような状況は起こりえないはずだが……）。<tt>%type</tt> 宣言は、<tt><a href="#CupMode">%cup</a></tt> スイッチの設定を上書きする。
+<BR>&nbsp;
+<LI>
+<B><TT>%yylexthrow{</TT></B></LI>
+
+<BR><B><TT>"exception1"[, "exception2", ... ]</TT></B>
+<BR><B><TT>%yylexthrow}</TT></B>
+<BR><TT>%yylexthrow{...%yylexthrow}</TT> の内側にリストされた例外は、スキャニングメソッドのthrows節で宣言されるだろう。もし仕様書に１つ以上の <TT>%yylexthrow{...%yylexthrow}</TT> 節が存在するなら、記述されたすべての例外が宣言されるだろう。
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="EOF"></A>ファイルの終端(EOF)</H4>
+スキャニングメソッドがEOFに到達したときに返すデフォルト値は、常に存在する。あなたは、しかしながら、EOFに到達したときに返すための特定の値と、実行されるべき特定のコードの断片を定義することができる。
+
+<P>EOFのデフォルト値は、スキャニングメソッドの戻り値型に依存する：
+<UL>
+<LI>
+<B><TT>%integer</TT></B> では、スキャニングメソッドは値 <B><TT>YYEOF</TT></B> を返すだろう。それは、生成されたクラスの <TT>public static final int</TT> メンバである。</LI>
+
+<LI>
+<B><TT>%intwrap</TT></B>では、あるいは、</li>
+<li>どこにも型の記述がないか、あるいは、</li>
+<li><B><TT>%type</TT></B> を使って宣言されたユーザ定義型では、その値は <B><TT>null</TT></B>である。</LI>
+
+<LI>
+<B><TT>%cup</TT></B> を使ったCUP互換モードでは、その値は <B><TT>new java_cup.runtime.Symbol(sym.EOF)</TT></B> である。</LI>
+</UL>
+EOFで実行するユーザの値とコードは、これらの命令を使って定義することができる：
+<UL>
+<LI><a name="eofval"></a>
+<B><TT>%eofval{</TT></B></LI>
+
+<BR><B><TT>...</TT></B>
+<BR><B><TT>%eofval}</TT></B>
+<BR><TT>%eofval{ ... %eofval}</TT> に含まれるコードは、スキャニングメソッドにそのままコピーされ、EOFに到達したときに <B>毎回</B> 実行される。（これは、EOFに到達した後に、ふたたびスキャニングメソッドが呼ばれるときも可能である）。そのコードは、パーザにEOFを表す値を返すことができる（返すべきである）。仕様書の <TT>%{eofval ... %eofval}</TT> 節は１つだけにすべきである。<TT>%{eofval ... %eofval}</TT> 命令は、<tt><a href="#CupMode">%cup</a></tt> スイッチの設定を上書きする。
+
+<BR>&nbsp;
+<LI><a name = "eof"></a>
+<B><TT>%eof{</TT></B></LI>
+
+<BR><B><TT>...</TT></B>
+<BR><B><TT>%eof}</TT></B>
+<BR><TT>%{eof ... %eof}</TT> に含まれるコードは、確実に一度は実行されるはずである。そしてそのとき、EOFに到達している。そのコードは、メソッド <TT>void yy_do_eof()</TT> に含まれ、どのような値も返すべきではない（この目的のために、<TT>%eofval{...%eofval}</TT> を使う）。もし１つ以上のEOFコード命令が存在するとき、そのコードは仕様書に現れる順番で連結される。
+<BR>&nbsp;
+<LI>
+<B><TT>%eofthrow{</TT></B></LI>
+
+<BR><B><TT>"exception1"[,"exception2", ... ]</TT></B>
+<BR><B><TT>%eofthrow}</TT></B>
+<BR><TT>%eofthrow{...%eofthrow}</TT> の内側にリストされた例外は、メソッド <TT>yy_do_eof()</TT> のthrows節で宣言される。メソッドの中に含まれる（そのメソッドについては <a href = "#eof"><TT>%eof{...%eof}</TT></a> も参照）。もし１つ以上の <TT>%eofthrow{...%eofthrow}</TT> 節が存在するなら、記述されたすべての例外が宣言されるだろう。
+<BR>&nbsp;
+
+<a name="eofclose"></a>
+<LI><B><TT>%eofclose</tt></b>
+<BR>は、JFlexがEOFで入力ストリームを閉じるようにする。コード <tt>yyclose()</tt> はメソッド <tt>yy_do_eof()</tt> に（<tt>%eof{...%eof}</tt> に記述されたコードとともに）追加され、例外 <tt>java.io.IOException</tt> は、このメソッドのthrows節で（<TT>%eofthrow{...%eofthrow}</TT> のそれらとともに）宣言される。
+<BR>&nbsp;
+</li>
+
+</UL>
+
+<H4>
+<A NAME="Standalone"></A>スタンドアロンスキャナ</H4>
+
+<UL>
+<LI>
+<B><TT>%debug</TT></B></LI>
+
+<BR>は、生成されたクラスのメイン関数を作成する。それは、コマンドライン上で入力ファイルの名前を期待(expect)し、EOFに到達するまで返された各トークンをJavaコンソール上に表示することによって、この入力ファイル上でスキャナを実行する。
+<BR>&nbsp;
+<LI>
+<B><TT>%standalone</TT></B></LI>
+
+<BR>は、生成されたクラスのメイン関数を作成する。それは、コマンドライン上で入力ファイルの名前を期待(expect)し、この入力ファイル上でスキャナを実行する。スキャナによって返された値は無視される。しかし、任意のマッチしなかったテキストは、その代わりに、Javaコンソール上に表示される。</UL>
+
+<UL>&nbsp;</UL>
+
+<H4>
+<A NAME="CupMode"></A>CUPとの適合性</H4>
+もしあなたが、あなたの生成されたスキャナとCUPのインターフェイスを実現する方法に興味があるのなら、セクション <A HREF="#CUPWork">［協調動作：JFlexとCUP］</A> も読むべきである。
+<UL>
+<LI>
+<B><TT>%cup</TT></B></LI>
+
+<BR><tt>%cup</tt> 命令は、CUP適合モードを可能にし、以下の命令の集合と同等である：
+<UL><TT>%type java_cup.runtime.Symbol</TT>
+<BR><TT>%eofval{</TT>
+<BR><TT>&nbsp; return new java_cup.runtime.Symbol(sym.EOF);</TT>
+<BR><TT>%eofval}</TT>
+<BR><TT>%eofclose</TT>
+<BR>&nbsp;</UL>
+</UL>
+
+<H4>
+<A NAME="CodeGeneration"></A>コードの生成</H4>
+JFlexがどのような種類の字句解析ルーチンを作成するのかを、次のオプションが定義する。
+<BR>&nbsp;
+<UL>
+<LI>
+もし命令が与えられなければ、JFlexは入れ子になったswitch文の中にハードコードされたDFAを持つスキャナを生成するだろう。このメソッドは、コンパイルされた <TT>.class</TT> ファイルのサイズの点から大量の圧縮を与えるだけでなく、かなり良い性能を提供する。けれども、もしあなたのスキャナが大きくなるのであれば（だいたい200状態以上）、性能がはなはだ悪化するため、<TT>%table</TT> 命令か <TT>%pack</TT> 命令のどちらか一つを考慮すべきである。もしあなたのスキャナがそれよりもさらに大きくなるのであれば（およそ300状態）、Javaのコンパイラ <TT>javac</TT> は破損したコードを生成する可能性があり、実行時にクラッシュするか、仮想マシンによってチェックを受けたときに <TT>java.lang.VerifyError</TT> を報告するかもしれない。これは、<A HREF="#RefMachineSpec">Java仮想マシンの仕様書 [9]</A> に記述されたように、Javaのメソッドの64KBのサイズ制限によるものである。この場合、デフォルトのコード生成方法は、ふつう、<TT>%table</TT> 命令よりも高圧縮のDFA表を提供するため、あなたは <TT>%pack</TT> 命令の使用を強いられるであろう。</LI>
+
+<BR>&nbsp;
+<LI>
+<B><TT>%table</TT></B></LI>
+
+<BR><TT>%table</TT> 命令は、JFlexが古典的な表駆動スキャナを提供するようにする。それは、そのDFA表を2次元配列にエンコードする。このモードでは、JFlexは少量の表圧縮だけを行い（表圧縮の問題についての詳細については <A HREF="#REFParseTable">[6]</A>,<A HREF="#REFSparseTable">[10]</A>,<A HREF="#REFAho">[1]</A>,<A HREF="#REFMaurer">[11]</A> を参照）、JLexがバージョン1.2.2まで行っていたのと同じ方法を使用する。これらの方法を比較するために、このマニュアルのセクション <A HREF="#performance">［性能について二言三言］</A> を参照のこと。上と同じ理由で（メソッドの64KBのサイズ制限）、同じ問題が発生する。それは、スキャナが大きすぎるときである。これは、仮想マシンが標準の方法として、配列の静的な初期化子を処理するように思われるからである。あなたは、この場合でも、その問題を避けるために <TT>%pack</TT> 命令の使用を強いられるだろう。
+<BR>&nbsp;
+<LI>
+<B><TT>%pack</TT></B></LI>
+
+<BR><TT>%pack</TT> は、JFlexが生成されたDFA表だけを圧縮するようにする。そしてそれは、最初のスキャナオブジェクトが作成される（そしてその結果、初期化される）とき、展開される必要がある。展開後、DFA表への内部アクセスは、<TT>%table</TT> オプションを使うのとまったく同じである ― 唯一の余分な仕事は、拡張されたDFA表のサイズに比例した時間計算量においては非常に高速な、展開処理である。すなわち、それはある特定のスキャナクラスに対して１回だけ行われる ― それが何回インスタンス化されるかは問題にならない。また、これらのスキャナが実行時にどのようにふるまうかについては、セクション<A HREF="#performance">［性能について二言三言］</A>をもう一度参照のこと。<TT>%pack</TT> を使えば、スキャナのサイズには事実上制限がないと考えるべきである。
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="CharacterSets"></A><B>文字集合</B></H4>
+
+<UL>
+<LI>
+<B><TT>%7bit</TT></B></LI>
+
+<BR>は、生成されたスキャナが７ビットASCIIの入力ファイル（文字コード0～127）を期待するようにする。これはJLexにおけるデフォルト値であるため、JFlexも7ビットのスキャナをデフォルトとする。もし、127より大きいコードの入力文字が実行時に入力に現れたら、スキャナは <tt>ArrayIndexOutofBoundsException</TT> を投げるだろう。このためだけではないが、あなたは <TT>%full</TT> 命令か <TT>%unicode</TT> 命令の１つを使うことを考慮すべきである。
+<BR>&nbsp;
+<LI>
+<B><TT>%full</TT></B></LI>
+
+<LI>
+<B><TT>%8bit</TT></B></LI>
+
+<BR>両方のオプションは、生成されたスキャナが８ビットASCIIの入力ファイル（文字コード0～255）を期待するようにする。もし、255より大きいコードの入力文字が実行時に入力に現れたら、スキャナは <tt>ArrayIndexOutofBoundsException</tt> を投げるだろう。
+<BR>&nbsp;
+<LI>
+<B><TT>%unicode</TT></B></LI>
+
+<LI>
+<B><TT>%16bit</TT></B></LI>
+
+<BR>両方のオプションは、生成されたスキャナが16ビットUnicodeの入力ファイル（文字コード0～65535）を期待するようにする。この入力文字の集合を使えば、実行時オーバフローはないだろう。８ビットASCII入力の処理は、８ビットスキャナよりわずかに遅いかもしれない。
+<BR>&nbsp;
+
+<a name="caseless"></a>
+<LI><B><TT>%caseless</TT></B></LI>
+<BR>このオプションは、それらが大文字と小文字の両方の形式で記述されていたとしても、JFlexが仕様書ですべての文字と文字列を処理できるようにする。これは、大文字か小文字かによらないキーワードで言語に対するスキャナを記述する簡単な方法を可能にする。たとえば、仕様書の中の文字列 "<tt>break</tt>" は、表現 <tt>([bB][rR][eE][aA][kK])</tt> のように処理される。<tt>%caseless</tt> オプションは、マッチしたテキストを変化させず、文字クラスに影響しない。そのため、<tt>[a]</tt> は文字 <tt>a</tt> にだけマッチし、<tt>A</tt> にもマッチすることはない。どの文字が大文字でどの文字が小文字であるかは、Unicode標準によって定義され、Javaのメソッド <tt>Character.toUpperCase</tt> と <tt>Character.toLowerCase</tt> を使ってJFlexによって決定される。
+
+<BR>&nbsp;</UL>
+<H4>
+<A NAME="Counting"></A><B>行数、文字数、桁数の計測</B></H4>
+
+<UL>
+<LI>
+<B><TT>%char</TT></B></LI>
+
+<BR>は、文字数の計測をonにする。<TT>int</TT> のメンバ変数 <TT>yychar</TT> は、入力の先頭から現在のトークンの先頭までの（0から始まる）文字数を持っている。
+<BR>&nbsp;
+<LI>
+<B><TT>%line</TT></B></LI>
+
+<BR>は、行数の計測をonにする。<TT>int</TT> のメンバ変数 <TT>yyline</TT> は、入力の先頭から現在のトークンの先頭までの（0から始まる）行数を持っている。
+<BR>&nbsp;
+<LI>
+<B><TT>%column</TT></B></LI>
+
+<BR>は、桁数の計測をonにする。<TT>int</TT> のメンバ変数 <TT>yycolumn</TT> は、現在の行の先頭から現在のトークンの先頭までの（0から始まる）文字数を持っている。
+
+<P>&nbsp;</UL>
+
+<H4>
+<A NAME="Obsolete"></A>もはや使われないJLexのオプション</H4>
+
+<UL>
+<LI>
+<B><TT>%notunix</TT></B></LI>
+
+<BR>このJLexのオプションは、まだ有効な命令として認識されるが、もはや使われない。それは、W95とUnixの間で正規表現の <TT>$</TT> 演算子に対する改行文字(line terminators)の種類（<TT>\r\n</TT> と <TT>\n</TT>）を切り替えるために使用した。JFlexは両方の形式のプラットホーム依存の改行文字を常に認識する。
+<BR>&nbsp;
+<LI>
+<B><TT>%yyeof</TT></B></LI>
+
+<BR>このJLexのオプションは、まだ有効な命令として認識されるが、もはや使われない。それは、メンバ定数 <TT>YYEOF</TT> をpublicとして宣言するために使うべきであった。JFLexはいずれにしてもそれをpublicで宣言する。
+<BR>&nbsp;</UL>
+
+<H4>
+<A NAME="StateDecl"></A>状態の宣言</H4>
+状態の宣言は、次の形式（訳註：fromはformの誤植）を持っている：
+<UL><TT>%state "state identifier"[, "state identifier", ... ]</TT></UL>
+それぞれ <TT>%state</TT> で始まる、１行以上の状態の宣言が存在していてもよい。状態の識別子は、文字の後に一連の文字、数字、下線が続く。状態の識別子は、空白かカンマによって区切られる。
+
+<P>連続した
+<UL><TT>%state STATE1</TT>
+<BR><TT>%state STATE3, XYZ, STATE_10</TT>
+<BR><TT>%state ABC STATE5</TT></UL>
+は、<TT>{STATE1, STATE3, XYZ, STATE_10, ABC, STATE5}</TT> という識別子の集合を字句状態として宣言する。
+<BR>&nbsp;
+<H5>
+<A NAME="MacroDefs"></A>マクロ定義</H5>
+マクロ定義は、以下の形式を持つ
+<UL><TT>macroidentifier = regular expression</TT></UL>
+これは、次のことを意味する。マクロ定義は、後でマクロを参照するために使えるマクロ識別子（文字の後に一連の文字、数字、下線が続く）、その後に続く０文字以上の空白、その後に続く "<TT>=</TT>"、その後に続く０文字以上の空白、その後に続く正規表現（正規表現についてのさらなる情報についてはセクション<A HREF="#LexRules">［字句規則］</A>を参照）から構成される。
+
+<P>各マクロは１つの行に収めなければならない。
+
+<P>右辺の正規表現は、よく形式化されて(well formed)いなければならず、<TT>^</TT> 演算子や <TT>$</TT> 演算子を含んでいてはならない。<B>JLexとは違い、マクロは単なる一片のテキストではなく、コピーすることによって拡張される</B> ― それらは構文解析され、よく形式化されていなくてはならない。
+
+<P><B>これは特徴である。</B>それは、字句仕様の中のバグを見つけるためのいろいろな苦労を削除する（より複雑なマクロを囲む丸カッコを持たないようなこと ― JFlexではその必要がない）。JLex形式のマクロの問題のより詳細については<A HREF="#Porting">［JLexからの移植］</A>を参照のこと。
+
+<P>マクロ定義においてマクロの使用が可能であるため、要求される字句構造を記述するための表記のような文法を使うことが可能である。マクロは、しかしながら、それらを表す正規表現の単なる省略形のままである。それらは文法の非終端ではないし、どのような方法でも再帰的に使うことはできない。JFlexは、生成時にマクロ定義の中のサイクルを見つけ、それらを報告する。JFlexはまた、定義されているが仕様書の“字句規則”セクションで使われないマクロについても警告する。
+<br> &nbsp;
+
+<H3>
+<A NAME="LexRules"></A>字句規則</H3>
+JFlexの仕様書の“字句規則”セクションは、正規表現の集合と、スキャナが関連づけられた正規表現にマッチした時に実行されるアクション（Javaコード）を含んでいる。
+<BR>&nbsp;
+<H4>
+<A NAME="Grammar"></A>構文</H4>
+“字句規則”セクションの構文は、以下のBNF文法によって表現される（終端記号は '<TT>quotes</TT>' に囲まれている）。
+<NOBR>
+<P><TT>LexicalRules ::= Rule+</TT>
+<BR><TT>Rule&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ::= [StateList]
+['^'] RegExp ['$'] Action</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| StateGroup</TT>
+<BR><TT>StateGroup&nbsp;&nbsp; ::= StateList '{' Rule+ '}'</TT>
+<BR><TT>StateList&nbsp;&nbsp;&nbsp; ::= '&lt;' Identifier (',' Identifier)*
+'>'</TT>
+<BR><TT>Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ::= '{' JavaCode '}'</TT>
+
+<P><TT>RegExp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ::= RegExp '|' RegExp</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| RegExp RegExp</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '(' RegExp ')'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| RegExp ('*'|'+'|'?')</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| RegExp "{" Number ["," Number] "}"</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '[' (Character|Character'-'Character)+ ']'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| PredefinedClass</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '{' Identifier '}'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '"' StringCharacter+ '"'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| Character</TT>
+
+<P><TT>PredefinedClass ::= '[:jletter:]'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '[:jletterdigit:]'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '[:letter:]'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '[:digit:]'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '[:uppercase:]'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '[:lowercase:]'</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+| '.'</TT>
+</NOBR>
+<P><A NAME="Terminals"></A>文法は以下の終端記号を使用する：
+<UL>
+<LI>
+<TT>JavaCode</TT></LI>
+
+<UL><a href="#RefLangSpec">Java言語仕様書 [7]</a> の14.2節で記述されたような <I><TT>BlockStatements</TT></I> の連続。</UL>
+
+<LI>
+
+<TT>Number</TT></LI>
+<UL>
+負でない10進整数。
+</UL>
+
+<LI>
+
+<TT>Identifier</TT></LI>
+
+<UL>文字 <TT>[a-zA-Z]</TT> に続く、０文字以上の文字、数字、または下線 <TT>[a-zA-Z0-9_]</TT> の連続。</UL>
+
+<LI>
+<TT>Character</TT></LI>
+
+<UL>これらのメタ文字の一つではない、エスケープシーケンスまたは任意のUnicode文字：
+<BR><TT>&nbsp;|&nbsp; (&nbsp; )&nbsp; {&nbsp; }&nbsp; [&nbsp; ]&nbsp; &lt;&nbsp;
+>&nbsp; \&nbsp; .&nbsp; *&nbsp; +&nbsp; ?&nbsp; ^&nbsp; $&nbsp; /&nbsp;
+.&nbsp; "</TT></UL>
+
+<LI>
+<TT>StringCharacter</TT></LI>
+
+<UL>これらのメタ文字の一つではない、エスケープシーケンスまたは任意のUnicode文字：
+<BR><TT>&nbsp;\&nbsp; "</TT></UL>
+
+<LI>
+エスケープシーケンス</LI>
+
+<UL>
+<LI>
+は、以下の中の１つ</LI>
+
+<BR><TT>&nbsp; \n&nbsp; \r&nbsp; \t&nbsp; \f&nbsp; \b</TT>
+<LI>
+<TT>\x</TT> に続く、２桁の16進数 <TT>[a-fA-F0-9]</TT>（標準ASCIIエスケープシーケンスを意味する）、</LI>
+
+<LI>
+<TT>\u</TT> に続く、４桁の16進数 <TT>[a-fA-F0-9]</TT>（Unicodeエスケープシーケンスを意味する）、</LI>
+
+<LI>
+バックスラッシュに続く、000から377までの３桁の８進数（標準ASCIIエスケープシーケンスを意味する）、</LI>
+
+<LI>
+バックスラッシュに続く、その文字を意味する任意の他のUnicode文字。</LI>
+</UL>
+</UL>
+<TT>\n</TT> エスケープシーケンスはASCII LFを意味する ― 行末を意味するのではない、ことに注意する。行の最後とマッチしたいならば、Javaによってサポートされたプラットフォームで異なった行末を考慮するために、表現 <TT>\r|\n|\r\n</TT> を使用すべきである。
+
+<P>JFlexバージョン1.1においては、空白文字 <tt>" "</tt> (space) と <tt>"\t"</tt> (tab) は、正規表現の読みやすさを改良するために使うことができる。それらはJFlexによって無視されるだろう。しかしながら、文字のクラスと文字列では、空白文字は空白そのものを表すだけである（そのため、文字列 <tt>" "</tt> は、正確な１つのスペース文字とマッチし、<tt>[ \n]</tt> はASCII LFまたはスペース文字とマッチする）。
+
+<P>JFlexは以下の標準的な演算子の優先順位を適用する（最上位から最下位の順）：
+<UL>
+<LI>
+単項演算子 (<TT>'*','+','?', {n}, {n,m}</TT>)</LI>
+
+<LI>
+連結 (<TT>RegExp::= RegExp Regexp</TT>)</LI>
+
+<LI>
+共通部分 (<TT>RegExp::= RegExp '|' RegExp</TT>)</LI>
+</UL>
+そのため、例として、表現 <TT>a | abc | cd*</TT> は、<TT>(a|(abc)) | (c(d*))</TT> のように解析される。
+
+<H4>
+<A NAME="Semantics"></A>意味論</H4>
+このセクションでは、ある正規表現（すなわち、<A HREF="#Grammar">上</A>で提示した文法の <TT>RegExp</TT> プロダクションによって記述される表現）によってマッチされるテキストの非公式な記述を与える。
+
+<P>以下のものから構成されるものだけが正規表現である。
+<UL>
+<LI>
+<TT>Character</TT> はこの文字にマッチする。</LI>
+
+<LI>
+文字クラス <TT>'[' (Character|Character'-'Character)+ ']'</TT> は、そのクラスの任意の文字にマッチする。もしそのクラスにリストされているか、そのコードがリストされた文字の範囲 <TT>Character'-'Character</TT> の中にあれば、ある <TT>Character</TT> はあるクラスの要素と考えられるものである。そのため、例えば <TT>[a0-3\n]</TT> は、文字 <TT>a 0 1 2 3 \n</TT> のいずれかとマッチする。</LI>
+
+<LI>
+文字列 <TT>'"' StringCharacter+ '"'</TT> は、ダブルクォーテーションで囲まれた正確なテキストにマッチする。<TT>\</TT> と <TT>"</TT> 以外のメタ文字は、文字列の中ではそれらの特別な意味を失う。</LI>
+
+<LI>
+マクロの使用 <TT>'{' Identifier '}'</TT> は、"<TT>Identifier</TT>" という名前を持ったマクロの右辺にマッチされる入力にマッチする。</LI>
+
+<LI>
+<A NAME="predefCharCl"></A>前もって定義された文字クラスは、そのクラスのどのような文字にもマッチする。前もって定義された文字クラスには以下のようなものがある：</LI>
+
+<UL><TT>.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</TT>は、<TT>\n</TT> 以外のすべての文字を含む。
+
+<P>その他のすべての前もって定義された文字クラスは、<TT>java.lang.Character</TT> クラスのJava関数によって定義される。
+<BR><TT>[:jletter:]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; isJavaIdentifierStart()</TT>
+<BR><TT>[:jletterdigit:] isJavaIdentifierPart()</TT>
+<BR><TT>[:letter:]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; isLetter()</TT>
+<BR><TT>[:digit:]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; isDigit()</TT>
+<BR><TT>[:uppercase:]&nbsp;&nbsp;&nbsp; isUpperCase()</TT>
+<BR><TT>[:lowercase:]&nbsp;&nbsp;&nbsp; isLowerCase()</TT>
+
+<P>それらは特に、Unicodeの文字集合を使った動作のときに有用である。スキャナジェネレータは、これらのクラスがUnicode文字の集合とともに使用されるとき、非常に大量の異なった文字を考慮しなければならないため、それらが生成処理を大幅に減速させるだろう。</UL>
+</UL>
+
+    もし <TT>a</TT> と <TT>b</TT> が正規表現であるならば、
+
+    <UL>
+        <dl compact>
+          <dt><TT>a|b</TT></dt>
+          <dd>
+            (union) は正規表現である。それは、<tt>a</tt> または <tt>b</tt> にマッチされるすべての入力にマッチする。
+          </dd>
+          
+          <dt><TT>ab</TT></dt>
+          <dd>
+            (concatenation) は正規表現である。それは、<tt>a</tt> にマッチされる入力とそれに続く <tt>b</tt> にマッチされる入力にマッチする。
+          </dd>
+          
+          <dt><TT>a*</TT></dt>
+          <dd>
+            (kleene closure) は、<tt>a</tt> にマッチされる入力の０回以上の繰り返しにマッチする。
+          </dd>
+          
+          <dt><TT>a+</TT></dt>
+          <dd>は、<tt>aa*</tt> と等しい。
+          </dd>
+          
+          <dt><TT>a?</TT></dt>
+          <dd>は、空の入力、または <tt>a</tt> にマッチされる入力にマッチする。
+          </dd>
+          
+          <dt><TT>a{n}</TT></dt>
+          <dd>
+            は、<tt>a</tt> の <tt>n</tt> 個の連結に等しい。そのため、たとえば <tt>a{4}</tt> は表現 <nobr><tt>a a a a</tt></nobr> に等しい。10進整数 <tt>n</tt> は正の数でなければならない。
+          </dd>
+          
+          <dt><TT>a{n,m}</TT></dt>
+          <dd>
+            は、少なくとも <tt>n</tt> 個、最大 <tt>m</tt> 個の <tt>a</tt> の連結に等しい。そのため、たとえば <tt>a{2,4}</tt> は、表現 <nobr><tt>a a a? a?</tt></nobr> に等しい。<tt>n</tt> と <tt>m</tt> の両方は非負の整数であり、<tt>m</tt> は <tt>n</tt> よりも小さくてはいけない。
+          </dd>
+
+          <dt><TT>(a)</TT></dt>
+          <dd>は <TT>a</TT> と同じ入力にマッチする。
+          </dd>
+          
+        </dl>
+    </UL>
+
+字句規則において、正規表現 <TT>r</TT> が（行頭演算子）'<TT>^</TT>' の後に続くことがある。<TT>r</TT> は、入力中の行の先頭にのみマッチする。行は、各 <TT>\n</TT> の後と入力の先頭で始まる。入力において、先行する <TT>\n</TT> は消費されず、他の規則によってマッチされる。
+
+<P>字句規則において、正規表現 <TT>r</TT> にはその後に（行末演算子）'<TT>$</TT>' が続くことがある。<TT>r</TT> は、入力中の行の最後にのみマッチする。行の最後は、正規表現 <TT>\r|\n|\r\n</TT> によって示される。行の最後は、消費されず、マッチされたテキストの範囲に含まれない。
+<br> &nbsp;
+<H4>
+<A NAME="HowMatched"></A>入力はどのようにマッチされるのか</H4>
+その入力を消費するとき、スキャナは入力の最も長い部分にマッチする正規表現を決定する（最長一致規則）。入力の最も長い部分にマッチする正規表現が１つ以上あるならば（すなわち、それらはすべて同じ入力にマッチする）、生成されたスキャナは、仕様書の初めに現れる正規表現を選択する。有効な正規表現を決定した後、関連づけられたアクションが実行される。もしマッチする正規表現がなければ、スキャナはエラーメッセージとともに終了する（<TT>%standalone</TT> 命令が使われたならば、スキャナはその代わりに、マッチしなかった入力を <TT>java.lang.System.out</TT> に表示し、そしてスキャニングを再開する）。
+
+<P>字句状態は、現在の入力にマッチする正規表現の集合を、さらに制限するために使うことができる。
+<BR>&nbsp;
+<UL>
+<LI>
+正規表現は、関連づけられた字句状態の集合がスキャナの現在のアクティブな字句状態を含むとき、もしくは、関連づけられた字句状態の集合が空であるならば、そのときに限りマッチされる。</LI>
+<BR>&nbsp;
+<LI>
+スキャナの現在のアクティブな字句状態は、正規表現のアクションの中で、メソッド <TT>yybegin()</TT> を使って変更することができる。</LI>
+<BR>&nbsp;
+
+<LI>
+スキャナは字句状態 <TT>YYINITIAL</TT> で始まる。それは、常にデフォルトで宣言される。</LI>
+<BR>&nbsp;
+
+<LI>
+正規表現に関連づけられた字句状態の集合は、以下のように計算される。</LI>
+<BR>&nbsp;
+
+<UL>以下の形式の規則の字句状態の集合
+<UL><TT>StateList RegExp Action</TT></UL>
+は、<TT>StateList</TT> にリストされたすべての状態の集合と、囲んでいる <TT>StateGroup</TT> の字句状態の集合との共通集合、もしくは、囲んでいる <TT>StateGroup</TT> がなければ、<TT>StateList</TT> にあるすべての状態の集合のみ、である。
+
+<P>以下の形式の状態グループの字句状態の集合
+<UL><TT>StateList "{" Rule+ "}"</TT></UL>
+は、<TT>StateList</TT> にリストされたすべての状態の集合と、囲んでいる <TT>StateGroup</TT> の字句状態の集合との共通集合、もしくは、囲んでいる <TT>StateGroup</TT> がなければ、<TT>StateList</TT> にあるすべての状態の集合のみ、である。
+
+<P>要するに：字句状態とは <TT>StateGroups</TT> を累積(cumulate)したものである。</UL>
+<BR>&nbsp;
+
+<LI>
+字句状態は、それらが仕様書の中で使われるのと同じ名前のもとで、生成されたクラスのJavaの <TT>int</TT> 定数のように宣言され、使われる。</LI>
+<BR>&nbsp;
+</UL>
+
+<H4>
+<a name="ScannerMethods"></a>
+アクションでアクセス可能なスキャナメソッドと変数</H4>
+生成されたスキャナクラスの以下のメソッドとメンバ変数は、字句アクションでユーザによってアクセスされるべきものを意味する：
+<UL>
+<LI>
+<TT>String yytext()</TT></LI>
+
+<UL>は、マッチされた入力テキストの範囲を返す。</UL>
+
+<LI>
+<TT>int yylength()</TT></LI>
+
+<UL>は、マッチされた入力テキストの範囲の長さを返す（作成すべき <TT>String</TT> オブジェクトを必要としない）。</UL>
+
+<LI>
+<TT>void yyclose()</TT></LI>
+<UL>は、入力ストリームを閉じる。スキャニングメソッドの呼び出し後はいつも、EOFの値を返す。</UL>
+
+<LI>
+<TT>int yystate()</TT></LI>
+<UL>は、スキャナの現在の字句状態を返す。
+</UL>
+
+<LI>
+<TT>void yybegin(int lexicalState)</TT></LI>
+
+<UL>は、字句状態 <TT>lexicalState</TT> に遷移する。</UL>
+
+<LI>
+<TT>void yypushback(int number)</TT></LI>
+
+<UL>は、マッチしたテキストの <TT>number</TT> 個の文字を入力ストリームに押し戻す(pushback)。それらのテキストは、スキャニングメソッドの次の呼び出しで読まれるだろう。再び読まれるための文字数は、マッチしたテキスト（の文字数）よりも大きくてはいけない。
+その押し戻された文字は、<tt>yypushback</tt> の呼び出しの後では、<tt>yylength</tt> と <tt>yytext()</tt> には含まれないだろう。Javaでは文字列は変更できないことに注意する。すなわち、以下のようなアクションコード
+    <UL><TT>
+    <BR>String matched = yytext();
+    <BR>yypushback(1);
+    <BR>return matched;
+    <BR>&nbsp;
+    </TT></UL>
+    は、マッチしたテキスト全体を返すだろう。しかし一方
+    <UL><TT>
+    <BR>yypushback(1);
+    <BR>return yytext();
+    <BR>&nbsp;
+    </TT></UL>
+    は、マッチしたテキストから最後の文字を差し引いたものを返すだろう。
+</UL>
+
+<LI>
+<TT>int yyline</TT></LI>
+
+<UL>は、入力における現在の行数を持っている（０から始まる、<TT><A HREF="#Counting">%line</A></TT> 命令を使ったときのみ有効）</UL>
+
+<LI>
+<TT>int yychar</TT></LI>
+
+<UL>は、入力における現在の文字数を持っている（０から始まる、<TT><A HREF="#Counting">%char</A></TT> 命令を使ったときのみ有効）</UL>
+
+<LI>
+<TT>int yycolumn</TT></LI>
+
+<UL>は、現在の行の現在の文字数を持っている（０から始まる、<TT><A HREF="#Counting">%column</A></TT> 命令を使ったときのみ有効）</UL>
+</UL>
+
+<HR WIDTH="100%">
+<H2>
+<A NAME="performance"></A>5 性能について二言三言</H2>
+This section gives some empirical results about the speed of JFlex generated
+scanners in comparison to those generated by <A HREF="#PerformanceJLex">JLex</A>,
+compares a JFlex scanner with a <A HREF="#PerformanceHandwritten">handwritten</A>
+one, and presents some <A HREF="#PerformanceTips">tips</A> on how to make
+your specification produce a faster scanner.
+
+<P><A NAME="PerformanceJLex"></A>Scanners generated by the tool JLex are
+quite fast: It was however possible to further improve the performance
+of generated scanners using JFlex. The following table shows the results
+that were produced by the scanner specification of a small toy programming
+language (it was in fact the example from the JLex website). The scanner
+was generated using JLex and all three different JFlex code generation
+methods. Then it was run on a W95 system using JDK 1.1.6 with&nbsp; a sample
+input of about 5000 lines of code of that toy programming language. The
+values presented in the table denote the time from scanner object creation
+to returning the EOF value.
+<BR>&nbsp;
+<TABLE BORDER COLS=8 WIDTH="100%" >
+<TR>
+<TD></TD>
+
+<TD>
+<CENTER>JLex</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (default)</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (<TT>%table</TT>)</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (<TT>%pack</TT>)</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>&nbsp; 5000 lines, JIT</TD>
+
+<TD>
+<DIV ALIGN=right>0,94 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,88 sec&nbsp;</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>6,8% faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,83 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>13,2 % faster</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>0,83 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>13,2 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>&nbsp; 5000 lines, no JIT</TD>
+
+<TD>
+<DIV ALIGN=right>1,65 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,43 sec&nbsp;</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>15,4% faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,48 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>14,9 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,49 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>10,7 % faster</DIV>
+</TD>
+</TR>
+</TABLE>
+&nbsp;
+<BR>Since the scanning time of the lexical analyzer examined in the table
+above includes lexical actions that often need to create new object instances,
+another table shows the execution time for the same specification without
+lexical actions. A larger input file (about 15000 lines) has been used
+to reduce noise in the time measuerments.
+<BR>&nbsp;
+<TABLE BORDER COLS=8 WIDTH="100%" >
+<TR>
+<TD>
+<CENTER>&nbsp;</CENTER>
+</TD>
+
+<TD>
+<CENTER>JLex</CENTER>
+</TD>
+
+<TD ALIGN=CENTER COLSPAN="2">
+<CENTER>JFlex (default)</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (<TT>%table</TT>)</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (<TT>%pack</TT>)</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>15000 lines, JIT</TD>
+
+<TD>
+<DIV ALIGN=right>0,55 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,44 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>25,0 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,38 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>44,7 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,38 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>44,7 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>15000 lines, no JIT</TD>
+
+<TD>
+<DIV ALIGN=right>2,52 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>2,09 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>20,5 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>2,14 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>17,8 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>2,14 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>17,8 % faster</DIV>
+</TD>
+</TR>
+</TABLE>
+&nbsp;
+<BR>It is however very difficult to optimize Java programs aggressivly,
+because execution time of single instructions depend on the platform and
+the implementation of the Java Virtual Machine the program is executed
+on. Therefore the tables above can not be used as a reference to which
+code generation method of JFlex is the right one to choose in general.
+The following table was produced by the same lexical specification and
+the same input on a Linux system using JDK 1.1.5.
+<BR>&nbsp;
+<TABLE BORDER COLS=8 WIDTH="100%" >
+<TR>
+<TD></TD>
+
+<TD>
+<CENTER>JLex</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (default)</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (<TT>%table</TT>)</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex (<TT>%pack</TT>)</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>&nbsp; 5000 lines,&nbsp;
+<BR>with actions</TD>
+
+<TD>
+<DIV ALIGN=right>4,25 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>3,77 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>12,7 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>3,83 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>11,0 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>3,81 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>11,5 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>15000 lines,&nbsp;
+<BR>with actions</TD>
+
+<TD>
+<DIV ALIGN=right>1,33 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,20 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>10,8 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,23 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>8,1 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,21 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>9,9 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>&nbsp; 5000 lines,&nbsp;
+<BR>without actions</TD>
+
+<TD>
+<DIV ALIGN=right>2,53 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>2,09 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>21,0 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>2,15 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>17,7 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>2,16 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>17,1 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD NOWRAP>15000 lines,&nbsp;
+<BR>without actions</TD>
+
+<TD>
+<DIV ALIGN=right>0,86 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,75 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>14,7 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,76 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>13,2 % faster</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,77 sec</DIV>
+</TD>
+
+<TD NOWRAP>
+<DIV ALIGN=right>11,7 % faster</DIV>
+</TD>
+</TR>
+</TABLE>
+<BR>
+Although all JFlex scanners were faster than those generated by JLex, it
+shows slight differences between JFlex code generation methods when compared
+to the relations obtained on the W95 system.
+
+<P><A NAME="PerformanceHandwritten"></A>It should also be stated here,
+that DFA based scanners like those generated by JFlex are usually faster
+than handwritten ones.
+<BR>&nbsp;
+<BR>The following table compares a handwritten scanner for the Java language
+obtained from the website of CUP with the JFlex generated scanner for Java
+that comes with JFlex in the <TT>examples</TT> directory. They were tested
+on two different <TT>.java</TT> files on a W95 system using JDK 1.1.6.
+<BR>&nbsp;
+<TABLE BORDER COLS=4 WIDTH="100%" >
+<TR>
+<TD></TD>
+
+<TD>
+<CENTER>handwritten scanner</CENTER>
+</TD>
+
+<TD COLSPAN="2">
+<CENTER>JFlex generated scanner</CENTER>
+</TD>
+</TR>
+
+<TR>
+<TD>7473 lines, JIT</TD>
+
+<TD>
+<DIV ALIGN=right>2,42 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,04 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>132,6 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD>5045 lines, JIT</TD>
+
+<TD>
+<DIV ALIGN=right>1,71 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>0,88 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>94,3 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD>7473 lines, no JIT</TD>
+
+<TD>
+<DIV ALIGN=right>5,88 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,86 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>216,1 % faster</DIV>
+</TD>
+</TR>
+
+<TR>
+<TD>5045 lines, no JIT</TD>
+
+<TD>
+<DIV ALIGN=right>4,01 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>1,21 sec</DIV>
+</TD>
+
+<TD>
+<DIV ALIGN=right>231,4 % faster</DIV>
+</TD>
+</TR>
+</TABLE>
+&nbsp;
+<BR>As you can see, the generated scanner is up 230% faster than the handwritten
+one. The alert reader surely has noticed that execution times for the JFlex
+generated scanner differ only very little for a run with JIT compiler and
+without. With very large scanners and small input files this may even lead to the 
+somewhat strange effect, that the scanner is faster without a JIT compiler than
+with the JIT switched on.
+<p>
+As Angelo Schneider pointed me: This is because the generated scanners are so good :-)
+<em>What?</em> Yes. Letｴs take a look at the characteristics of a scanner:
+A scanner uses only a certain percentage X of its time for recognizing
+symbols, executing actions and the like. The rest of the time is spent with IO. 
+An optimal scanner
+has a very small percentage X for the actual scanning and spends almost all of its
+time with IO. A bad scanner has a high value of X. A JIT compiler can only improve
+the X part of the scanner and can improve almost nothing of the IO time. 
+So if the JFlex scanner has a low X value and is large (so it takes long for the
+JIT to compile it) and the input is small (so the small X that is improved can't 
+pay off) the scanner gets slower with JIT than without (but it should still be 
+faster than handwritten).
+
+<P>One example of a handwritten scanner that is considerably slower than
+the equivalent generated one is surely no proof for all generated scanners
+being faster than handwritten.It is clearly impossible to prove such a
+thing since you could always write the generated scanner by hand. From
+a software engineering point of view however, there is no excuse for writing
+a scanner by hand since this task takes more time, is more difficult and
+therefore more error prone than writing a compact, readable and easy to
+change lexical specification.
+<BR>&nbsp;
+<H5>
+<A NAME="PerformanceTips"></A>How to write a faster specification</H5>
+Although JFlex generated scanners show good performance without special
+optimizations, there are some heuristics that can make a lexical specification
+produce an even faster scanner. Those are (roughly in order of performance
+gain):
+<BR>&nbsp;
+<UL>
+<LI>
+Avoid rules that require backtracking</LI>
+
+<UL>From the <A HREF="#REFflex">C/C++ flex</A> manpage: "<I>Getting rid
+of backtracking is messy and often may be an enormous amount of work for
+a complicated scanner.</I>" Backtracking is introduced by the longest match
+rule and occurs for instance on this set of expressions:
+<BR>&nbsp;
+<BR><TT>&nbsp; "averylongkeyword"</TT>
+<BR><TT>&nbsp; .</TT>
+<BR>&nbsp;
+<BR>With input <TT>"averylongjoke"</TT> the scanner has to read all charcters
+up to <TT>'j' </TT>to decide that rule &acute;<TT>.</TT>&acute; should
+be matched. All characters of <TT>"verylong"</TT> have to be read again
+for the next matching process. Backtracking can be avoided in general by
+adding error rules that match those error conditions
+<BR><TT>&nbsp; "av"|"ave"|"avery"|"averyl"|..</TT>
+<BR>While this is impractical in most scanners, there is still the possiblity
+to add a "catch all" rule for a lengthy list of keywords
+<BR><TT>&nbsp;&nbsp; "keyword1"&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(KEYWORD1);
+}</TT>
+<BR><TT>&nbsp;&nbsp; ..</TT>
+<BR><TT>&nbsp;&nbsp; "keywordn"&nbsp;&nbsp;&nbsp;&nbsp; { return symbol(KEYWORDn);
+}</TT>
+<BR><TT>&nbsp;&nbsp; [a-z]+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+{ error("not a keyword"); }</TT>
+</UL>
+<BR>&nbsp;
+
+<LI>
+Match as much text as possible in a rule.</LI>
+
+<UL>One rule is matched in the innermost loop of the scanner. Doing most
+of the work there gains performance.</UL>
+<BR>&nbsp;
+
+<LI>
+Avoid the beginning of line operator '^'</LI>
+
+<UL>It costs one additional comparison per input character.</UL>
+<BR>&nbsp;
+
+<LI>
+Avoid line and column counting</LI>
+
+<UL>It costs one additional comparison per input character.</UL>
+<BR>&nbsp;
+
+<LI>
+Avoid the unicode character set</LI>
+
+<UL>It costs one additional comparison per input character.</UL>
+<BR>&nbsp;
+
+<LI>
+Avoid the end of line operator '$'</LI>
+
+<UL>It costs one additional comparison per action.</UL>
+</UL>
+<BR>
+Note, that writing more rules in a specification does not make the generated
+scanner slower (except when you have to switch to another code generation
+method because of the larger size).
+
+<P>It should be mentioned, that some of these tips contradict to a readable
+and compact specification style. When in doubt or when requirements are
+not (yet) fixed: don't use them - the specification can always be optimized
+in a later state of the development process.
+
+<P>
+<HR WIDTH="100%">
+
+<H2>
+<A NAME="Porting"></A>6 JLexからの移植</H2>
+JFlexは古いJLexの仕様書を変更することなく読むように、そして、JLexによって生成されたスキャナと「それよりも速い」という違いだけで、正確に同じふるまいをするスキャナを生成するように設計された。
+
+<P>これは、すべての「よく形式化された(well formed)」JLexの仕様書上で、
+予想されるような動作をする。
+
+<P>上の記述がいくぶん絶対的(absolute)であることから、ここでは "well formed" が何を意味するかをちょっと調べてみよう。あるJLexの仕様書がwell formedであるのは、その仕様書が以下のようになっている場合である
+<UL>
+<LI>
+JLexによって実際のスキャナを生成する</LI>
+
+<LI>
+'<TT>^</TT>' 演算子を含まない</LI>
+
+<UL>行頭演算子は、JLexでは標準的ではないふるまいをする：それは直前の文字 <TT>\n</TT> を消費する。これは、JFlexが生成したスキャナでは起こらない。その問題は、「新しい」文字 <TT>\n</TT> にマッチする余分なルールをあちこちに書くことによって解決できる。</UL>
+
+<LI>
+'<TT>$</TT>' 演算子を含まない</LI>
+
+<UL>行末演算子は、JLexではプラットホーム非依存ではない。それは、デフォルトでは <TT>\n</TT> にマッチし、<TT>%notunix</TT> 命令が与えられたときは <TT>\r\n</TT> にマッチする。JFlexでは行末として表現 <TT>\r|\n|\r\n</TT> にマッチし、<TT>%notunix</TT> 命令を無視する。これは他のプラットホームでもまた受理すること以外には、あなたの古い仕様書でもふつうは何ら問題はないだろう。</UL>
+
+<LI>
+<TT>%cup</TT> スイッチを含まない</LI>
+
+<UL><TT>%cup</TT> スイッチはJLexでは何の意味も持たない。JFlexではそれは<A HREF="#CUPWork">［CUPとのインターフェイス］</A>として使われる。</UL>
+
+<LI>
+マクロ定義において丸カッコによって囲まれる完全な正規表現のみを持っている</LI>
+
+<UL>これはちょっと厳しく聞こえるかもしれないが、重大な問題になることがある ― それは、仕様書の中にある、最初の状況では目立たなかったいくつかのいやらしいバグを見つける事態をなるべく避ける。JLexでは、マクロの右辺はただの一片のテキストであり、それはマクロが使用される場所にコピーされる。これによって
+<UL><TT>macro1 = ("hello"</TT>
+<BR><TT>macro2 = {macro1})*</TT></UL>
+のようなわけのわからない素材は（<tt>macro2</tt> を <tt>("hello")*</tt> に展開することで）可能になる。これはJFlexでは許されないことであり、あなたはこの定義を変更しなければならないだろう。しかしながら、JLexのマクロによって導入できる、もっと難解な種類のエラーが存在する。
+<UL><TT>macro = a|b</TT></UL>
+のような定義と
+<UL><TT>{macro}*</TT></UL>
+のような使用を考えてみよう。これはJLexでは
+<UL><TT>a|b*</TT></UL>
+と展開され、おそらく意図的に
+<UL><TT>(a|b)*</TT></UL>
+とは展開されない。JFlexは常に後者の展開法を使用する。これが正規表現に対する省略形について自然な考え方だからである。
+
+<P>ほとんどの仕様書は、しかしながら、この問題によって苦しむことはないだろう。というのは、マクロはしばしば
+<UL><TT>alpha = [a-zA-Z]</TT></UL>
+のような（悪意のない）文字クラスや
+<UL><TT>ident = {alpha}({alpha}|{digit})*</TT></UL>
+のようなもう少し危険な定義を含んでいるからである。それらは
+<UL><TT>{ident}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; { .. action ..
+}</TT></UL>
+のような規則を書くためにだけ使われ、上で示された種類のエラーがきわだたせられる
+<BR>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <TT>{ident}*</TT>
+<BR>のようなもっと複雑な表現ではない。</UL>
+</UL>
+
+
+<HR WIDTH="100%">
+
+<H2>
+<A NAME="CUPWork"></A>7 協調動作：JFlexとCUP</H2>
+JFlexの設計上のもう一つの主要な目標は、できるだけ簡単にフリーのJava構文解析ルーチン生成系(parser generator)<a href="#REFCUP">CUP [8]</a> とのインターフェイスを構成することである。これは、特別な意味を持った <TT><A HREF="#CupMode">%cup</A></TT> 命令を与えることによって行われる。インターフェイスは、しかしながら常に２つの側面を持っている。このセクションでは、その話のCUP側に集中する：
+
+<P>もしあなたが、このように始まるスキャナの仕様書を持っているのであれば：
+<BR>
+<HR WIDTH="100%">
+<TT>package PACKAGE;</TT>
+<BR><TT>import java_cup.runtime.*; &nbsp;&nbsp; /* this is convenience, but not necessary */</TT>
+<BR>&nbsp;
+<BR><TT>%%</TT>
+<BR>&nbsp;
+<BR><TT>%class Lexer</TT>
+<BR><TT>%cup</TT>
+<BR><TT>..</TT>
+<HR WIDTH="100%">
+<BR>それは次のように始まるCUPの仕様書とマッチする
+<BR>
+<HR WIDTH="100%">
+<TT>package PACKAGE;</TT>
+
+<P><TT>parser code {:</TT>
+<BR><TT>&nbsp; Lexer lexer;</TT>
+
+<P><TT>&nbsp; public parser (java.io.Reader input) {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; lexer = new Lexer(input);</TT>
+<BR><TT>&nbsp; }</TT>
+<BR><TT>:};</TT>
+
+<P><TT>scan with {: return lexer.yylex(); :};</TT>
+
+<BR><TT>..</TT>
+<HR WIDTH="100%">
+<BR>これは、生成されるパーザが <tt>parser</tt> という名前を得ることを仮定している。もしそうでなければ、あなたはコンストラクタの名前を調整しなくてはならない。
+
+<P>パーザはこのようなメインルーチンで開始されることがある：
+<BR>
+<HR WIDTH="100%">
+<TT>..</TT>
+<BR><TT>&nbsp; try {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; parser p = new parser(new FileReader(fileName));</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; Object result = p.parse().value;</TT>
+<BR><TT>&nbsp; }</TT>
+<BR><TT>&nbsp; catch (Exception e) {</TT>
+<BR><TT>..</TT>
+<HR WIDTH="100%">
+<BR>&nbsp;
+<BR>&nbsp;
+
+<P>もしあなたが、生成されるスキャナの名前に依存しないパーザの仕様書を求めているのであれば、代わりにインターフェイス <TT>Lexer</TT> を書くことができる
+<BR>
+<HR WIDTH="100%">
+<TT>public interface Lexer {</TT>
+<BR><TT>&nbsp; public java_cup.runtime.Symbol yylex() throws java.io.IOException;</TT>
+<BR><TT>}</TT>
+<HR WIDTH="100%">
+<BR>次のようにパーザのコードを変更する：
+<BR>
+<HR WIDTH="100%">
+<TT>package PACKAGE;</TT>
+
+<P><TT>parser code {:</TT>
+<BR><TT>&nbsp; Lexer lexer;</TT>
+
+<P><TT>&nbsp; public parser (Lexer lexer) {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; this.lexer = lexer;</TT>
+<BR><TT>&nbsp; }</TT>
+<BR><TT>:};</TT>
+
+<P><TT>scan with {: return lexer.yylex(); :};</TT>
+
+<P><TT>..</TT>
+<HR WIDTH="100%">
+<BR><TT>%implements</TT> 命令を使ってLexerインターフェイスのことをJFlexに知らせる：
+
+<HR WIDTH="100%">
+<TT>..</TT>
+<BR><TT>%class Scanner&nbsp;&nbsp;&nbsp;&nbsp; /* not Lexer now, since
+that is our interface! */</TT>
+<BR><TT>%implements Lexer</TT>
+<BR><TT>%cup</TT>
+<BR><TT>..</TT>
+<HR WIDTH="100%">
+
+<P>そして最後に、次のようになるようにメインルーチンを変更する
+<HR WIDTH="100%">
+<TT>...</TT>
+<BR><TT>&nbsp; try {</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; parser p = new parser(new Scanner(new FileReader(fileName)));</TT>
+<BR><TT>&nbsp;&nbsp;&nbsp; Object result = p.parse().value;</TT>
+<BR><TT>&nbsp; }</TT>
+<BR><TT>&nbsp; catch (Exception e) {</TT>
+<BR><TT>...</TT>
+<HR WIDTH="100%">
+
+<P>もしCUPが生成したパーザが提供するエラーメッセージを利用したいのであれば、CUPの仕様書の "parser code" セクションの中の <TT>report_error</TT> や <TT>report_fatal_error</TT> メソッドを上書き（オーバライド）することもできる。新しいメソッドは、例えば、ユーザに対してもっと便利にエラーの位置を報告するために <TT>yyline</TT> や <TT>yycolumn</TT>（クラス <TT>java_cup.runtime.Symbol</TT> のメンバ変数 <TT>left</TT> および <TT>right</TT> に格納されている）を使うことができる。このJFlexの配布(distribution)の <TT>examples\java\</TT> ディレクトリの中にあるJava言語用のレキサとパーザは、この形式のエラー報告(error reporting)を使用している。これらの仕様書は、アクションの中で上のテクニックの実演も行っている。
+<P>
+<HR WIDTH="100%">
+<BR>&nbsp;
+<H2>
+<A NAME="Bugs"></A>8 バグ</H2>
+All known bugs have been fixed in the release this manual accompanies.
+
+<P>If you find new ones, please report them to <A HREF="mailto: kleing@informatik.tu-muenchen.de">Gerwin
+Klein</A> <tt>&lt;kleing@informatik.tu-muenchen.de&gt;</tt>.
+
+<P>Please check the <A HREF="faq.html">FAQ</A> and currently known bugs
+at the <A HREF="http://www.informatik.tu-muenchen.de/~kleing/jflex/index.html#Bugs">JFlex website</a> 
+before reporting a new bug.
+<BR>&nbsp;
+<BR>
+<HR WIDTH="100%">
+<BR>&nbsp;
+<H2>
+<dl>
+<A NAME="References"></A>9 参考文献</H2>
+
+<dt><A NAME="REFAho"></A>[1] </dt> 
+<dd>
+  A. Aho, R. Sethi, J. Ullman, <I>Compilers: Principles, Techniques, and Tools</I>, 1986
+</dd>
+
+<dt><A NAME="REFAppel"></A>[2]</dt> 
+<dd>
+  A.W. Appel, <I>Modern Compiler Implementation in Java: basic techniques</I>, 1997
+</dd>
+
+<dt><A NAME="REFJLex"></A>[3]</dt>
+<dd>
+ Elliot Berk, <I>JLex: A lexical analyser generator for Java</I>, 
+ <A HREF="http://www.cs.princeton.edu/~appel/modern/java/JLex/">
+ http://www.cs.princeton.edu/~appel/modern/java/JLex/</A>
+</dd>
+
+<dt><A NAME="REFfast"></A>[4] </dt> 
+<dd>
+K. Brouwer, W. Gellerich,E. Ploedereder, <I>Myths and Facts about the Efficient Implementation of
+Finite Automata and Lexical Analysis,</I> in: Proceedings of the 7th International
+Conference on Compiler Construction (CC '98), 1998
+</dd>
+
+<dt><A NAME="REFflex"></A>[5]</dt> 
+<dd>
+ Vern Paxon, <I>flex - The fast lexical analyzer generator</I>, 1995
+</dd>
+
+<dt><A NAME="REFParseTable"></A>[6] </dt> 
+<dd>
+ P. Dencker, K. D&uuml;rre, J. Henft, <I>Optimization of Parser Tables for portable Compilers</I>, 
+ in: ACM Transactions on Programming Languages and Systems 6(4), 1984
+</dd>
+
+<dt><A NAME="RefLangSpec"></A>[7] </dt> 
+<dd>
+  J. Gosling, B. Joy, G. Steele, <I>The Java Language Specifcation</I>, 1996, 
+  <A HREF="http://www.javasoft.com/docs/books/jls/">http://www.javasoft.com/docs/books/jls/</A>
+</dd>
+
+<dt><A NAME="REFCUP"></A>[8]</dt>
+<dd>
+ Scott E. Hudson, <I>CUP LALR Parser Generator for Java</I>, 
+ <A HREF="http://www.cs.princeton.edu/~appel/modern/java/CUP/">
+  http://www.cs.princeton.edu/~appel/modern/java/CUP/</A>
+</dd>
+
+<dt><A NAME="RefMachineSpec"></A>[9] </dt> 
+<dd>
+ T. Lindholm, F. Yellin, <I>The Java Virtual Machine Specification</I>, 1996, 
+ <A HREF="http://www.javasoft.com/docs/books/vmspec/">http://www.javasoft.com/docs/books/vmspec/</A>
+</dd> 
+
+<dt><A NAME="REFSparseTable"></A>[10] </dt> 
+<dd>
+  R.E. Tarjan, A. Yao, <I>Storing a Sparse Table</I>, in: Communications of the ACM 22(11), 1979
+</dd> 
+
+<dt><A NAME="REFMaurer"></A>[11] </dt> 
+<dd>
+  R. Wilhelm, D. Maurer, <I>&Uuml;bersetzerbau</I>, Berlin 1997<SUP>2</SUP>
+</dd> 
+</dl>
+
+<P>
+<HR WIDTH="100%">
+<BR>&nbsp;
+<H2>
+<A NAME="Copyright"></A>10 権利とライセンス</H2>
+JFlex is free software, published under the terms of the <A HREF="http://www.fsf.org/copyleft/gpl.html">GNU
+General Public License</A>.
+
+<P>There is absolutely NO WARRANTY for JFlex, its code and its documentation.
+
+<P>The code generated by JFlex inherits the copyright of the specification it
+was produced from. If it was your specification, you may use the generated 
+code without restriction.
+
+<P>See the file <A HREF="COPYRIGHT">COPYING</A> for more information.
+
+<P>
+<HR WIDTH="100%">
+
+<center>
+<FONT size=-1>Java is a trademark of Sun Microsystems, Inc., and refers to Sun's Java
+programming language. JFlex is not sponsored by or affiliated with Sun
+Microsystems, Inc.</FONT>
+</center>
+
+</BODY>
+</HTML>
+introduced by JL
