@@ -73,6 +73,16 @@ body {
   float: left;
 }
 
+.download {
+  margin: 2em 0 2em 0;
+}
+
+.download .xitem {
+  padding: 1ex 3ex 1ex 3ex;
+  margin: 2px 5px 2px 5px;
+  background-color: #F0F0F0;
+}
+
 h1 {
   margin-top: 50px;
   margin-bottom: 20px;
