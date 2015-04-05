@@ -7,7 +7,7 @@ import Hakyll
 
 main :: IO ()
 main = hakyll $ do
-    match ("js/*" .||. "img/*" .||. "fonts/*") $ do
+    match ("js/*" .||. "img/*" .||. "fonts/*" .||. "release/*") $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -20,9 +20,12 @@ main = hakyll $ do
         compile compressCssCompiler
 
     match "pages/*.md" $ do
-        route   $ setExtension "html" `composeRoutes` gsubRoute "pages/" (const "")
+        route   $ setExtension "html" `composeRoutes` 
+                  gsubRoute "pages/" (const "")
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
     match "templates/*" $ compile templateCompiler
+
+

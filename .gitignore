@@ -1,5 +1,6 @@
 site
 site.hi
 site.o
+release/
 _cache/
 _site/
