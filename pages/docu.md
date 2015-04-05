@@ -38,15 +38,17 @@ title: JFlex - Online Documentation
 -   The JFlex FAQ: [Frequently Asked Questions](faq.html)
     
 -   There is a short series of articles on JFlex and Cup in the [Linux
-    Gazette](http://www.linuxgazette.net/) by Richard A. Sevenich and
+    Gazette](http://linuxgazette.net/) by Richard A. Sevenich and
     Christopher Lopes. They give a very good introduction to parsing for
-    people who are not familiar with the tools involved.
+    people who are not familiar with the tools involved.    
     -   Linux Gazette \#39, [Compiler Construction Tools, Part
-        I](http://www.linuxgazette.net/issue39/sevenich.html)
+        I](http://www.tldp.org/LDP/LG/issue39/sevenich.html)
     -   Linux Gazette \#41, [Compiler Construction Tools, Part
-        II](http://www.linuxgazette.net/issue41/sevenich.html)
+        II](http://www.tldp.org/LDP/LG/issue41/sevenich.html)
     -   Linux Gazette \#41, [Compiler Construction Tools, Part
-        III](http://www.linuxgazette.net/issue41/lopes/lopes.html)
+        III](http://www.tldp.org/LDP/LG/issue41/lopes/lopes.html)
+
+    &nbsp;
 
 -   [Known Issues](bugs.html)
     
