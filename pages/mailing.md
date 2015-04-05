@@ -11,7 +11,7 @@ JFlex has three public mailing lists hosted by [sourceforge.net](http://sourcefo
     <div class="col-md-7 col-md-offset-2">
     <div class="mailitems">
     * <span class="name">jflex-announce</span>
-    * [mailman info](http://lists.sourceforge.net/lists/listinfo/jflex-announce)
+    * [mailman info](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
     * [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
     </div></div></div></div>
 
@@ -20,7 +20,7 @@ JFlex has three public mailing lists hosted by [sourceforge.net](http://sourcefo
     <div class="col-md-7 col-md-offset-2">
     <div class="mailitems">
     * <span class="name">jflex-users</span>
-    * [mailman info](http://lists.sourceforge.net/lists/listinfo/jflex-users)
+    * [mailman info](https://lists.sourceforge.net/lists/listinfo/jflex-users)
     * [archive](https://sourceforge.net/p/jflex/mailman/jflex-users)
     </div></div></div></div>
 
@@ -29,7 +29,7 @@ JFlex has three public mailing lists hosted by [sourceforge.net](http://sourcefo
     <div class="col-md-7 col-md-offset-2">
     <div class="mailitems">
     * <span class="name">jflex-devel</span>
-    * [mailman info](http://lists.sourceforge.net/lists/listinfo/jflex-devel)
+    * [mailman info](https://lists.sourceforge.net/lists/listinfo/jflex-devel)
     * [archive](https://sourceforge.net/p/jflex/mailman/jflex-devel)
     </div></div></div></div>
       
@@ -52,4 +52,4 @@ JFlex has three public mailing lists hosted by [sourceforge.net](http://sourcefo
     </form></div>
     To prevent abuse you will receive a request for confirmation. If you reply to that request from the same address you wished to subscribe, you should receive a final confirmation that your subscription to the list was successful. If  you encounter any problems, send mail to [Gerwin Klein](mailto:lsf@jflex.de).
 
--   If you wish to unsubscribe from either list, please go to the [jflex-announce](http://lists.sourceforge.net/lists/listinfo/jflex-announce), [jflex-users](http://lists.sourceforge.net/lists/listinfo/jflex-users),  or [jflex-devel](http://lists.sourceforge.net/lists/listinfo/jflex-devel)   page, and follow the instructions given there. You can also send mail to [Gerwin Klein](mailto:lsf@jflex.de).
+-   If you wish to unsubscribe from either list, please go to the [jflex-announce](https://lists.sourceforge.net/lists/listinfo/jflex-announce), [jflex-users](https://lists.sourceforge.net/lists/listinfo/jflex-users),  or [jflex-devel](https://lists.sourceforge.net/lists/listinfo/jflex-devel)   page, and follow the instructions given there. You can also send mail to [Gerwin Klein](mailto:lsf@jflex.de).
