@@ -1,13 +1,13 @@
 body {
-  padding-top: 50px;
   padding-bottom: 20px;
-  color: #2a2a2a;  
+  color: #202020;  
 }
 
 .navbar-wrapper > .container {
   padding-right: 0;
   padding-left: 0;
 }
+
 .navbar-wrapper .navbar {
   padding-right: 15px;
   padding-left: 15px;
@@ -90,5 +90,9 @@ hr {
 
 .divider {
   margin: 80px 0 20px 0;
+}
+
+#license {
+  font-size: smaller;
 }
 
