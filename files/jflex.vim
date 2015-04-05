@@ -1,7 +1,6 @@
 " Vim syntax file
 " Language:         JFlex
 " Maintainer:       Gerwin Klein <lsf@jflex.de>
-" Last Change:      $Revision: 839 $, $Date: 2014-06-15 01:24:32 +1000 (Sun, 15 Jun 2014) $
 
 " Thanks to Michael Brailsford for help and suggestions
 
