@@ -111,7 +111,7 @@ The following list is more comprehensive:
 ### New in version 1.5
 
 -   JFlex now conforms with [Unicode Regular Expressions
-    UTS\#18](http://www.unicode.org/reports/tr18/tr18-17.html) Basic
+    UTS&num;18](http://www.unicode.org/reports/tr18/tr18-17.html) Basic
     Unicode Support - Level 1. Supplementary code points (above the
     Basic Multilingual Plane) are not yet supported.
 -   Support for new meta characters \\s, \\S, \\d, \\D, \\w, \\W.
