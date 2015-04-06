@@ -10,10 +10,10 @@ download from this page and a number of [mirrors](mirrors.html).
 
 <div class="container download">
 <div class="row">
-  <div class="col-sm-4 col-sm-offset-1"><div class="xitem">
+  <div class="col-sm-4"><div class="xitem">
   JFlex + documentation
   </div></div>
-  <div class="col-sm-4"><div class="xitem">
+  <div class="col-sm-5"><div class="xitem">
   [jflex-1.6.1.tar.gz](release/jflex-1.6.1.tar.gz)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
@@ -21,7 +21,7 @@ download from this page and a number of [mirrors](mirrors.html).
   </div></div>
 </div>
 <div class="row">
-  <div class="col-sm-4 col-sm-offset-5"><div class="xitem">
+  <div class="col-sm-5 col-sm-offset-4"><div class="xitem">
   [jflex-1.6.1.zip](release/jflex-1.6.1.zip)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
@@ -29,10 +29,10 @@ download from this page and a number of [mirrors](mirrors.html).
   </div></div>
 </div>
 <div class="row">
-  <div class="col-sm-4 col-sm-offset-1"><div class="xitem">
+  <div class="col-sm-4"><div class="xitem">
   JFlex maven plugin
   </div></div>
-  <div class="col-sm-4"><div class="xitem">
+  <div class="col-sm-5"><div class="xitem">
   [jflex-maven-plugin-1.6.1.zip](release/jflex-maven-plugin-1.6.1.tar.gz)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
@@ -40,7 +40,7 @@ download from this page and a number of [mirrors](mirrors.html).
   </div></div>
 </div>
 <div class="row">
-  <div class="col-sm-4 col-sm-offset-5"><div class="xitem">
+  <div class="col-sm-5 col-sm-offset-4"><div class="xitem">
   [jflex-maven-plugin-1.6.1.zip](release/jflex-maven-plugin-1.6.1.tar.gz)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
@@ -67,7 +67,7 @@ For the developer list, see the [mailing lists](mailing.html) page.
 \
 <div class="container"><form action="http://home.informatik.tu-muenchen.de/kleing/cgi-bin/jflexlist.cgi" method="get"> <div class="form-group row"><div class="input-group col-sm-6 col-sm-offset-3"> <span 
   class="input-group-addon" id="EmailLabel">Email:</span>
-  <input class="form-control" type="text" name="email" aria-describedby="EmailLabel"></div></div><div class="form-group row"><div class="col-sm-6 col-sm-offset-3"><center>
+  <input class="form-control" type="text" name="email" aria-describedby="EmailLabel"></div></div><div class="form-group row"><div class="col-sm-8 col-sm-offset-2"><center>
 <label class="checkbox-inline">
   <input type=checkbox name="list" value="jflex-announce" checked> jflex-announce
 </label>
