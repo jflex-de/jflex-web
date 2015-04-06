@@ -17,6 +17,26 @@ You can then run
 to get the [Hakyll][2] web site generator.
 
 
+## Structure
+
+Most of the content is in directory `pages` in the form of markdown or html
+files, which have templates and css applied to them to form the website.
+
+The content of `files` is copied verbatim to the site and contains
+miscellaneous support files. Javascprit and CSS files are in `js` and `css`
+respectively, and `templates` contains the template parts, including
+navigation, header, footer, etc, that make up the site's pages.
+
+Layout should mainly be controlled from `css/jflex.css` and `templates/*.html`,
+content should all be in `pages/*.{md|html}`.
+
+The build scripts expects the release `.tar.gz`, `.zip`, and `.sha1` files in
+`release` which is not version controlled (supposed to be generated from a
+tagged release version of the main jflex repo). The `docs/` directory is mostly
+generated from the release files, but is version controlled (should be removed
+once things are more integrated).
+
+
 ## Build
 
     ghc --make site
