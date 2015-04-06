@@ -17,6 +17,8 @@ The current maven jflex plugin is [version 1.6.1](download.html).
 
 ## News
 
+**2015-04-06:** New website design. Enjoy!
+
 **2015-03-16:** JFlex 1.6.1 released! See <a href="#notes">below</a> for release notes.
 
 **2015-02-28:** JFlex [code repository][0] and [issue tracker][1] have moved to [github][2]!
