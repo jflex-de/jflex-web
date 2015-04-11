@@ -41,11 +41,11 @@ title: JFlex - Online Documentation
     Gazette](http://linuxgazette.net/) by Richard A. Sevenich and
     Christopher Lopes. They give a very good introduction to parsing for
     people who are not familiar with the tools involved.    
-    -   Linux Gazette \#39, [Compiler Construction Tools, Part
+    -   Linux Gazette issue 39, [Compiler Construction Tools, Part
         I](http://www.tldp.org/LDP/LG/issue39/sevenich.html)
-    -   Linux Gazette \#41, [Compiler Construction Tools, Part
+    -   Linux Gazette issue 41, [Compiler Construction Tools, Part
         II](http://www.tldp.org/LDP/LG/issue41/sevenich.html)
-    -   Linux Gazette \#41, [Compiler Construction Tools, Part
+    -   Linux Gazette issue 41, [Compiler Construction Tools, Part
         III](http://www.tldp.org/LDP/LG/issue41/lopes/lopes.html)
 
     &nbsp;
