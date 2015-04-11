@@ -2,10 +2,9 @@
 title: JFlex - The Fast Scanner Generator for Java
 ---
 
-<div class="container front">
-  <div class="row">
-    <div class="col-sm-4"><img src="jflex-black.png" alt="JFlex Logo" width=221 height=180/></div>
-    <div class="col-sm-8">
+<div class="container front"><div class="row">
+<div class="col-sm-4"><img src="jflex-black.png" alt="JFlex Logo" width=221 height=180/></div>
+<div class="col-sm-8">
 
 # JFlex
 
@@ -14,9 +13,7 @@ The current stable version is [JFlex 1.6.1][9] released on Mar 16, 2015
 The current maven jflex plugin is [version 1.6.1][9].
 
 See the [changelog](history.html).
-    </div>
-  </div>
-</div>
+</div></div></div>
 
 ## What is it?
 
@@ -41,8 +38,6 @@ and the Java modification of Berkeley Yacc
 [BYacc/J](http://byaccj.sourceforge.net/) by Bob Jamison.
 It can also be used together with other parser generators like
 [ANTLR](http://www.antlr.org/) or as a standalone tool.
-
-[Features of JFlex](features.html).
 
 ----------------------------
 
@@ -69,8 +64,9 @@ software project management tool.
 
 ----------------------------
 
-## JFlex is free?
-FLex is released under a permissive open-source BSD-style license and available for [download](download.html). See also [Copyright, License & Warranty](copying.html). 
+## JFlex is free
+
+JFLex is released under a permissive open-source BSD-style license and available for [download](download.html). See also [Copyright, License & Warranty](copying.html). 
 
 
 

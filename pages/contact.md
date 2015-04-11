@@ -8,45 +8,48 @@ JFlex has three public mailing lists hosted by [sourceforge.net](http://sourcefo
 
 ## Stay informed
 
-`jflex-announce` is a mailing-list for notification on new JFlex releases and severe bugs. This list is read only and very low traffic. Your email address will be kept private.
-    <div class="container"><div class="row">
-    <div class="col-md-7 col-md-offset-2">
-    <div class="mailitems">
-    * <span class="name">jflex-announce</span>
-    * [subscribe](mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe)
-    * [mailman info](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
-    * [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
-    </div></div></div></div>
+`jflex-announce` is a mailing-list for notification on new JFlex releases and severe bugs. This list is read only and very low traffic.
+Your email address will be kept private.
+
+<div class="container"><div class="row">
+<div class="col-md-7 col-md-offset-2">
+<div class="mailitems">
+* [jflex-announce](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
+* [subscribe](mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe)
+* [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
+</div></div></div></div>
 
 ## Discuss with other users and get help
 
 `jflex-users` is a discussion list of developers who use JFlex.
 It is the perfect place to ask for help, assist other users and discuss strange behaviours
 before filing a bug.
-The list is not moderated and writable for subscribers only. Your email address will only be
-visible if you post to the list.
-    <div class="container"><div class="row">
-    <div class="col-md-7 col-md-offset-2">
-    <div class="mailitems">
-    * <span class="name">jflex-users</span>
-    * [subscribe](mailto:jflex-users-request@lists.sourceforge.net?subject=subscribe)
-    * [mailman info](https://lists.sourceforge.net/lists/listinfo/jflex-users)
-    * [archive](https://sourceforge.net/p/jflex/mailman/jflex-users)
-    </div></div></div></div>
+The list is not moderated and writable for subscribers only.
+Your email address will only be visible if you post to the list.
+
+<div class="container"><div class="row">
+<div class="col-md-7 col-md-offset-2">
+<div class="mailitems">
+* [jflex-users](https://lists.sourceforge.net/lists/listinfo/jflex-users)
+* [subscribe](mailto:jflex-users-request@lists.sourceforge.net?subject=subscribe)
+* [archive](https://sourceforge.net/p/jflex/mailman/jflex-users)
+</div></div></div></div>
 
 
 ## Ongoing development
 
 `jflex-devel` is the list of the JFlex developement team, where discussions on ongoing
 development take place.
-The list is not moderated and writable for subscribers only. Your email address will only be visible if you post to the list. Please join if you are interested in contributing to JFlex.
-    <div class="container"><div class="row">
-    <div class="col-md-7 col-md-offset-2">
-    <div class="mailitems">
-    * <span class="name">jflex-devel</span>
-    * [mailman info](https://lists.sourceforge.net/lists/listinfo/jflex-devel)
-    * [archive](https://sourceforge.net/p/jflex/mailman/jflex-devel)
-    </div></div></div></div>
+The list is not moderated and writable for subscribers only.
+Your email address will only be visible if you post to the list.
+Please join if you are interested in contributing to JFlex.
+
+<div class="container"><div class="row">
+<div class="col-md-7 col-md-offset-2">
+<div class="mailitems">
+* [jflex-devel](https://lists.sourceforge.net/lists/listinfo/jflex-devel)
+* [archive](https://sourceforge.net/p/jflex/mailman/jflex-devel)
+</div></div></div></div>
 
 
 
