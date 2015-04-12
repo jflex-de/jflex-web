@@ -4,6 +4,8 @@ title: JFlex - Contact
 
 # Contact
 
+-----
+
 ## Stay informed
 
 `jflex-announce` is a mailing-list for notification on new JFlex releases and severe bugs. This list is read only and very low traffic.
@@ -17,23 +19,6 @@ Your email address will be kept private.
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
 </div></div></div></div>
 
------
-
-## Discuss with other users and get help
-
-`jflex-users` is a discussion list of developers who use JFlex.
-It is the perfect place to ask for help, assist other users and discuss strange behaviours
-before filing a bug.
-The list is not moderated and writable for subscribers only.
-Your email address will only be visible if you post to the list.
-
-<div class="container"><div class="row">
-<div class="col-md-7 col-md-offset-2">
-<div class="mailitems">
-* [jflex-users](https://lists.sourceforge.net/lists/listinfo/jflex-users)
-* [subscribe](mailto:jflex-users-request@lists.sourceforge.net?subject=subscribe)
-* [archive](https://sourceforge.net/p/jflex/mailman/jflex-users)
-</div></div></div></div>
 
 -----
 
@@ -52,20 +37,6 @@ Please join if you are interested in contributing to JFlex.
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-devel)
 </div></div></div></div>
 
------
-
-## Issues and feature requests
-
-Please be sure to check the [manual](manual.html), the [FAQ](faq.html),
-and the [currently open issues](https://github.com/jflex-de/jflex/issues)
-before reporting a new one.
-
-Quick links to the JFlex [github issue tracker](https://github.com/jflex-de/jflex/issues):
-
--   [open bugs](https://github.com/jflex-de/jflex/labels/bug)
-     if you find a new bug
--   [open feature requests](https://github.com/jflex-de/jflex/labels/enhancement)
-    if you think a useful feature should be implemented
 
 -----
 
