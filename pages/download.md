@@ -55,6 +55,19 @@ package `jflex-maven-plugin` contains the source code of the JFlex
 plugin for the [maven build tool](http://maven.apache.org). They are not
 necessary to run or build JFlex, only to change the plugin itself.
 
-Stay informed of new releases with the 
-[announcenent mailing list](http://sourceforge.net/p/jflex/mailman/jflex-announce/).
+----------------------------
+
+## Stay informed
+
+`jflex-announce` is a mailing-list for notification on new JFlex releases and severe bugs. This list is read only and very low traffic.
+Your email address will be kept private.
+
+<div class="container"><div class="row">
+<div class="col-md-7 col-md-offset-2">
+<div class="mailitems">
+* [jflex-announce](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
+* [subscribe](mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe)
+* [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
+</div></div></div></div>
+
 

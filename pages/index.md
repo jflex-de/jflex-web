@@ -61,6 +61,21 @@ It can also be used together with other parser generators like
    lexer during the `generate-sources` phase of
    [Maven](http://maven.apache.org/).   
 
+----------------------------
+
+## Stay informed
+
+`jflex-announce` is a mailing-list for notification on new JFlex releases and severe bugs. This list is read only and very low traffic.
+Your email address will be kept private.
+
+<div class="container"><div class="row">
+<div class="col-md-7 col-md-offset-2">
+<div class="mailitems">
+* [jflex-announce](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
+* [subscribe](mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe)
+* [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
+</div></div></div></div>
+
 
 ----------------------------
 
