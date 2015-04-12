@@ -2,9 +2,7 @@
 title: JFlex - Contact
 ---
 
-# Discussion lists
-
-JFlex has three public mailing lists hosted by [sourceforge.net](http://sourceforge.net).
+# Contact
 
 ## Stay informed
 
@@ -18,6 +16,8 @@ Your email address will be kept private.
 * [subscribe](mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe)
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
 </div></div></div></div>
+
+-----
 
 ## Discuss with other users and get help
 
@@ -35,6 +35,7 @@ Your email address will only be visible if you post to the list.
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-users)
 </div></div></div></div>
 
+-----
 
 ## Ongoing development
 
@@ -51,9 +52,9 @@ Please join if you are interested in contributing to JFlex.
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-devel)
 </div></div></div></div>
 
+-----
 
-
-# Issues and feature requests
+## Issues and feature requests
 
 Please be sure to check the [manual](manual.html), the [FAQ](faq.html),
 and the [currently open issues](https://github.com/jflex-de/jflex/issues)
@@ -66,8 +67,9 @@ Quick links to the JFlex [github issue tracker](https://github.com/jflex-de/jfle
 -   [open feature requests](https://github.com/jflex-de/jflex/labels/enhancement)
     if you think a useful feature should be implemented
 
+-----
 
-# Team
+## Team
 
 -   Who wrote JFlex? JFlex was originally developed by Gerwin Klein. The
     current developers are [Gerwin Klein](http://www.doclsf.de), Steve
