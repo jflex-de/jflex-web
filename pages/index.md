@@ -57,9 +57,9 @@ It can also be used together with other parser generators like
 
 **2009-01-31:** [JFlex 1.4.3 released](jflex-1.4.3). 
 
-**2007-10-29:** There now exists a [JFlex Maven plugin][3], contributed by
-Régis Décamps. It integrates JFlex into the [Maven](http://maven.apache.org/)
-software project management tool.
+**2007-10-29:** A new [JFlex Maven plugin][3] allows to generate the
+   lexer during the `generate-sources` phase of
+   [Maven](http://maven.apache.org/).   
 
 
 ----------------------------
