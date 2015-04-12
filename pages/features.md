@@ -4,7 +4,7 @@ title: JFlex - Features
 
 # JFlex Features
 
-See also [release history](history.html)
+See also [release history](changelog.html)
 
 ----
 

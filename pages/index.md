@@ -12,7 +12,7 @@ The current stable version is [JFlex 1.6.1][9] released on Mar 16, 2015
 
 The current maven jflex plugin is [version 1.6.1][9].
 
-See the [changelog](history.html).
+See the [changelog](changelog.html).
 </div></div></div>
 
 ## What is it?
@@ -45,15 +45,15 @@ It can also be used together with other parser generators like
 
 **2015-04-06:** New website design. Enjoy!
 
-**2015-03-16:** [JFlex 1.6.1 released](history.html#jflex-1.6.1).
+**2015-03-16:** [JFlex 1.6.1 released](changelog.html#jflex-1.6.1).
 
 **2015-02-28:** JFlex [code repository][1] and [issue tracker][2] have moved to [github][0]!
 
-**2014-06-20:** [JFlex 1.6 released](history.html#jflex-1.6.0).
+**2014-06-20:** [JFlex 1.6 released](changelog.html#jflex-1.6.0).
 
-**2014-03-21:** [JFlex 1.5.1 released](history.html#jflex-1.5.1).
+**2014-03-21:** [JFlex 1.5.1 released](changelog.html#jflex-1.5.1).
 
-**2014-01-21:** It's been a long time coming: [JFlex 1.5 released](history.html#jflex-1.5.0)!
+**2014-01-21:** It's been a long time coming: [JFlex 1.5 released](changelog.html#jflex-1.5.0)!
 
 **2009-01-31:** [JFlex 1.4.3 released](jflex-1.4.3). 
 
