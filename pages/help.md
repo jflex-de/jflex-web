@@ -6,9 +6,10 @@ title: JFlex - help
 
 -----
 
-## Ask and answer questions on StackOverflow
+## Ask and answer questions on [StackOverflow][1]
 
-We are on StackOverflow: tag [`[jflex]`](http://stackoverflow.com/questions/tagged/jflex?sort=newest)
+<script src="http://feeds.feedburner.com/StackoverflowJflex?format=sigpro"
+type="text/javascript" ></script>
 
 -----
 
@@ -42,3 +43,4 @@ please be sure to:
    -   [opened feature requests](https://github.com/jflex-de/jflex/labels/enhancement)
 4. discuss about it on the `jflex-users` mailing-list.
 
+[1]: http://stackoverflow.com/questions/tagged/?tagnames=jflex&sort=newest
