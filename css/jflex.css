@@ -6,11 +6,24 @@ body {
 #title {
   float: none;
   height: 100px;
-  color: white;
   font-size: 60px;
   padding: 15px 0 0 50px;;
 }
 
+/* Navbar color */
+.navbar-inverse {
+  background-color: #303F9F; /* primary dark: indigo 700 */
+  border: 0;
+}
+#header.navbar-inverse {
+  color: #FFFFFF;
+}
+.navbar-inverse .navbar-brand,
+.navbar-inverse .navbar-nav>li>a {
+  color: #C5CAE9; /* primary light: indigo 100 */
+}
+
+/* Navbar sticky effect. */
 #header.material-header-collapsed {
   position: fixed;
   top: 0;
@@ -18,15 +31,14 @@ body {
   right: 0;
   z-index: 100;
 }
-
 #header.material-header-collapsed > #title {
   display: none;
 }
-
 #content.material-header-collapsed {
   /* margin is #title height + #navbar height */
   margin-top: 160px;
 }
+
 
 .navbar-toggle {
   float: left;
