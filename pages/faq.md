@@ -2,9 +2,6 @@
 title: JFlex - Frequently Asked Questions
 ---
 
-# JFlex FAQ
-
-
 #### Can I use my old JLex specifications with JFlex?
 
 Yes. You usually can use them unchanged. See section [[porting from

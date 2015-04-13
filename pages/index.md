@@ -1,5 +1,6 @@
 ---
-title: JFlex - The Fast Scanner Generator for Java
+title: JFlex
+subtitle: The Fast Scanner Generator for Java
 ---
 
 <div class="container front"><div class="row">

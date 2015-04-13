@@ -2,8 +2,6 @@
 title: JFlex mode for XEmacs
 ---
 
-# Emacs mode for JFlex
-
 This page describes the XEmacs major mode for JFlex.
 
 It currently supports the following features:

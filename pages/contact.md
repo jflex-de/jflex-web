@@ -1,10 +1,6 @@
 ---
-title: JFlex - Contact
+title: Contact
 ---
-
-# Contact
-
------
 
 ## Stay informed
 

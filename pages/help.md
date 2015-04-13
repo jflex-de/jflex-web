@@ -1,10 +1,6 @@
 ---
-title: JFlex - help
+title: Help
 ---
-
-# Help
-
------
 
 ## Ask and answer questions on [StackOverflow][1]
 

@@ -1,9 +1,6 @@
 ---
-title: JFlex syntax highlighting for Vim
+title: Syntax highlighting for Vim
 ---
-
-# JFlex syntax highlighting for Vim
-
 
 This page describes the vim syntax file for JFlex. It exentends vim's syntax
 highlighting to JFlex specifications. It recognizes JFlex keywords, macro

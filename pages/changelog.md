@@ -1,8 +1,6 @@
 ---
-title: History
+title: Changelog
 ---
-
-# JFlex Change Log
 
 ## JFlex 1.6.1
 (March 16, 2015)

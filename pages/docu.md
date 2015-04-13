@@ -1,8 +1,6 @@
 ---
-title: JFlex - Online Documentation
+title: Documentation
 ---
-
-# JFlex Documentation
 
 -   [Installation instructions](installing.html)
 

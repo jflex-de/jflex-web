@@ -1,10 +1,6 @@
 ---
-title: JFlex - Features
+title: Features
 ---
-
-# JFlex Features
-
-----
 
 ## Main design goals of JFlex
 

@@ -1,9 +1,6 @@
 ---
-title: Download JFlex
+title: Download
 ---
-
-
-# Download JFlex
 
 JFlex is free software and available for
 download from this page and a number of [mirrors](mirrors.html).
