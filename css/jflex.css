@@ -3,6 +3,10 @@ body {
   color: #202020;  
 }
 
+.navbar-toggle {
+  float: left;
+}
+
 .front {
   margin-top: 3em;  
 }
