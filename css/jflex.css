@@ -1,6 +1,12 @@
 body {
   padding-bottom: 20px;
-  color: #202020;  
+  color: #212121;
+}
+h1, h2 {
+  color: #444444;
+}
+h3, h4 {
+  color: #212121;
 }
 
 #title {
