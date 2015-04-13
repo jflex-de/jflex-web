@@ -15,6 +15,8 @@ The current maven jflex plugin is [version 1.6.1][9].
 See the [changelog](changelog.html).
 </div></div></div>
 
+----------------------------
+
 ## What is it?
 
 JFlex is a lexical analyzer generator (also known as scanner generator) for
@@ -84,6 +86,7 @@ Your email address will be kept private.
 JFLex is released under a permissive open-source BSD-style license and available for [download](download.html). See also [Copyright, License & Warranty](copying.html). 
 
 
+----------------------------
 
 ## What platforms does JFlex support?
 
