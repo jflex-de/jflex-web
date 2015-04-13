@@ -50,6 +50,7 @@ button.navbar-toggle {
   left: 0;
   right: 0;
   z-index: 100;
+  box-shadow: rgba(0,0,0,5) 0px 2px 6px 0px;
 }
 #header.material-header-collapsed > #title {
   display: none;
