@@ -55,37 +55,19 @@ package `jflex-maven-plugin` contains the source code of the JFlex
 plugin for the [maven build tool](http://maven.apache.org). They are not
 necessary to run or build JFlex, only to change the plugin itself.
 
-The documentation for JFlex is also available [online](docu.html).
+----------------------------
 
-JFlex has three mailing lists: **jflex-announce** is low traffic and
-read-only for announcements of new releases, **jflex-users** is for help
-and discussions, and **jflex-devel** for developer discussions. If you
-would like to subscribe to either of the first two, please enter your
-email address below, check the appropriate boxes, and press `[subscribe]`.
-For the developer list, see the [mailing lists](mailing.html) page.
+## Stay informed
 
-\
-<div class="container"><form action="http://home.informatik.tu-muenchen.de/kleing/cgi-bin/jflexlist.cgi" method="get"> <div class="form-group row"><div class="input-group col-sm-6 col-sm-offset-3"> <span 
-  class="input-group-addon" id="EmailLabel">Email:</span>
-  <input class="form-control" type="text" name="email" aria-describedby="EmailLabel"></div></div><div class="form-group row"><div class="col-sm-8 col-sm-offset-2"><center>
-<label class="checkbox-inline">
-  <input type=checkbox name="list" value="jflex-announce" checked> jflex-announce
-</label>
-<label class="checkbox-inline">
-  <input type=checkbox name="list" value="jflex-users"> jflex-users 
-</label>
-<label class="checkbox-inline">
-  <input type=checkbox name="list" value="jflex-devel"> jflex-devel
-</label> &nbsp; &nbsp;
-<input type=submit value="Subscribe" class="btn btn-primary"></center></div></div>
-<input type=hidden name="action" value="subscribe">
-</form></div>
+`jflex-announce` is a mailing-list for notification on new JFlex releases and severe bugs. This list is read only and very low traffic.
+Your email address will be kept private.
 
-To prevent abuse you will receive a request for confirmation of your
-wish to subscribe. If you reply to that request from the same address
-you wished to subscribe, you should receive a final confirmation that
-your subscription to the list was successful.
+<div class="container"><div class="row">
+<div class="col-md-7 col-md-offset-2">
+<div class="mailitems">
+* [jflex-announce](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
+* [subscribe](mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe)
+* [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
+</div></div></div></div>
 
-More information on the lists can be found on the [mailing lists](mailing.html)
-page.
 

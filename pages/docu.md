@@ -25,7 +25,7 @@ title: JFlex - Online Documentation
 -   [Japanese translation](jflex_manual_j.html) of an older version
     (1.1.2) of the JFlex manual (in Japanese Shift\_JIS encoding). Most
     of this still applies to the current version. See the [change
-    log](history.html) for a list of changes. Many thanks to Yuichi
+    log](changelog.html) for a list of changes. Many thanks to Yuichi
     Nakajima, Yukio Ikeda, Katsuhiko Yamazaki, and Koji Ooya for their
     efforts.
     If you would like to translate the JFlex manual into another
@@ -52,6 +52,6 @@ title: JFlex - Online Documentation
 
 -   [Known Issues](bugs.html)
     
--   The [Change Log](history.html) of JFlex
+-   The [Change Log](changelog.html) of JFlex
     
 -   Information about [Copying & License](copying.html)
