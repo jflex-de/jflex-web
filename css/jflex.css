@@ -10,6 +10,13 @@ body {
   padding: 15px 0 0 50px;;
 }
 
+a {
+  color: #3F51B5; /* primary: indigo 500 */
+}
+a:hover {
+  color: #FF5722; /* accent */
+  text-decoration: none;
+}
 /* Navbar color */
 .navbar-inverse {
   background-color: #303F9F; /* primary dark: indigo 700 */
@@ -25,6 +32,9 @@ body {
 }
 button.navbar-toggle {
   border: 0;
+}
+.navbar-inverse button.navbar-toggle:hover {
+  background-color: #FF5722; /* accent color: orange 500 */;
 }
 
 /* Navbar sticky effect. */
