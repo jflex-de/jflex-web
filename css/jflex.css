@@ -42,11 +42,11 @@ button.navbar-toggle {
   /* margin is #title height + #navbar height */
   margin-top: 160px;
 }
-#header .navbar-header {
+#header .navbar-brand {
   opacity: 0;
   transition: width,opacity 0.7s ease;
 }
-#header.material-header-collapsed .navbar-header {
+#header.material-header-collapsed .navbar-brand {
   opacity: 1;
 }
 
