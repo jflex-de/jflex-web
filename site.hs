@@ -7,7 +7,7 @@ import Text.Regex.TDFA ((=~))
 
 main :: IO ()
 main = hakyll $ do
-    match ("js/*" .||. "img/*" .||. "fonts/*" .||. "release/*") $ do
+    match ("css/*.min.css" .||. "js/*" .||. "img/*" .||. "fonts/*" .||. "release/*") $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -17,10 +17,6 @@ main = hakyll $ do
 
     match ("docs/*") $ do
         route   $ gsubRoute "docs/" (const "")
-        compile copyFileCompiler
-
-    match "css/*.min.css" $ do
-        route   idRoute
         compile copyFileCompiler
         
     match "css/*.css" $ do
