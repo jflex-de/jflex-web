@@ -14,7 +14,7 @@ import Text.Jasmine
 
 main :: IO ()
 main = hakyll $ do
-    match ("img/*" .||. "fonts/*" .||. "release/*") $ do
+    match ("img/*" .||. "css/*.min.css" .||. "js/*.min.js" .||. "fonts/*" .||. "release/*") $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -33,10 +33,6 @@ main = hakyll $ do
     match "js/*.js" $ do
         route   idRoute
         compile compressJsCompiler
-
-    match "css/*.min.css" $ do
-        route   idRoute
-        compile copyFileCompiler
         
     match "css/*.css" $ do
         route   idRoute
