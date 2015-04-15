@@ -19,6 +19,10 @@ main = hakyll $ do
         route   $ gsubRoute "docs/" (const "")
         compile copyFileCompiler
 
+    match "css/*.min.css" $ do
+        route   idRoute
+        compile copyFileCompiler
+        
     match "css/*.css" $ do
         route   idRoute
         compile compressCssCompiler
