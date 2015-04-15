@@ -13,6 +13,7 @@ platform][1], which includes the package manager `cabal`.
 You can then run
 
     cabal install hakyll
+    cabal install hjsmin
 
 to get the [Hakyll][2] web site generator.
 
