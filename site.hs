@@ -1,13 +1,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Hakyll
+import Control.Applicative ((<$>))
+
+import qualified Data.ByteString.Lazy.Char8 as LazyByte
+import qualified Data.Text as Txt
+import qualified Data.Text.Encoding as Encoding
+
 import Text.Regex.TDFA ((=~))
+import Text.Jasmine
 
 ----- JFlex hakyll site script -----
 
 main :: IO ()
 main = hakyll $ do
-    match ("js/*" .||. "img/*" .||. "fonts/*" .||. "release/*") $ do
+    match ("img/*" .||. "fonts/*" .||. "release/*") $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -18,6 +25,14 @@ main = hakyll $ do
     match ("docs/*") $ do
         route   $ gsubRoute "docs/" (const "")
         compile copyFileCompiler
+
+    match "js/*.min.js" $ do
+        route   idRoute
+        compile copyFileCompiler
+        
+    match "js/*.js" $ do
+        route   idRoute
+        compile compressJsCompiler
 
     match "css/*.min.css" $ do
         route   idRoute
@@ -67,3 +82,10 @@ substAll expr subst input =
     if not (null match)
     then before ++ subst match ++ substAll expr subst after
     else input
+
+compressJsCompiler :: Compiler (Item String)
+compressJsCompiler = fmap jasmin <$> getResourceString
+
+jasmin :: String -> String
+jasmin src = LazyByte.unpack $ minify $
+    LazyByte.fromChunks [(Encoding.encodeUtf8 $ Txt.pack src)] 
