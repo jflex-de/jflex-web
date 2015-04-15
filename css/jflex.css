@@ -97,7 +97,6 @@ button.navbar-toggle {
 .mailitems .name {
   margin: 0 1px 1.5em 0px;
   padding: 1ex 2em 1ex 2em;
-  background-color: #E0E0E0;
   width: 12em;
   display: block;
   float: left;
@@ -106,7 +105,6 @@ button.navbar-toggle {
 .mailitems a {
   margin: 0 1px 1.5em 1px;
   padding: 1ex 2em 1ex 2em;
-  background-color: #E0E0E0;
   width: 12em;
   display: block;
   float: left;
@@ -119,9 +117,22 @@ button.navbar-toggle {
 .download .xitem {
   padding: 1ex 3ex 1ex 3ex;
   margin: 2px 5px 2px 5px;
-  background-color: #F0F0F0;
+  
 }
-
+.mailitems .name,
+.mailitems a,
+.download .xitem {
+  background-color: #E0E0E0; /* gray 300 */
+}
+.button, .mailitems a.button {
+  color: #FFF;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #FF5722; /* accent: orange 500 */
+  box-shadow: rgba(0,0,0,0.5) 0px 1.5px 4px 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
 h1 {
   margin-top: 50px;
   margin-bottom: 20px;
