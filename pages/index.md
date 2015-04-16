@@ -1,5 +1,6 @@
 ---
-title: JFlex - The Fast Scanner Generator for Java
+title: JFlex
+subtitle: The Fast Scanner Generator for Java
 ---
 
 <div class="container front"><div class="row">
@@ -74,7 +75,8 @@ Your email address will be kept private.
 <div class="col-md-7 col-md-offset-2">
 <div class="mailitems">
 * [jflex-announce](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
-* [subscribe](mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe)
+* <a class="button"\
+  href="mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe">subscribe</a>
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
 </div></div></div></div>
 

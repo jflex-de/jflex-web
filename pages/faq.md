@@ -1,14 +1,11 @@
 ---
-title: JFlex - Frequently Asked Questions
+title: Frequently Asked Questions
 ---
-
-# JFlex FAQ
-
 
 #### Can I use my old JLex specifications with JFlex?
 
-Yes. You usually can use them unchanged. See section [[porting from
-JLex]](manual.html#Porting) of the manual for more information on that topic.
+Yes. You usually can use them unchanged. See section [porting from
+JLex](manual.html#Porting) of the manual for more information on that topic.
 
 #### Where can I get the latest version of JFlex? 
 
@@ -23,7 +20,7 @@ JFlex and the code it produces should run on any platform that supports JRE/JDK
 
 #### Can I use CUP and JFlex together? 
 
-You can. See section [[Working together: JFlex and CUP]](manual.html#CUPWork)
+You can. See section [Working together: JFlex and CUP](manual.html#CUPWork)
 of the manual on how to do it.
 
 #### Can I use the generated code of my JFlex specification commercially?
@@ -31,14 +28,17 @@ of the manual on how to do it.
 You can use your generated code without restriction. See the file
 [copyright](COPYRIGHT) for more information.
 
-#### My Scanner throws an "IOException: Reader returned 0 characters. See JFlex examples for workaround." What now?
+#### My Scanner throws an "IOException: Reader returned 0 characters. See JFlex examples\
+for workaround." What now?
 
 Short answer: wrap the reader that returns 0 characters in one that blocks
 instead. Long answer: See the
-[README](https://github.com/jflex-de/jflex/blob/master/jflex/examples/zero-reader/README.md) and example solution in the example
+[README](https://github.com/jflex-de/jflex/blob/master/jflex/examples/zero-reader/README.md)
+and example solution in the example
 [zero-reader](https://github.com/jflex-de/jflex/blob/master/jflex/examples/zero-reader/).
 
-#### I want my scanner to read from a network byte stream or from interactive stdin. Can I do this with JFlex?
+#### I want my scanner to read from a network byte stream or from interactive stdin.\
+Can I do this with JFlex?
 
 This actually depends on the syntax of the input you want to read. The problem
 is, that for some expressions the scanner needs one character of lookahead to

@@ -1,3 +1,7 @@
+---
+title: Installing
+---
+
 Installing and Running JFlex {#Installing}
 ============================
 

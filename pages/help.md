@@ -1,10 +1,6 @@
 ---
-title: JFlex - help
+title: Help
 ---
-
-# Help
-
------
 
 ## Ask and answer questions on [StackOverflow][1]
 
@@ -25,7 +21,8 @@ Your email address will only be visible if you post to the list.
 <div class="col-md-7 col-md-offset-2">
 <div class="mailitems">
 * [jflex-users](https://lists.sourceforge.net/lists/listinfo/jflex-users)
-* [subscribe](mailto:jflex-users-request@lists.sourceforge.net?subject=subscribe)
+* <a class="button"\
+  href="mailto:jflex-users-request@lists.sourceforge.net?subject=subscribe">Subscribe</a>
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-users)
 </div></div></div></div>
 

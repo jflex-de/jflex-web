@@ -1,8 +1,6 @@
 ---
-title: JFlex - Copying, Warranty & License
+title: Copying, Warranty & License
 ---
-
- 
 
 JFlex is free software, and since version 1.5 published under the terms
 of a permissive BSD-style licnense (see below).
@@ -15,8 +13,7 @@ it was produced from. If it was your specification, you may use the
 generated code without restriction.
 
 
-JFlex License
--------------
+## JFlex License
 
 Copyright © Gerwin Klein, Steve Rowe, Regis Decamp. All rights reserved.
 

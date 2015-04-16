@@ -1,20 +1,74 @@
 body {
   padding-bottom: 20px;
-  color: #202020;  
+  color: #212121;
+}
+h1, h2 {
+  color: #444444;
+}
+h3, h4 {
+  color: #212121;
 }
 
-.navbar-wrapper > .container {
-  padding-right: 0;
-  padding-left: 0;
+#title {
+  float: none;
+  min-height: 100px;
+  font-size: 60px;
+  padding: 15px 0 0 50px;;
 }
 
-.navbar-wrapper .navbar {
-  padding-right: 15px;
-  padding-left: 15px;
+a {
+  color: #3F51B5; /* primary: indigo 500 */
+}
+a:hover {
+  color: #FF5722; /* accent */
+  text-decoration: none;
+}
+/* Navbar color */
+.navbar-inverse {
+  background-color: #303F9F; /* primary dark: indigo 700 */
+  border: 0;
+}
+#header.navbar-inverse,
+.navbar-inverse .navbar-brand {
+  color: #FFFFFF;
 }
 
-.navbar-wrapper .navbar .container {
-  width: auto;  
+.navbar-inverse .navbar-nav>li>a {
+  color: #C5CAE9; /* primary light: indigo 100 */
+}
+button.navbar-toggle {
+  border: 0;
+}
+.navbar-inverse button.navbar-toggle:hover {
+  background-color: #FF5722; /* accent color: orange 500 */;
+}
+
+/* Navbar sticky effect. */
+#header.material-header-collapsed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  box-shadow: rgba(0,0,0,5) 0px 2px 6px 0px;
+}
+#header.material-header-collapsed > #title {
+  display: none;
+}
+#content.material-header-collapsed {
+  /* margin is #title height + #navbar height */
+  margin-top: 160px;
+}
+#header .navbar-brand {
+  opacity: 0;
+  transition: width,opacity 0.7s ease;
+}
+#header.material-header-collapsed .navbar-brand {
+  opacity: 1;
+}
+
+.navbar-toggle {
+  float: left;
 }
 
 .front {
@@ -22,8 +76,8 @@ body {
 }
 
 .front img {
-  width: 221;
-  height: 180;
+  width: 221px;
+  height: 180px;
 }
 
 .mailitems ul {
@@ -43,7 +97,6 @@ body {
 .mailitems .name {
   margin: 0 1px 1.5em 0px;
   padding: 1ex 2em 1ex 2em;
-  background-color: #E0E0E0;
   width: 12em;
   display: block;
   float: left;
@@ -52,7 +105,6 @@ body {
 .mailitems a {
   margin: 0 1px 1.5em 1px;
   padding: 1ex 2em 1ex 2em;
-  background-color: #E0E0E0;
   width: 12em;
   display: block;
   float: left;
@@ -65,11 +117,24 @@ body {
 .download .xitem {
   padding: 1ex 3ex 1ex 3ex;
   margin: 2px 5px 2px 5px;
-  background-color: #F0F0F0;
+  
 }
-
+.mailitems .name,
+.mailitems a,
+.download .xitem {
+  background-color: #E0E0E0; /* gray 300 */
+}
+.button, .mailitems a.button {
+  color: #FFF;
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #FF5722; /* accent: orange 500 */
+  box-shadow: rgba(0,0,0,0.5) 0px 1.5px 4px 0px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
 h1 {
-  margin-top: 50px;
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
@@ -80,7 +145,7 @@ code, pre {
 }
 
 code {
-	color: #4a4a4a;
+  color: #4a4a4a;
   background-color: #f5f5f5;	
 }
 
