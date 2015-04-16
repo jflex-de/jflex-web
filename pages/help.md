@@ -36,8 +36,8 @@ please be sure to:
 1. check the [manual](manual.html)
 2. check the [FAQ](faq.html)
 3. check the [currently open issues](https://github.com/jflex-de/jflex/issues)
-   -   [opened bugs](https://github.com/jflex-de/jflex/labels/bug)
-   -   [opened feature requests](https://github.com/jflex-de/jflex/labels/enhancement)
-4. discuss about it on the `jflex-users` mailing-list.
+    - [open bugs](https://github.com/jflex-de/jflex/labels/bug)
+    - [open feature requests](https://github.com/jflex-de/jflex/labels/enhancement)
+4. discuss it on the `jflex-users` mailing-list.
 
 [1]: http://stackoverflow.com/questions/tagged/?tagnames=jflex&sort=newest

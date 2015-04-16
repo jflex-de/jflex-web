@@ -92,7 +92,7 @@ JFLex is released under a permissive open-source BSD-style license and available
 
 ## What platforms does JFlex support?
 
-JFlex generates the scanner on platform that supports JDK 6 or above.
+JFlex generates the scanner on platforms that supports JDK 6 or above.
 
 The generated scanner runs with JRE 5 or above.
 
