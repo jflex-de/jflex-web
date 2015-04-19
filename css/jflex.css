@@ -56,8 +56,8 @@ button.navbar-toggle {
   display: none;
 }
 #content.material-header-collapsed {
-  /* margin is #title height + #navbar height */
-  margin-top: 160px;
+  /* padding is #title height + #navbar height */
+  padding-top: 160px;
 }
 #header .navbar-brand {
   opacity: 0;
