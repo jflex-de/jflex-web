@@ -1,24 +1,24 @@
----
+----
 title: User’s Manual
----
+----
 
 <center>
 
 <div id="header">
-<h1 class="title">JFlex User’s Manual</h1>
+<h1 class="title">JFlex User's Manual</h1>
 </div>
 
 <div class="figure">
 <img src="jflex-black.png" />
-
 </div>
+
 <p>The Fast Lexical Analyser Generator</p>
-<p>Copyright © 1998–2015 by <a href="http://www.doclsf.de">Gerwin Klein</a>, Steve Rowe, and Régis Décamps.</p>
-Version 1.6.1, 16 March 2015
+<p>Copyright © 1998–2015 by <a href="http://www.doclsf.de">Gerwin Klein</a>, Steve Rowe, and <a href="http://regis.decamps.info/">Régis Décamps</a>.</p>
+Version 1.6.1, 20 April 2015
 </center>
 
+<h1>Table Of Contents</h1>
 <div id="TOC">
-<h1 id="table-of-contents">Table Of Contents</h1>
 <ul>
 <li><a href="#Intro">Introduction</a><ul>
 <li><a href="#design-goals">Design goals</a></li>
@@ -27,6 +27,7 @@ Version 1.6.1, 16 March 2015
 <li><a href="#Installing">Installing and Running JFlex</a><ul>
 <li><a href="#installing-jflex">Installing JFlex</a></li>
 <li><a href="#running-jflex">Running JFlex</a></li>
+<li><a href="#jflex-ant-task">JFlex Ant Task</a></li>
 </ul></li>
 <li><a href="#Example">A simple Example: How to work with JFlex</a><ul>
 <li><a href="#ExampleUserCode">Code to include</a></li>
@@ -169,6 +170,54 @@ Version 1.6.1, 16 March 2015
 <p><code>--info</code><br />print system and JDK information (useful if you’d like to report a problem)</p>
 <p><code>--unicodever &lt;ver&gt;</code><br />print all supported properties for Unicode version <code>&lt;ver&gt;</code></p>
 <p><code>--help</code> or <code>-h</code><br />print a help message explaining options and usage of JFlex.</p>
+<h2 id="jflex-ant-task">JFlex Ant Task</h2>
+<p>JFlex can easily be integrated with the <a href="http://ant.apache.org/">Ant</a> build tool. To use JFlex with Ant, simply copy the <code>lib/jflex-1.6.1.jar</code> file to the <code>$ANT_HOME/lib/</code> directory or explicitly set the path to <code>lib/jflex-1.6.1.jar</code> in the task definition (see example below).</p>
+<p>The JFlex Ant Task invokes JFlex on a grammar file.</p>
+<p>To use the JFlex task, place the following line in the Ant build file:</p>
+<pre><code>&lt;taskdef classname=&quot;jflex.anttask.JFlexTask&quot; name=&quot;jflex&quot; /&gt;</code></pre>
+<p>Or, setting the path to the JFlex jar explicitly:</p>
+<pre><code>&lt;taskdef classname=&quot;jflex.anttask.JFlexTask&quot; name=&quot;jflex&quot;
+         classpath=&quot;path-to-jflex.jar&quot; /&gt;</code></pre>
+<p>The JFlex task requires the <code>file</code> attribute to be set to the source grammar file (<code>*.flex</code>). Unless the target directory is specified with the <code>destdir</code> option, the generated class will be saved to the same directory where the grammar file resides. Like <code>javac</code>, the JFlex task creates subdirectories in <code>destdir</code> according to the generated class package.</p>
+<p>This task only invokes JFlex if the grammar file is newer than the generated files.</p>
+<h3 id="parameters">Parameters</h3>
+<p>The following attributes are available for invoking the JFlex task.</p>
+<ul>
+<li><p><code>file=&quot;file&quot;</code><br />The grammar file to process. This attribute is required.</p></li>
+<li><p><code>destdir=&quot;dir&quot;</code><br />The directory to write the generated files to. If not set, the files are written to the directory containing the grammar file. Note that unlike JFlex's <code>-d</code> command line option, <code>destdir</code> causes the generated file to be written to <code>{destdir}/</code><strong><code>{packagename}</code></strong>. This behaviour is similar to `javac -d dir.</p></li>
+<li><p><code>outdir=&quot;dir&quot;</code> <br />The directory to write the generated files to. If not set, the files are written to the directory containing the grammar file. This options works exactly like JFlex's <code>-d</code> command line option, it causes the output file to be written to <code>dir</code> regardless of the package name.</p></li>
+<li><p><code>verbose</code> (default <code>&quot;off&quot;</code>)<br />Display generation process messages.</p></li>
+<li><p><code>dump</code> (default <code>&quot;off&quot;</code>) <br />Dump character classes, NFA and DFA tables.</p></li>
+<li><p><code>time</code> or <code>timeStatistics</code> (default <code>&quot;off&quot;</code>)<br />Display generation time statistics.</p></li>
+<li><p><code>nomin</code> or <code>skipMinimization</code> (default <code>&quot;off&quot;</code>)<br />Skip DFA minimisation step.</p></li>
+<li><p><code>skel=&quot;file&quot;</code> or <code>skeleton=&quot;file&quot;</code><br />Use external skeleton file.</p></li>
+<li><p><code>dot</code> or <code>generateDot</code> (default <code>&quot;off&quot;</code>)<br />Write graphviz <code>.dot</code> files for the generated automata.</p></li>
+<li><p><code>nobak</code> (default <code>&quot;off&quot;</code>)<br />Do not make a backup if the generated file exists.</p></li>
+<li><p><code>jlex</code> (default <code>&quot;off&quot;</code>)<br />Use JLex compatibility mode.</p></li>
+<li><p><code>legacydot</code> (default <code>&quot;off&quot;</code>)<br />The dot <code>.</code> meta-character matches <code>[^\n]</code> instead of <code>[^\n\r\u000B\u000C\u0085\u2028\u202 9]</code></p></li>
+<li><p><code>noinputstreamctor</code> (default <code>&quot;true&quot;</code>)<br />Don't include an <code>InputStream</code> constructor in the generated scanner</p></li>
+<li><p><code>unusedwarning</code> (default <code>&quot;true&quot;</code>)<br />Warn about unused macro definitions in the lexer specification.</p></li>
+</ul>
+<h3 id="example">Example</h3>
+<p>After the task definition, the <code>&lt;jflex ..&gt;</code> task is available in Ant. For example:</p>
+
+<pre><code>&lt;jflex
+    file=&quot;src/parser/Parser.flex&quot;
+    destdir=&quot;build/generated/&quot;
+/&gt;</code></pre>
+
+<p>JFlex generates the scanner for <code>src/parser/Scanner.flex</code> and saves the result to <code>build/generated/parser/</code>, providing <code>Scanner.flex</code> is declared to be in package <code>parser</code>.</p>
+
+<pre><code>&lt;jflex
+    file=&quot;src/parser/Scanner.flex&quot;
+    destdir=&quot;build/generated/&quot;
+/&gt;
+&lt;javac
+    srcdir=&quot;build/generated/&quot;
+    destdir=&quot;build/classes/&quot;
+/&gt;</code></pre>
+
+<p>The same as above plus compile generated classes to <code>build/classes</code></p>
 <h1 id="Example">A simple Example: How to work with JFlex</h1>
 <p>To demonstrate how a lexical specification with JFlex looks like, this section presents a part of the specification for the Java language. The example does not describe the whole lexical structure of Java programs, but only a small and simplified part of it (some keywords, some operators, comments and only two kinds of literals). It also shows how to interface with the LALR parser generator CUP <span class="citation">(Hudson 1996)</span> and therefore uses a class <code>sym</code> (generated by CUP), where integer constants for the terminal tokens of the CUP grammar are declared. JFlex comes with a directory <code>examples</code>, where you can find a small standalone scanner that doesn’t need other tools like CUP to give you working example code without dependencies.</p>
 <p>The <code>examples</code> directory also contains a <em>complete</em> JFlex specification of the lexical structure of Java programs together with the CUP parser specification for Java by C. Scott Ananian, obtained from the CUP <span class="citation">(Hudson 1996)</span> web site (modified to interface with the JFlex scanner). Both specifications adhere to the Java Language Specification <span class="citation">(Gosling, Joy, and Steele 1996)</span>.</p>
@@ -272,7 +321,7 @@ Version 1.6.1, 16 March 2015
 <p>The second section <em>options and declarations</em> is more interesting. It consists of a set of options, code that is included inside the generated scanner class, lexical states and macro declarations. Each JFlex option must begin a line of the specification and starts with a <code>%</code>. In our example the following options are used:</p>
 <ul>
 <li><p><code>%class Lexer</code> tells JFlex to give the generated class the name <code>Lexer</code> and to write the code to a file <code>Lexer.java</code>.</p></li>
-<li><p><code>%unicode</code> defines the set of characters the scanner will work on. For scanning text files, <code>%unicode</code> should always be used. The Unicode version may be specified, e.g. <code>%unicode 4.1</code>. If no version is specified, the most recent supported Unicode version will be used - in JFlex 1.6.1, this is Unicode 7.0. See also <a href="#sec:encodings">Encodings</a> for more information on character sets, encodings, and scanning text vs. binary files.</p></li>
+<li><p><code>%unicode</code> defines the set of characters the scanner will work on. For scanning text files, <code>%unicode</code> should always be used. The Unicode version may be specified, e.g. <code>%unicode 4.1</code>. If no version is specified, the most recent supported Unicode version will be used - in JFlex 1.6.1, this is Unicode 7.0. See also <a href="#sec:encodings">Encodings</a> for more information on character sets, encodings, and scanning text vs. binary files.</p></li>
 <li><p><code>%cup</code> switches to CUP compatibility mode to interface with a CUP generated parser.</p></li>
 <li><p><code>%line</code> switches line counting on (the current line number can be accessed via the variable <code>yyline</code>)</p></li>
 <li><p><code>%column</code> switches column counting on (the current column is accessed via <code>yycolumn</code>)</p></li>
@@ -409,7 +458,7 @@ Lexical rules</code></pre>
 <li><p><code>%eofclose</code></p>
 <p>Causes JFlex to close the input stream at the end of file. The code <code>yyclose()</code> is appended to the method <code>yy_do_eof()</code> (together with the code specified in <code>%eof{...%eof}</code>) and the exception <code>java.io.IOException</code> is declared in the throws clause of this method (together with those of <code>%eofthrow{...%eofthrow}</code>)</p></li>
 <li><p><code>%eofclose false</code></p>
-<p>Turns the effect of <code>%eofclose</code> off again (e.g. in case closing of input stream is not wanted after <code>%cup</code>).</p></li>
+<p>Turns the effect of <code>%eofclose</code> off again (e.g. in case closing of input stream is not wanted after <code>%cup</code>).</p></li>
 </ul>
 <h3 id="standalone-scanners">Standalone scanners</h3>
 <ul>
@@ -592,7 +641,7 @@ PropertyValue       ::= Identifier</code></pre>
 </ul>
 <p>So the expression <code>a | abc | !cd*</code> for instance is parsed as <code>(a|(abc)) | ((!c)(d*))</code>.</p>
 <h3 id="Semantics">Semantics</h3>
-<p>This section gives an informal description of which text is matched by a regular expression, i.e. an expression described by the <code>RegExp</code> production of the grammar <a href="#Grammar">above</a>.</p>
+<p>This section gives an informal description of which text is matched by a regular expression, i.e. an expression described by the <code>RegExp</code> production of the grammar <a href="#Grammar">above</a>.</p>
 <p>A regular expression that consists solely of</p>
 <ul>
 <li><p>a <code>Character</code> matches this character.</p></li>
@@ -634,7 +683,7 @@ PropertyValue       ::= Identifier</code></pre>
     \W  [^\p{Alpha}\p{Digit}\p{Mark}
           \p{Connector Punctuation}\p{Join Control}]</code></pre></li>
 <li><p> <!-- FIXME: inline refs don't link properly in pdf --> <a name="unipropsyntax"></a>Unicode Properties are character classes specified by each version of the Unicode Standard. JFlex supports a subset of all defined Properties for each supported Unicode version. To see the full list of supported Properties, give the <code>–uniprops &lt;ver&gt;</code> option on the JFlex command line, where <code>&lt;ver&gt;</code> is the Unicode version. Some Properties have aliases; JFlex recognizes all aliases for all supported properties. JFlex supports loose matching of Properties: case distinctions, whitespace, hyphens, and underscores are ignored.</p>
-<p>To refer to a Unicode Property, use the <code>\p{...}</code> syntax, e.g. the Greek Block can be referred to as <code>\p{Block:Greek}</code>. To match all characters not included in a property, use the <code>\P{...}</code> syntax (note that the ’<code>P</code>’ is uppercase), e.g. to match all characters that are <strong>not</strong> letters, use <code>\P{Letter}</code>.</p>
+<p>To refer to a Unicode Property, use the <code>\p{...}</code> syntax, e.g. the Greek Block can be referred to as <code>\p{Block:Greek}</code>. To match all characters not included in a property, use the <code>\P{...}</code> syntax (note that the ’<code>P</code>’ is uppercase), e.g. to match all characters that are <strong>not</strong> letters, use <code>\P{Letter}</code>.</p>
 <p>See UTS#18 <span class="citation">(Davis and Heninger 2013)</span> for a description of and links to definitions of some supported Properties. UnicodeSet <span class="citation">(“Unicode Utilities: UnicodeSet” 2015)</span> is an online utility to show the character sets corresponding to Unicode Properties and set operations on them, but only for the most recent Unicode version.</p></li>
 <li><p>Dot (<code>.</code>) matches <code>[^\r\n\u2028\u2029\u000B\u000C\u0085]</code>.<br />Use the <code>–legacydot</code> option to instead match <code>[^\n]</code>.</p></li>
 <li><p><code>\R</code> matches any newline: <code>\r\n|[\r\n\u2028\u2029\u000B\u000C\u0085]</code>.</p></li>
@@ -669,7 +718,7 @@ PropertyValue       ::= Identifier</code></pre>
 <p>For arbitrary look-ahead (also called <em>trailing context</em>) the expression is matched only when followed by input that matches the trailing context.</p>
 <p>JFlex allows lex/flex style <code>&lt;&lt;EOF&gt;&gt;</code> rules in lexical specifications. A rule</p>
 <pre><code>[StateList]  &lt;&lt;EOF&gt;&gt;    { action code }</code></pre>
-<p>is very similar to the <code>%eofval</code> directive. The difference lies in the optional <code>StateList</code> that may precede the <code>&lt;&lt;EOF&gt;&gt;</code> rule. The action code will only be executed when the end of file is read and the scanner is currently in one of the lexical states listed in <code>StateList</code>. The same <code>StateGroup</code> (see section <a href="#HowMatched">How the input is matched</a>) and precedence rules as in the “normal” rule case apply (i.e. if there is more than one <code>&lt;&lt;EOF&gt;&gt;</code> rule for a certain lexical state, the action of the one appearing earlier in the specification will be executed). <code>&lt;&lt;EOF&gt;&gt;</code> rules override settings of the <code>%cup</code> and <code>%byaccj</code> options and should not be mixed with the <code>%eofval</code> directive.</p>
+<p>is very similar to the <code>%eofval</code> directive. The difference lies in the optional <code>StateList</code> that may precede the <code>&lt;&lt;EOF&gt;&gt;</code> rule. The action code will only be executed when the end of file is read and the scanner is currently in one of the lexical states listed in <code>StateList</code>. The same <code>StateGroup</code> (see section <a href="#HowMatched">How the input is matched</a>) and precedence rules as in the “normal” rule case apply (i.e. if there is more than one <code>&lt;&lt;EOF&gt;&gt;</code> rule for a certain lexical state, the action of the one appearing earlier in the specification will be executed). <code>&lt;&lt;EOF&gt;&gt;</code> rules override settings of the <code>%cup</code> and <code>%byaccj</code> options and should not be mixed with the <code>%eofval</code> directive.</p>
 <p>An <code>Action</code> consists either of a piece of Java code enclosed in curly braces or is the special <code>|</code> action. The <code>|</code> action is an abbreviation for the action of the following expression.</p>
 <p>Example:</p>
 <pre><code>expression1   |
@@ -684,7 +733,7 @@ expression3   { some action }</code></pre>
 c / d   |
 b       { some action }</code></pre>
 <h3 id="HowMatched">How the input is matched</h3>
-<p>When consuming its input, the scanner determines the regular expression that matches the longest portion of the input (longest match rule). If there is more than one regular expression that matches the longest portion of input (i.e. they all match the same input), the generated scanner chooses the expression that appears first in the specification. After determining the active regular expression, the associated action is executed. If there is no matching regular expression, the scanner terminates the program with an error message (if the <code>%standalone</code> directive has been used, the scanner prints the unmatched input to <code>java.lang.System.out</code> instead and resumes scanning).</p>
+<p>When consuming its input, the scanner determines the regular expression that matches the longest portion of the input (longest match rule). If there is more than one regular expression that matches the longest portion of input (i.e. they all match the same input), the generated scanner chooses the expression that appears first in the specification. After determining the active regular expression, the associated action is executed. If there is no matching regular expression, the scanner terminates the program with an error message (if the <code>%standalone</code> directive has been used, the scanner prints the unmatched input to <code>java.lang.System.out</code> instead and resumes scanning).</p>
 <p>Lexical states can be used to further restrict the set of regular expressions that match the current input.</p>
 <ul>
 <li><p>A regular expression can only be matched when its associated set of lexical states includes the currently active lexical state of the scanner or if the set of associated lexical states is empty and the currently active lexical state is inclusive. Exclusive and inclusive states only differ in this one point: rules with an empty set of associated states.</p></li>
@@ -774,7 +823,7 @@ expr1                   { yybegin(A); action }
 <p>Of course the encoding to use can also come from the data itself: for instance, when you scan an HTML page, it may have embedded information about its character encoding in the headers.</p>
 <p>More information about encodings, which ones are supported, how they are called, and how to set them may be found in the official Java documentation in the chapter about internationalisation. The link <a href="http://docs.oracle.com/javase/1.5.0/docs/guide/intl/" class="uri">http://docs.oracle.com/javase/1.5.0/docs/guide/intl/</a> leads to an online version of this for Oracle’s JDK 1.5. <!-- FIXME: update to newer JDK --></p>
 <h2 id="scanning-binaries">Scanning binaries</h2>
-<p>Scanning binaries is both easier and more difficult than scanning text files. It’s easier because you want the raw bytes and not their meaning, i.e. you don’t want any translation. It’s more difficult because it’s not so easy to get “no translation” when you use Java readers.</p>
+<p>Scanning binaries is both easier and more difficult than scanning text files. It’s easier because you want the raw bytes and not their meaning, i.e. you don’t want any translation. It’s more difficult because it’s not so easy to get &quot;no translation&quot; when you use Java readers.</p>
 <p>The problem (for binaries) is that JFlex scanners are designed to work on text. Therefore the interface is the <code>Reader</code> class. You can still get a binary scanner when you write your own custom <code>InputStreamReader</code> class that explicitly does no translation, but just copies byte values to character codes instead. It sounds quite easy, and actually it is no big deal, but there are a few pitfalls on the way. In the scanner specification you can only enter positive character codes (for bytes that is <code>\x00</code> to <code>\xFF</code>). Java’s <code>byte</code> type on the other hand is a signed 8 bit integer (-128 to 127), so you have to convert them accordingly in your custom <code>Reader</code>. Also, you should take care when you write your lexer spec: if you use text in there, it gets interpreted by an encoding first, and what scanner you get as result might depend on which platform you run JFlex on when you generate the scanner (this is what you want for text, but for binaries it gets in the way). If you are not sure, or if the development platform might change, it’s probably best to use character code escapes in all places, since they don’t change their meaning.</p>
 <h1 id="unicoderegexconformance">Conformance with Unicode Regular Expressions UTS#18</h1>
 <p>This section gives details about JFlex 1.6.1’s conformance with the requirements for Basic Unicode Support Level 1 given in UTS#18 <span class="citation">(Davis and Heninger 2013)</span>.</p>
@@ -952,7 +1001,7 @@ scan with {: return lexer.yylex(); :};</code></pre>
     super(new Lexer(input));
   }
 :};</code></pre>
-<p>If you don’t mind changing the method that is calling the parser, you could remove the constructor entirely (and if there is nothing else in it, the whole <code>parser code</code> section). The main method calling the parser would then construct the parser as shown in the section above.</p>
+<p>If you don't mind changing the method that is calling the parser, you could remove the constructor entirely (and if there is nothing else in it, the whole <code>parser code</code> section). The main method calling the parser would then construct the parser as shown in the section above.</p>
 <p>The JFlex specification does not need to be changed.</p>
 <h2 id="BYaccJ">JFlex and BYacc/J</h2>
 <p>JFlex has built-in support for the Java extension <a href="http://byaccj.sourceforge.net/">BYacc/J</a> <span class="citation">(Jamison)</span> by Bob Jamison to the classical Berkeley Yacc parser generator. This section describes how to interface BYacc/J with JFlex. It builds on many helpful suggestions and comments from Larry Bell.</p>
@@ -990,7 +1039,7 @@ NL  = \n | \r | \r\n
 /* float */
 {NUM}  { yyparser.yylval = new parserval(Double.parseDouble(yytext()));
          return parser.NUM; }</code></pre>
-<p>The lexer expects a reference to the parser in its constructor. Since Yacc allows direct use of terminal characters like <code>’+’</code> in its specifications, we just return the character code for single char matches (e.g. the operators in the example). Symbolic token names are stored as <code>public static int</code> constants in the generated parser class. They are used as in the <code>NL</code> token above. Finally, for some tokens, a semantic value may have to be communicated to the parser. The <code>NUM</code> rule demonstrates how.</p>
+<p>The lexer expects a reference to the parser in its constructor. Since Yacc allows direct use of terminal characters like <code>’+’</code> in its specifications, we just return the character code for single char matches (e.g. the operators in the example). Symbolic token names are stored as <code>public static int</code> constants in the generated parser class. They are used as in the <code>NL</code> token above. Finally, for some tokens, a semantic value may have to be communicated to the parser. The <code>NUM</code> rule demonstrates how.</p>
 <p>A matching BYacc/J parser specification would look like this:</p>
 <pre><code>%{
   import java.io.*;
@@ -1219,3 +1268,5 @@ ACMilano - Juventus 1:4</code></pre>
 <li id="fn2"><p>Thanks to Dimitri Maziuk for pointing these out.<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>
+</body>
+</html>
