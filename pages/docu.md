@@ -10,8 +10,7 @@ title: Documentation
 -   Usage information for the [JFlex maven
     plugin](http://jflex.sourceforge.net/jflex-maven-plugin/).
     
--   Usage information for the [JFlex Ant Task](jflex_anttask.html) (by
-    Rafal Mantiuk).
+-   Usage information for the [JFlex Ant Task](manual.html#jflex-ant-task).
     
 -   A list of [external JFlex
     grammars](https://github.com/jflex-de/jflex/wiki/External-JFlex-Grammars)
