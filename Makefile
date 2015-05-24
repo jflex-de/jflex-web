@@ -21,4 +21,4 @@ siteclean: site
 
 clean: 
 	rm -rf _cache _site
-	rm -f site.o site site.hs
+	rm -f site.o site site.hi
