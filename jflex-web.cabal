@@ -7,5 +7,8 @@ executable site
   main-is:          site.hs
   build-depends:    base == 4.*
                   , hakyll == 4.6.*
+                  , happy == 1.19.*
+                  , alex == 3.1.*
+                  , hjsmin == 0.1.4.*
   ghc-options:      -threaded
   default-language: Haskell2010
