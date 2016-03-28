@@ -59,6 +59,7 @@ main = hakyll $ do
 issueFilter :: String -> String
 issueFilter markdown = substAll "#[0-9]{1,4}[^0-9]" subst markdown
   where
+    subst :: String -> String
     subst match =      
       let lst = [last match]
           num = tail (init match)
