@@ -30,7 +30,7 @@ download from this page and a number of [mirrors](mirrors.html).
   JFlex maven plugin
   </div></div>
   <div class="col-sm-5"><div class="xitem">
-  [jflex-maven-plugin-1.6.1.zip](release/jflex-maven-plugin-1.6.1.tar.gz)
+  [jflex-maven-plugin-1.6.1.tar.gz](release/jflex-maven-plugin-1.6.1.tar.gz)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
   [sha1](release/jflex-maven-plugin-1.6.1.tar.gz.sha1)
@@ -38,10 +38,10 @@ download from this page and a number of [mirrors](mirrors.html).
 </div>
 <div class="row">
   <div class="col-sm-5 col-sm-offset-4"><div class="xitem">
-  [jflex-maven-plugin-1.6.1.zip](release/jflex-maven-plugin-1.6.1.tar.gz)
+  [jflex-maven-plugin-1.6.1.zip](release/jflex-maven-plugin-1.6.1.zip)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [sha1](release/jflex-maven-plugin-1.6.1.tar.gz.sha1)
+  [sha1](release/jflex-maven-plugin-1.6.1.zip.sha1)
   </div></div>
 </div>
 </div>
