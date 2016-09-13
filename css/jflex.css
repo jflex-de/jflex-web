@@ -31,6 +31,7 @@ a:hover {
 #header.navbar-inverse,
 .navbar-inverse .navbar-brand {
   color: #FFFFFF;
+  border-radius: 0px;
 }
 
 .navbar-inverse .navbar-nav>li>a {
