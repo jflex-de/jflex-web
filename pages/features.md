@@ -7,7 +7,7 @@ title: Features
 The main design goals of JFlex are:
 
 -   Full unicode support
--   Compatible with FLex
+-   Compatible with JLex
 -   Faster generated scanners
 -   Faster scanner generation
 -   Convenient specification syntax
