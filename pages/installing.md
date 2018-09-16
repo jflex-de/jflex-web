@@ -17,43 +17,44 @@ To install JFlex on Windows, follow these three steps:
     should be generated:
     
 ```
-    C:\jflex-1.6.1\ 
+    C:\jflex-1.7.0\ 
         +--bin\                        (start scripts) 
         +--doc\                        (FAQ and manual) 
         +--examples\ 
             +--byaccj\                 (calculator example for BYacc/J) 
-            +--cup\                    (calculator example for cup) 
+            +--cup-maven\              (calculator example for cup and maven) 
             +--interpreter\            (interpreter example for cup) 
             +--java\                   (Java lexer specification) 
             +--simple-maven\           (example scanner built with maven) 
             +--standalone-maven\       (a simple standalone scanner, 
                                         built with maven) 
             +--zero-reader\            (Readers that return 0 characters) 
-        +--lib\                        (precompiled classes, skeleton files) 
+        +--lib\                        (precompiled classes) 
         +--src\ 
             +--main\ 
+                +--config\             (PMD source analyzer configuration) 
                 +--cup\                (JFlex parser spec) 
                 +--java\ 
-                    +--java_cup\ 
-                        +--runtime\    (source code of cup runtime classes) 
                     +--jflex\          (source code of JFlex) 
+                        +--anttask\    (source code of JFlex Ant Task) 
                         +--gui\        (source code of JFlex UI classes) 
+                        +--unicode\    (source code for Unicode properties) 
                 +--jflex\              (JFlex scanner spec) 
                 +--resources\          (messages and default skeleton file) 
             +--test\                   (unit tests)
 ```
 
 2.  Edit the file **`bin\jflex.bat`** (in the example it’s
-    `C:\jflex-1.6.1\bin\jflex.bat`) such that
+    `C:\jflex-1.7.0\bin\jflex.bat`) such that
 
     -   **`JAVA_HOME`** contains the directory where your Java JDK is
         installed (for instance `C:\java`) and
 
     -   **`JFLEX_HOME`** the directory that contains JFlex (in the
-        example: `C:\jflex-1.6.1`)
+        example: `C:\jflex-1.7.0`)
 
 3.  Include the `bin\` directory of JFlex in your path. (the one that
-    contains the start script, in the example: `C:\jflex-1.6.1bin`).
+    contains the start script, in the example: `C:\jflex-1.7.0\bin`).
 
 
 ### Mac/Unix with tar
@@ -63,7 +64,7 @@ To install JFlex on a Mac or Unix system, follow these two steps:
 -   Decompress the archive into a directory of your choice with GNU tar,
     for instance to `/usr/share`:
 
-    `tar -C /usr/share -xvzf jflex-1.6.1.tar.gz`
+    `tar -C /usr/share -xvzf jflex-1.7.0.tar.gz`
 
     (The example is for site wide installation. You need to be root for
     that. User installation works exactly the same way — just choose a
@@ -72,7 +73,7 @@ To install JFlex on a Mac or Unix system, follow these two steps:
 -   Make a symbolic link from somewhere in your binary path to
     `bin/jflex`, for instance:
 
-    `ln -s /usr/share/jflex-1.6.1/bin/jflex /usr/bin/jflex`
+    `ln -s /usr/share/jflex-1.7.0/bin/jflex /usr/bin/jflex`
 
     If the Java interpreter is not in your binary path, you need to
     supply its location in the script `bin/jflex`.
@@ -81,11 +82,11 @@ You can verify the integrity of the downloaded file with the SHA1 checksum
 available on the [JFlex download page](http://jflex.de/download.html). If you
 put the checksum file in the same directory as the archive, and run:
 
-`shasum --check jflex-1.6.1.tar.gz.sha1`
+`shasum --check jflex-1.7.0.tar.gz.sha1`
 
 it should tell you
 
-`jflex-1.6.1.tar.gz: OK`
+`jflex-1.7.0.tar.gz: OK`
 
 
 Running JFlex
@@ -96,7 +97,7 @@ You run JFlex with:
 `jflex <options> <inputfiles>`
 
 It is also possible to skip the start script in `bin/` and include the
-file `lib/jflex-1.6.1.jar` in your `CLASSPATH` environment
+file `lib/jflex-1.7.0.jar` in your `CLASSPATH` environment
 variable instead.
 
 Then you run JFlex with:
@@ -105,7 +106,7 @@ Then you run JFlex with:
 
 or with:
 
-`java -jar jflex-1.6.1.jar <options> <inputfiles>`
+`java -jar jflex-1.7.0.jar <options> <inputfiles>`
 
 The input files and options are in both cases optional. If you don’t
 provide a file name on the command line, JFlex will pop up a window to
@@ -115,6 +116,10 @@ JFlex knows about the following options:
 
 `-d <directory>`\
 writes the generated file to the directory `<directory>`
+
+`--encoding <name>`\
+uses the character encoding `<name>` (e.g. `utf-8`) to read lexer
+specifications.
 
 `--skel <file>`\
 uses external skeleton `<file>`. This is mainly for JFlex maintenance
@@ -139,9 +144,6 @@ display transition tables of NFA, initial DFA, and minimised DFA
 `--legacydot`\
 dot (`.`) meta character matches `[^\n]` instead of\
 `[^\n\r\u000B\u000C\u0085\u2028\u2029]`
-
-`--noinputstreamctor`\
-don’t include an InputStream constructor in the generated scanner
 
 `--verbose` or `-v`\
 display generation progress messages (enabled by default)
@@ -180,9 +182,9 @@ JFlex Ant Task
 --------------
 
 JFlex can easily be integrated with the [Ant](http://ant.apache.org/)
-build tool. To use JFlex with Ant, simply copy the `lib/jflex-1.6.1.jar`
+build tool. To use JFlex with Ant, simply copy the `lib/jflex-1.7.0.jar`
 file to the `$ANT_HOME/lib/` directory or explicitly set the path to
-`lib/jflex-1.6.1.jar` in the task definition (see example below).
+`lib/jflex-1.7.0.jar` in the task definition (see example below).
 
 The JFlex Ant Task invokes JFlex on a grammar file.
 
@@ -228,6 +230,9 @@ The following attributes are available for invoking the JFlex task.
 -  `verbose` (default `"off"`)\
     Display generation process messages.                     
 
+-  `encoding` (if unset uses the JVM default encoding)\
+    The character encoding to use when reading lexer specifications.
+
 -  `dump` (default `"off"`)\           
     Dump character classes, NFA and DFA tables.                           
 
@@ -251,9 +256,6 @@ The following attributes are available for invoking the JFlex task.
 
 -  `legacydot` (default `"off"`)\
     The dot `.` meta-character matches `[^\n]` instead of `[^\n\r\u000B\u000C\u0085\u2028\u202 9]`
-
--  `noinputstreamctor` (default `"true"`)\
-    Don't include an `InputStream` constructor in the generated scanner
 
 -  `unusedwarning` (default `"true"`)\
     Warn about unused macro definitions in the lexer specification.
