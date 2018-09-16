@@ -9,9 +9,9 @@ subtitle: The Fast Scanner Generator for Java
 
 # JFlex
 
-The current stable version is [JFlex 1.6.1][9] released on Mar 16, 2015
+The current stable version is [JFlex 1.7.0][9] released on September 16, 2018
 
-The current maven jflex plugin is [version 1.6.1][9].
+The current maven jflex plugin is [version 1.7.0][9].
 
 See the [changelog](changelog.html).
 </div></div></div>
@@ -45,6 +45,8 @@ It can also be used together with other parser generators like
 ----------------------------
 
 ## News
+
+**2015-03-16:** [JFlex 1.7.0 released](changelog.html#jflex-1.7.0).
 
 **2015-04-06:** New website design. Enjoy!
 
@@ -92,10 +94,7 @@ JFLex is released under a permissive open-source BSD-style license and available
 
 ## What platforms does JFlex support?
 
-JFlex generates the scanner on platforms that supports JDK 6 or above.
-
-The generated scanner runs with JRE 5 or above.
-
+JFlex supports JDK 7 or above for build and run-time.
 
 [0]: https://github.com/jflex-de/
 [1]: https://github.com/jflex-de/jflex/
