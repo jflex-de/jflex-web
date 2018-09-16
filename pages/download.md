@@ -11,18 +11,18 @@ download from this page and a number of [mirrors](mirrors.html).
   JFlex + documentation
   </div></div>
   <div class="col-sm-5"><div class="xitem">
-  [jflex-1.6.1.tar.gz](release/jflex-1.6.1.tar.gz)
+  [jflex-1.7.0.tar.gz](release/jflex-1.7.0.tar.gz)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [sha1](release/jflex-1.6.1.tar.gz.sha1)
+  [sha1](release/jflex-1.7.0.tar.gz.sha1)
   </div></div>
 </div>
 <div class="row">
   <div class="col-sm-5 col-sm-offset-4"><div class="xitem">
-  [jflex-1.6.1.zip](release/jflex-1.6.1.zip)
+  [jflex-1.7.0.zip](release/jflex-1.7.0.zip)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [sha1](release/jflex-1.6.1.zip.sha1)
+  [sha1](release/jflex-1.7.0.zip.sha1)
   </div></div>
 </div>
 <div class="row">
@@ -30,18 +30,18 @@ download from this page and a number of [mirrors](mirrors.html).
   JFlex maven plugin
   </div></div>
   <div class="col-sm-5"><div class="xitem">
-  [jflex-maven-plugin-1.6.1.tar.gz](release/jflex-maven-plugin-1.6.1.tar.gz)
+  [jflex-maven-plugin-1.7.0.tar.gz](release/jflex-maven-plugin-1.7.0.tar.gz)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [sha1](release/jflex-maven-plugin-1.6.1.tar.gz.sha1)
+  [sha1](release/jflex-maven-plugin-1.7.0.tar.gz.sha1)
   </div></div>
 </div>
 <div class="row">
   <div class="col-sm-5 col-sm-offset-4"><div class="xitem">
-  [jflex-maven-plugin-1.6.1.zip](release/jflex-maven-plugin-1.6.1.zip)
+  [jflex-maven-plugin-1.7.0.zip](release/jflex-maven-plugin-1.7.0.zip)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [sha1](release/jflex-maven-plugin-1.6.1.zip.sha1)
+  [sha1](release/jflex-maven-plugin-1.7.0.zip.sha1)
   </div></div>
 </div>
 </div>
