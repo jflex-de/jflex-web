@@ -8,7 +8,7 @@ title: Documentation
     [[pdf]](manual.pdf)
     
 -   Usage information for the [JFlex maven
-    plugin](http://jflex.sourceforge.net/jflex-maven-plugin/).
+    plugin](http://jflex-de.github.io/jflex-web/jflex-maven-plugin/).
     
 -   Usage information for the [JFlex Ant Task](manual.html#jflex-ant-task).
     
