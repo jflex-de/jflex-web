@@ -46,5 +46,5 @@ Please join if you are interested in contributing to JFlex.
     Gerwin mail at `<lsf@jflex.de>`.
     [Here's Gerwin's PGP public key](public-key.asc) if you like to use
     encryption.\
-     Fingerprint: `30 6F 0E FF 8C 94 0D FD  A8 CA CA C4 F4 68 9A DF`
+     Fingerprint: `6A2E B9AB 09D6 0D44 EDCB  3156 3A3E 5D3A 0D3E 49D8`
 
