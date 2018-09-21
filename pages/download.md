@@ -14,7 +14,7 @@ download from this page and a number of [mirrors](mirrors.html).
   [jflex-1.7.0.tar.gz](release/jflex-1.7.0.tar.gz)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [asc](release/jflex-1.7.0.tar.gz.asc)
+  [asc](release/jflex-1.7.0.tar.gz.asc) / 
   [sha1](release/jflex-1.7.0.tar.gz.sha1)
   </div></div>
 </div>
@@ -23,7 +23,7 @@ download from this page and a number of [mirrors](mirrors.html).
   [jflex-1.7.0.zip](release/jflex-1.7.0.zip)
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [asc](release/jflex-1.7.0.zip.asc)
+  [asc](release/jflex-1.7.0.zip.asc) / 
   [sha1](release/jflex-1.7.0.zip.sha1)
   </div></div>
 </div>
