@@ -17,7 +17,7 @@ To install JFlex on Windows, follow these three steps:
     should be generated:
     
 ```
-    C:\jflex-1.7.0\ 
+    C:\jflex-$VERSION\ 
         +--bin\                        (start scripts) 
         +--doc\                        (FAQ and manual) 
         +--examples\ 
@@ -45,16 +45,16 @@ To install JFlex on Windows, follow these three steps:
 ```
 
 2.  Edit the file **`bin\jflex.bat`** (in the example it’s
-    `C:\jflex-1.7.0\bin\jflex.bat`) such that
+    `C:\jflex-$VERSION\bin\jflex.bat`) such that
 
     -   **`JAVA_HOME`** contains the directory where your Java JDK is
         installed (for instance `C:\java`) and
 
     -   **`JFLEX_HOME`** the directory that contains JFlex (in the
-        example: `C:\jflex-1.7.0`)
+        example: `C:\jflex-$VERSION`)
 
 3.  Include the `bin\` directory of JFlex in your path. (the one that
-    contains the start script, in the example: `C:\jflex-1.7.0\bin`).
+    contains the start script, in the example: `C:\jflex-$VERSION\bin`).
 
 
 ### Mac/Unix with tar
@@ -64,7 +64,7 @@ To install JFlex on a Mac or Unix system, follow these two steps:
 -   Decompress the archive into a directory of your choice with GNU tar,
     for instance to `/usr/share`:
 
-    `tar -C /usr/share -xvzf jflex-1.7.0.tar.gz`
+    `tar -C /usr/share -xvzf jflex-$VERSION.tar.gz`
 
     (The example is for site wide installation. You need to be root for
     that. User installation works exactly the same way — just choose a
@@ -73,7 +73,7 @@ To install JFlex on a Mac or Unix system, follow these two steps:
 -   Make a symbolic link from somewhere in your binary path to
     `bin/jflex`, for instance:
 
-    `ln -s /usr/share/jflex-1.7.0/bin/jflex /usr/bin/jflex`
+    `ln -s /usr/share/jflex-$VERSION/bin/jflex /usr/bin/jflex`
 
     If the Java interpreter is not in your binary path, you need to
     supply its location in the script `bin/jflex`.
@@ -82,11 +82,11 @@ You can verify the integrity of the downloaded file with the SHA1 checksum
 available on the [JFlex download page](http://jflex.de/download.html). If you
 put the checksum file in the same directory as the archive, and run:
 
-`shasum --check jflex-1.7.0.tar.gz.sha1`
+`shasum --check jflex-$VERSION.tar.gz.sha1`
 
 it should tell you
 
-`jflex-1.7.0.tar.gz: OK`
+`jflex-$VERSION.tar.gz: OK`
 
 
 Running JFlex
@@ -97,7 +97,7 @@ You run JFlex with:
 `jflex <options> <inputfiles>`
 
 It is also possible to skip the start script in `bin/` and include the
-file `lib/jflex-1.7.0.jar` in your `CLASSPATH` environment
+file `lib/jflex-$VERSION.jar` in your `CLASSPATH` environment
 variable instead.
 
 Then you run JFlex with:
@@ -106,7 +106,7 @@ Then you run JFlex with:
 
 or with:
 
-`java -jar jflex-1.7.0.jar <options> <inputfiles>`
+`java -jar jflex-$VERSION.jar <options> <inputfiles>`
 
 The input files and options are in both cases optional. If you don’t
 provide a file name on the command line, JFlex will pop up a window to
@@ -119,7 +119,7 @@ writes the generated file to the directory `<directory>`
 
 `--encoding <name>`\
 uses the character encoding `<name>` (e.g. `utf-8`) to read lexer
-specifications.
+specifications and write java files.
 
 `--skel <file>`\
 uses external skeleton `<file>`. This is mainly for JFlex maintenance
@@ -182,9 +182,9 @@ JFlex Ant Task
 --------------
 
 JFlex can easily be integrated with the [Ant](http://ant.apache.org/)
-build tool. To use JFlex with Ant, simply copy the `lib/jflex-1.7.0.jar`
+build tool. To use JFlex with Ant, simply copy the `lib/jflex-$VERSION.jar`
 file to the `$ANT_HOME/lib/` directory or explicitly set the path to
-`lib/jflex-1.7.0.jar` in the task definition (see example below).
+`lib/jflex-$VERSION.jar` in the task definition (see example below).
 
 The JFlex Ant Task invokes JFlex on a grammar file.
 
@@ -231,7 +231,7 @@ The following attributes are available for invoking the JFlex task.
     Display generation process messages.                     
 
 -  `encoding` (if unset uses the JVM default encoding)\
-    The character encoding to use when reading lexer specifications.
+    The character encoding to use when reading lexer specifications and writing java files.
 
 -  `dump` (default `"off"`)\           
     Dump character classes, NFA and DFA tables.                           
