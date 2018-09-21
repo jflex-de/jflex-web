@@ -17,7 +17,7 @@ title: Documentation
     that other projects have created.
     
 -   Syntax highlighting for JFlex in [Vim](vim.html) and
-    [XEmacs](emacs.html).
+    [XEmacs](emacs.html), as well as a [TextMate grammar][1]
     
 -   [Japanese translation](jflex_manual_j.html) of an older version
     (1.1.2) of the JFlex manual (in Japanese Shift\_JIS encoding). Most
@@ -47,8 +47,12 @@ title: Documentation
 
     &nbsp;
 
--   [Known Issues](bugs.html)
+-   [Known Issues][2]
     
 -   The [Change Log](changelog.html) of JFlex
     
 -   Information about [Copying & License](copying.html)
+
+
+[1]: https://github.com/jflex-de/jflex.tmbundle
+[2]: https://github.com/jflex-de/jflex/issues
