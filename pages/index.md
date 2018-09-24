@@ -99,5 +99,5 @@ JFlex supports JDK 7 or above for build and run-time.
 [0]: https://github.com/jflex-de/
 [1]: https://github.com/jflex-de/jflex/
 [2]: https://github.com/jflex-de/jflex/issues/
-[3]: http://jflex.sourceforge.net/jflex-maven-plugin/
+[3]: http://jflex-de.github.io/jflex-web/jflex-maven-plugin/
 [9]: /download.html
