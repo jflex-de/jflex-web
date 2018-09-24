@@ -27,15 +27,15 @@ title: Download
 </div>
 
 The distribution includes:
-- [installation procedures](installing.html),
-- documentation,
-- pre-compiled Java classes 
-- and source code of JFlex.
 
-The package `jflex-maven-plugin` contains the source code of the
-[JFlex plugin](http://jflex-de.github.io/jflex-web/jflex-maven-plugin/)
-for the [maven build tool](http://maven.apache.org). They are not
-necessary to run or build JFlex, only to change the plugin itself.
+ - [installation procedures](installing.html),
+ - documentation,
+ - pre-compiled Java classes 
+ - and source code of JFlex.
+
+JFlex can be used together with the
+[jflex-maven-plugin](http://jflex-de.github.io/jflex-web/jflex-maven-plugin/)
+for the [maven build tool](http://maven.apache.org).
 
 ----------------------------
 
