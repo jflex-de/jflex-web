@@ -2,9 +2,6 @@
 title: Download
 ---
 
-JFlex is free software and available for
-download from this page and a number of [mirrors](mirrors.html).
-
 <div class="container download">
 <div class="row">
   <div class="col-sm-4"><div class="xitem">
@@ -20,11 +17,34 @@ download from this page and a number of [mirrors](mirrors.html).
 </div>
 </div>
 
-The distribution includes [installation procedures](installing.html),
-documentation, pre-compiled classes and source code of JFlex. The
-package `jflex-maven-plugin` contains the source code of the JFlex
-plugin for the [maven build tool](http://maven.apache.org). They are not
-necessary to run or build JFlex, only to change the plugin itself.
+The distribution includes:
+
+ - [installation procedures](installing.html),
+ - documentation,
+ - pre-compiled Java classes 
+ - and source code of JFlex.
+
+JFlex can be used together with the
+[jflex-maven-plugin](http://jflex-de.github.io/jflex-web/jflex-maven-plugin/)
+for the [maven build tool](http://maven.apache.org).
+
+----------------------------
+
+
+JFlex is free software and available for
+download from this page and a number of mirrors.
+
+-   Main site: [http://jflex.de/](http://jflex.de/download.html)
+    
+-   UNSW Sydney:
+    [http://www.cse.unsw.edu.au/\~kleing/jflex/](http://www.cse.unsw.edu.au/~kleing/jflex/download.html)
+    
+-   New releases (v1.4 - current) are on 
+    [Github release page](https://github.com/jflex-de/jflex/releases)
+
+-   Old releases (v1.0 - v1.6.1) are on 
+    [Sourceforge download system](https://sourceforge.net/projects/jflex/files/jflex/)
+    
 
 ----------------------------
 
