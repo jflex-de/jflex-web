@@ -53,10 +53,6 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateCompiler
 
-    -- pages/installing.md was removed in favor of the user manual
-    create ["installing.html"] $ do
-      route idRoute
-      compile $ makeItem $ Redirect "manual.html#Installing"
 
 -----------------------
 
