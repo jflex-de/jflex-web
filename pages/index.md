@@ -46,6 +46,8 @@ It can also be used together with other parser generators like
 
 ## News
 
+**2018-10-10:** Initial release of a [rule for the Bazel build system](https://jflex-de.github.io/bazel_rules/).
+
 **2018-09-21:** [JFlex 1.7.0 released](changelog.html#jflex-1.7.0).
 
 **2015-04-06:** New website design. Enjoy!
