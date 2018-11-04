@@ -66,8 +66,9 @@ It can also integrate with [ANTLR](http://www.antlr.org/).
 
 JFlex can be used
 
--  via a [Maven](http://maven.apache.org/) plugin
--  via an ant task
+-  via a [Maven](https://maven.apache.org/) plugin
+-  via an [ant](https://ant.apache.org/) task
+-  via a [bazel](https://bazel.build/) rule
 -  as a standalone binary
 -  as a library
 
