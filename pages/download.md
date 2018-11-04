@@ -8,20 +8,11 @@ title: Download
   JFlex + documentation
   </div></div>
   <div class="col-sm-5"><div class="xitem">
-  [jflex-1.7.0.tar.gz](release/jflex-1.7.0.tar.gz)
+  [jflex-1.7.0.tar.gz][targz]
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [asc](release/jflex-1.7.0.tar.gz.asc) / 
-  [sha1](release/jflex-1.7.0.tar.gz.sha1)
-  </div></div>
-</div>
-<div class="row">
-  <div class="col-sm-5 col-sm-offset-4"><div class="xitem">
-  [jflex-1.7.0.zip](release/jflex-1.7.0.zip)
-  </div></div>
-  <div class="col-sm-2"><div class="xitem text-center">
-  [asc](release/jflex-1.7.0.zip.asc) / 
-  [sha1](release/jflex-1.7.0.zip.sha1)
+  [asc][targzasc] / 
+  [sha1][targzsha1]
   </div></div>
 </div>
 </div>
@@ -69,3 +60,8 @@ Your email address will be kept private.
 * <a class="button" href="mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe">subscribe</a>
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
 </div></div></div></div>
+
+
+[targz]: https://github.com/jflex-de/jflex/releases/download/v1.7.0/jflex-1.7.0.tar.gz
+[targzasc]: https://github.com/jflex-de/jflex/releases/download/v1.7.0/jflex-1.7.0.tar.gz.asc
+[targzsha1]: https://github.com/jflex-de/jflex/releases/download/v1.7.0/jflex-1.7.0.tar.gz.sha1
