@@ -29,18 +29,18 @@ main = hakyll $ do
     match "js/*.js" $ do
         route   idRoute
         compile compressJsCompiler
-        
+
     match "css/*.css" $ do
         route   idRoute
         compile compressCssCompiler
 
     match "pages/*.md" $ do
-        route   $ setExtension "html" `composeRoutes` 
+        route   $ setExtension "html" `composeRoutes`
                   gsubRoute "pages/" (const "")
         compile $ do
           body <- getResourceBody
           filtered <- return $ fmap issueFilter body
-          return (renderPandoc filtered)
+          renderPandoc filtered
             >>= loadAndApplyTemplate "templates/default.html" defaultContext
             >>= relativizeUrls
 
@@ -64,7 +64,7 @@ issueFilter :: String -> String
 issueFilter markdown = substAll "#[0-9]{1,4}[^0-9]" subst markdown
   where
     subst :: String -> String
-    subst match =      
+    subst match =
       let lst = [last match]
           num = tail (init match)
           url = "https://github.com/jflex-de/jflex/issues/"
@@ -85,4 +85,4 @@ compressJsCompiler = fmap jasmin <$> getResourceString
 
 jasmin :: String -> String
 jasmin src = LazyByte.unpack $ minify $
-    LazyByte.fromChunks [(Encoding.encodeUtf8 $ Txt.pack src)] 
+    LazyByte.fromChunks [(Encoding.encodeUtf8 $ Txt.pack src)]
