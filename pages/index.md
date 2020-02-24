@@ -46,7 +46,7 @@ It can also be used together with other parser generators like
 
 ## News
 
-**2020-02-22:** [JFlex 1.7.0 released](changelog.html#jflex-1.8.0).
+**2020-02-26:** [JFlex 1.8.0 released](changelog.html#jflex-1.8.0).
 
 **2018-10-10:** Initial release of a [rule for the Bazel build system](https://jflex-de.github.io/bazel_rules/).
 
