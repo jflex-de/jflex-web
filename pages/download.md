@@ -8,10 +8,10 @@ title: Download
   JFlex + documentation
   </div></div>
   <div class="col-sm-5"><div class="xitem">
-  [jflex-1.7.0.tar.gz][targz]
+  [jflex-1.8.0.tar.gz][targz]
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
-  [asc][targzasc] / 
+  [asc][targzasc] /
   [sha1][targzsha1]
   </div></div>
 </div>
@@ -21,7 +21,7 @@ The distribution includes:
 
  - [installation procedures](installing.html),
  - documentation,
- - pre-compiled Java classes 
+ - pre-compiled Java classes
  - and source code of JFlex.
 
 JFlex can be used together with the
@@ -35,16 +35,16 @@ JFlex is free software and available for
 download from this page and a number of mirrors.
 
 -   Main site: [http://jflex.de/](http://jflex.de/download.html)
-    
+
 -   UNSW Sydney:
     [http://www.cse.unsw.edu.au/\~kleing/jflex/](http://www.cse.unsw.edu.au/~kleing/jflex/download.html)
-    
--   New releases (v1.4 - current) are on 
+
+-   New releases (v1.4 - current) are on the
     [Github release page](https://github.com/jflex-de/jflex/releases)
 
--   Old releases (v1.0 - v1.6.1) are on 
+-   Old releases (v1.0 - v1.6.1) are on the
     [Sourceforge download system](https://sourceforge.net/projects/jflex/files/jflex/)
-    
+
 
 ----------------------------
 
@@ -62,6 +62,6 @@ Your email address will be kept private.
 </div></div></div></div>
 
 
-[targz]: https://github.com/jflex-de/jflex/releases/download/v1.7.0/jflex-1.7.0.tar.gz
-[targzasc]: https://github.com/jflex-de/jflex/releases/download/v1.7.0/jflex-1.7.0.tar.gz.asc
-[targzsha1]: https://github.com/jflex-de/jflex/releases/download/v1.7.0/jflex-1.7.0.tar.gz.sha1
+[targz]: https://github.com/jflex-de/jflex/releases/download/v1.8.0/jflex-1.8.0.tar.gz
+[targzasc]: https://github.com/jflex-de/jflex/releases/download/v1.8.0/jflex-1.8.0.tar.gz.asc
+[targzsha1]: https://github.com/jflex-de/jflex/releases/download/v1.8.0/jflex-1.8.0.tar.gz.sha1

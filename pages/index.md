@@ -9,9 +9,9 @@ subtitle: The Fast Scanner Generator for Java
 
 # JFlex
 
-The current stable version is [JFlex 1.7.0][9] released on September 21, 2018
+The current stable version is [JFlex 1.8.0][9] released on Feb 26, 2020
 
-The current maven jflex plugin is [version 1.7.0][9].
+The current maven jflex plugin is [version 1.8.0][9].
 
 See the [changelog](changelog.html).
 </div></div></div>
@@ -36,7 +36,7 @@ JFlex lexers are based on deterministic finite automata (DFAs).
 They are fast, without expensive backtracking.
 
 JFlex is designed to work together with the LALR parser generator
-[CUP](http://www.cs.princeton.edu/~appel/modern/java/CUP/) by Scott Hudson, 
+[CUP](http://www.cs.princeton.edu/~appel/modern/java/CUP/) by Scott Hudson,
 and the Java modification of Berkeley Yacc
 [BYacc/J](http://byaccj.sourceforge.net/) by Bob Jamison.
 It can also be used together with other parser generators like
@@ -45,6 +45,8 @@ It can also be used together with other parser generators like
 ----------------------------
 
 ## News
+
+**2020-02-22:** [JFlex 1.7.0 released](changelog.html#jflex-1.8.0).
 
 **2018-10-10:** Initial release of a [rule for the Bazel build system](https://jflex-de.github.io/bazel_rules/).
 
@@ -62,11 +64,11 @@ It can also be used together with other parser generators like
 
 **2014-01-21:** It's been a long time coming: [JFlex 1.5 released](changelog.html#jflex-1.5.0)!
 
-**2009-01-31:** [JFlex 1.4.3 released](jflex-1.4.3). 
+**2009-01-31:** [JFlex 1.4.3 released](jflex-1.4.3).
 
 **2007-10-29:** A new [JFlex Maven plugin][3] allows to generate the
    lexer during the `generate-sources` phase of
-   [Maven](http://maven.apache.org/).   
+   [Maven](http://maven.apache.org/).
 
 ----------------------------
 
@@ -79,8 +81,7 @@ Your email address will be kept private.
 <div class="col-md-7 col-md-offset-2">
 <div class="mailitems">
 * [jflex-announce](https://lists.sourceforge.net/lists/listinfo/jflex-announce)
-* <a class="button"\
-  href="mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe">subscribe</a>
+* <a href="mailto:jflex-announce-request@lists.sourceforge.net?subject=subscribe" class="button">subscribe</a>
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-announce/)
 </div></div></div></div>
 
@@ -89,14 +90,14 @@ Your email address will be kept private.
 
 ## JFlex is free
 
-JFLex is released under a permissive open-source BSD-style license and available for [download](download.html). See also [Copyright, License & Warranty](copying.html). 
+JFLex is released under a permissive open-source BSD-style license and available for [download](download.html). See also [Copyright, License & Warranty](copying.html).
 
 
 ----------------------------
 
 ## What platforms does JFlex support?
 
-JFlex supports JDK 7 or above for build and run-time.
+JFlex supports JDK 1.8 or above for build and JDK 7 and above for run-time.
 
 [0]: https://github.com/jflex-de/
 [1]: https://github.com/jflex-de/jflex/

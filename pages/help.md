@@ -21,8 +21,7 @@ Your email address will only be visible if you post to the list.
 <div class="col-md-7 col-md-offset-2">
 <div class="mailitems">
 * [jflex-users](https://lists.sourceforge.net/lists/listinfo/jflex-users)
-* <a class="button"\
-  href="mailto:jflex-users-request@lists.sourceforge.net?subject=subscribe">Subscribe</a>
+* <a href="mailto:jflex-users-request@lists.sourceforge.net?subject=subscribe" class="button">Subscribe</a>
 * [archive](https://sourceforge.net/p/jflex/mailman/jflex-users)
 </div></div></div></div>
 
