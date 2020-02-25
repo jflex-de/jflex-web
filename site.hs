@@ -22,6 +22,10 @@ main = hakyll $ do
         route   $ gsubRoute "files/" (const "")
         compile copyFileCompiler
 
+    match ("files/fig/*") $ do
+        route   $ gsubRoute "files/fig/" (const "fig/")
+        compile copyFileCompiler
+
     match ("docs/*") $ do
         route   $ gsubRoute "docs/" (const "")
         compile copyFileCompiler

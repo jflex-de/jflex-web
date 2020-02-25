@@ -20,7 +20,7 @@ title: Download
 The distribution includes:
 
  - [installation procedures](installing.html),
- - documentation,
+ - [documentation](manual.html),
  - pre-compiled Java classes
  - and source code of JFlex.
 
