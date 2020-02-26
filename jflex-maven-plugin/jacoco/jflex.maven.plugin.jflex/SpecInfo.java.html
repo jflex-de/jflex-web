@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SpecInfo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JFlex Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">jflex.maven.plugin.jflex</a> &gt; <span class="el_source">SpecInfo.java</span></div><h1>SpecInfo.java</h1><pre class="source lang-java linenums">/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * JFlex Maven3 plugin                                                     *
+ * Copyright (c) 2007-2017  Régis Décamps &lt;decamps@users.sf.net&gt;           *
+ * All rights reserved.                                                    *
+ *                                                                         *
+ * License: BSD                                                            *
+ *                                                                         *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+package jflex.maven.plugin.jflex;
+
+import com.google.common.base.Strings;
+import java.io.File;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import javax.annotation.Nullable;
+
+class SpecInfo {
+
+  /** name of the generated class */
+  final String className;
+
+  /** dot-separated package name. Empty string for the default package. */
+  final String packageName;
+
+  /** set of files recursively included from the lex spec */
+  final Set&lt;File&gt; includedFiles;
+
+  SpecInfo(String className, @Nullable String packageName) {
+<span class="fc" id="L31">    this(className, packageName, Collections.emptySet());</span>
+<span class="fc" id="L32">  }</span>
+
+<span class="fc" id="L34">  SpecInfo(String className, @Nullable String packageName, Set&lt;File&gt; includedFiles) {</span>
+<span class="fc" id="L35">    this.className = className;</span>
+<span class="fc" id="L36">    this.packageName = Strings.nullToEmpty(packageName);</span>
+<span class="fc" id="L37">    this.includedFiles = new HashSet&lt;&gt;(includedFiles);</span>
+<span class="fc" id="L38">  }</span>
+
+  @Override
+  public boolean equals(Object obj) {
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">    if (this == obj) {</span>
+<span class="nc" id="L43">      return true;</span>
+    }
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">    if (!(obj instanceof SpecInfo)) {</span>
+<span class="nc" id="L46">      return false;</span>
+    }
+<span class="fc" id="L48">    SpecInfo other = (SpecInfo) obj;</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">    return Objects.equals(className, other.className)</span>
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        &amp;&amp; Objects.equals(packageName, other.packageName)</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        &amp;&amp; Objects.equals(includedFiles, other.includedFiles);</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L56">    return Objects.hash(className, packageName, includedFiles);</span>
+  }
+
+  /**
+   * Returns the (relative) path name of the java source code file that corresponds to the class.
+   *
+   * &lt;p&gt;For instance, &quot;org.foo.Bar&quot; returns &quot;org/foo/Bar.java&quot;
+   *
+   * @return Name of the java file.
+   */
+  String getOutputFilename() {
+    // TODO(regisd) Use PackageUtil
+<span class="fc" id="L68">    String packageDir = packageName.replace('.', File.separatorChar);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">    if (packageDir.length() &gt; 0) {</span>
+<span class="fc" id="L70">      packageDir += File.separatorChar;</span>
+    }
+<span class="fc" id="L72">    return packageDir + className + &quot;.java&quot;;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

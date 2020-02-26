@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LexSimpleAnalyzerUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">JFlex Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">jflex.maven.plugin.jflex</a> &gt; <span class="el_source">LexSimpleAnalyzerUtils.java</span></div><h1>LexSimpleAnalyzerUtils.java</h1><pre class="source lang-java linenums">/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * JFlex Maven3 plugin                                                     *
+ * Copyright (c) 2007-2017  Régis Décamps &lt;decamps@users.sf.net&gt;           *
+ * Credit goes to the authors of the ant task.                             *
+ * All rights reserved.                                                    *
+ *                                                                         *
+ * License: BSD                                                            *
+ *                                                                         *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+package jflex.maven.plugin.jflex;
+
+import com.google.common.io.Files;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
+
+/**
+ * @author Rafal Mantiuk (Rafal.Mantiuk@bellstream.pl)
+ * @author Gerwin Klein (lsf@jflex.de)
+ * @author Régis Décamps
+ * @author Chris Fraire (cfraire@me.com)
+ */
+class LexSimpleAnalyzerUtils {
+
+  static final String DEFAULT_NAME = &quot;Yylex&quot;;
+
+<span class="fc" id="L36">  private static final Pattern INCLUDE_DIRECTIVE_MATCHER = Pattern.compile(&quot;^\\s*%include\\s+(.+)&quot;);</span>
+  private static final int INCLUDE_DIRECTIVE_ARG_OFFSET = 1;
+
+  /**
+   * Guesses package and class name, and {@code %include} files, based on this grammar definition.
+   *
+   * @param lexFile the lex spec to process
+   * @return collected info about this lex spec.
+   * @throws FileNotFoundException if the lex file does not exist
+   * @throws IOException when an IO exception occurred while reading a file.
+   */
+  static SpecInfo guessSpecInfo(File lexFile) throws IOException {
+<span class="fc" id="L48">    Reader lexFileReader = Files.newReader(lexFile, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L49">    return guessSpecInfo(lexFileReader, lexFile);</span>
+  }
+
+  /**
+   * Guesses package and class name, and {@code %include} files, based on this grammar definition.
+   *
+   * @param lexFileReader reader for lex spec to process
+   * @param lexFile the lex spec to process, used for relative path name resolution of {@code
+   *     %incude}s.
+   * @return collected info about this lex spec.
+   * @throws IOException when an IO exception occurred while processing the reader. Ignores IO
+   *     errors for {@code %incude} files.
+   */
+  static SpecInfo guessSpecInfo(Reader lexFileReader, File lexFile) throws IOException {
+<span class="fc" id="L63">    try (LineNumberReader reader = new LineNumberReader(lexFileReader)) {</span>
+<span class="fc" id="L64">      String className = null;</span>
+<span class="fc" id="L65">      String packageName = null;</span>
+<span class="fc bfc" id="L66" title="All 4 branches covered.">      while (className == null || packageName == null) {</span>
+<span class="fc" id="L67">        String line = reader.readLine();</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (line == null) {</span>
+<span class="fc" id="L69">          break;</span>
+        }
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        if (packageName == null) {</span>
+<span class="fc" id="L72">          packageName = guessPackage(line);</span>
+        }
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (className == null) {</span>
+<span class="fc" id="L75">          className = guessClass(line);</span>
+        }
+<span class="fc" id="L77">      }</span>
+
+<span class="fc bfc" id="L79" title="All 2 branches covered.">      if (className == null) {</span>
+<span class="fc" id="L80">        className = DEFAULT_NAME;</span>
+      }
+<span class="fc" id="L82">      return new SpecInfo(className, packageName, guessIncludes(lexFile));</span>
+    }
+  }
+
+  /**
+   * Processes a file for {@code %include} directives.
+   *
+   * @param file the lex file to process.
+   * @return the set of files (recursively) mentioned in {@code %include}s.
+   */
+  private static Set&lt;File&gt; guessIncludes(File file) {
+<span class="fc" id="L93">    return nestedIncludes(new HashSet&lt;&gt;(), file);</span>
+  }
+
+  /**
+   * Recursively processes a file for {@code %include} directives.
+   *
+   * @param file the file to process; itself assumed to be an {@code %include} or lex file. Path
+   *     names in the file are relative to the file location.
+   * @param seen the set of files seen so far, to avoid following cycles.
+   * @return the set of files (recursively) mentioned in {@code %include}s.
+   */
+  private static Set&lt;File&gt; nestedIncludes(Set&lt;File&gt; seen, File file) {
+<span class="fc" id="L105">    Set&lt;File&gt; includedFiles = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L106">    Set&lt;File&gt; newSeen = new HashSet&lt;&gt;(seen);</span>
+    try {
+<span class="fc" id="L108">      Reader reader = Files.newReader(file, StandardCharsets.UTF_8);</span>
+<span class="fc" id="L109">      Set&lt;File&gt; newFiles = mapFiles(parseIncludes(reader), file.getParentFile());</span>
+<span class="fc" id="L110">      newFiles.removeAll(seen);</span>
+<span class="fc" id="L111">      newSeen.addAll(newFiles);</span>
+<span class="fc" id="L112">      includedFiles.addAll(newFiles);</span>
+<span class="fc" id="L113">      Set&lt;File&gt; nested =</span>
+<span class="fc" id="L114">          newFiles.stream()</span>
+<span class="fc" id="L115">              .flatMap(f -&gt; nestedIncludes(newSeen, f).stream())</span>
+<span class="fc" id="L116">              .collect(Collectors.toSet());</span>
+<span class="fc" id="L117">      includedFiles.addAll(nested);</span>
+<span class="fc" id="L118">    } catch (IOException e) {</span>
+      // silently ignore IO exceptions in include file processing
+<span class="fc" id="L120">    }</span>
+<span class="fc" id="L121">    return includedFiles;</span>
+  }
+
+  /**
+   * Resolves path names relative to parent.
+   *
+   * @param set a set of relative path names
+   * @param parent the parent file of these path names
+   * @return the set of files relative to {@code parent}
+   */
+  static Set&lt;File&gt; mapFiles(Set&lt;String&gt; set, File parent) {
+<span class="fc" id="L132">    return set.stream().map(s -&gt; new File(parent, s)).collect(Collectors.toSet());</span>
+  }
+
+  /**
+   * Parses input for {@code %include} directives.
+   *
+   * @param fileReader the input
+   * @return the set of path names mentioned after {@code %include} directives in the input.
+   */
+  static Set&lt;String&gt; parseIncludes(Reader fileReader) throws IOException {
+<span class="fc" id="L142">    Set&lt;String&gt; includedFiles = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L143">    try (LineNumberReader reader = new LineNumberReader(fileReader)) {</span>
+<span class="fc" id="L144">      String line = reader.readLine();</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">      while (line != null) {</span>
+<span class="fc" id="L146">        String includedFile = guessIncluded(line);</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        if (includedFile != null) {</span>
+<span class="fc" id="L148">          includedFiles.add(includedFile);</span>
+        }
+<span class="fc" id="L150">        line = reader.readLine();</span>
+<span class="fc" id="L151">      }</span>
+    }
+<span class="fc" id="L153">    return includedFiles;</span>
+  }
+
+  @Nullable
+  private static String guessClass(String line) {
+<span class="fc" id="L158">    int index = line.indexOf(&quot;%class&quot;);</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">    if (index &gt; -1) {</span>
+<span class="fc" id="L160">      index += &quot;%class&quot;.length();</span>
+<span class="fc" id="L161">      return line.substring(index).trim();</span>
+    }
+<span class="fc" id="L163">    return null;</span>
+  }
+
+  @Nullable
+  private static String guessPackage(String line) {
+<span class="fc" id="L168">    int index = line.trim().indexOf(&quot;package&quot;);</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">    if (index == 0) {</span>
+<span class="fc" id="L170">      index += &quot;package&quot;.length();</span>
+
+<span class="fc" id="L172">      int end = line.indexOf(';', index);</span>
+<span class="pc bpc" id="L173" title="1 of 2 branches missed.">      if (end &gt;= index) {</span>
+<span class="fc" id="L174">        return line.substring(index, end).trim();</span>
+      }
+    }
+
+<span class="fc" id="L178">    return null;</span>
+  }
+
+  @Nullable
+  private static String guessIncluded(String line) {
+<span class="fc" id="L183">    Matcher matcher = INCLUDE_DIRECTIVE_MATCHER.matcher(line);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">    if (matcher.find()) {</span>
+<span class="fc" id="L185">      return matcher.group(INCLUDE_DIRECTIVE_ARG_OFFSET).trim();</span>
+    }
+<span class="fc" id="L187">    return null;</span>
+  }
+
+  private LexSimpleAnalyzerUtils() {}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
