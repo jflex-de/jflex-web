@@ -202,11 +202,11 @@ import org.apache.maven.project.MavenProject;
 
     // generate only if needs to
 <span class="fc" id="L204">    long generatedLastModified = generatedFile.lastModified();</span>
-<span class="pc bpc" id="L205" title="1 of 2 branches missed.">    if (lexFile.lastModified() - generatedLastModified &lt;= this.staleMillis</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">        &amp;&amp; latestModified(specInfo.includedFiles) - generatedLastModified &lt;= this.staleMillis) {</span>
-<span class="nc" id="L207">      getLog().info(&quot;  &quot; + generatedFile.getName() + &quot; is up to date.&quot;);</span>
-<span class="nc" id="L208">      getLog().debug(&quot;StaleMillis = &quot; + staleMillis + &quot;ms&quot;);</span>
-<span class="nc" id="L209">      return;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">    if (lexFile.lastModified() - generatedLastModified &lt;= this.staleMillis</span>
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">        &amp;&amp; latestModified(specInfo.includedFiles) - generatedLastModified &lt;= this.staleMillis) {</span>
+<span class="fc" id="L207">      getLog().info(&quot;  &quot; + generatedFile.getName() + &quot; is up to date.&quot;);</span>
+<span class="fc" id="L208">      getLog().debug(&quot;StaleMillis = &quot; + staleMillis + &quot;ms&quot;);</span>
+<span class="fc" id="L209">      return;</span>
     }
 
     // set options. Very strange that JFlex expects this in a static way.
@@ -298,11 +298,11 @@ import org.apache.maven.project.MavenProject;
    *     prevent getting any values
    */
   private static long latestModified(Set&lt;File&gt; includedFiles) {
-<span class="nc" id="L301">    long result = 0;</span>
-<span class="nc bnc" id="L302" title="All 2 branches missed.">    for (File file : includedFiles) {</span>
-<span class="nc" id="L303">      result = Math.max(file.lastModified(), result);</span>
-<span class="nc" id="L304">    }</span>
-<span class="nc" id="L305">    return result;</span>
+<span class="fc" id="L301">    long result = 0;</span>
+<span class="fc bfc" id="L302" title="All 2 branches covered.">    for (File file : includedFiles) {</span>
+<span class="fc" id="L303">      result = Math.max(file.lastModified(), result);</span>
+<span class="fc" id="L304">    }</span>
+<span class="fc" id="L305">    return result;</span>
   }
 
   static class ExtensionPredicate implements Predicate&lt;File&gt; {

@@ -1,5 +1,5 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-JFlex Maven Plugin,jflex.maven.plugin.jflex,JFlexMojo,167,276,22,22,30,61,20,11,1,8
+JFlex Maven Plugin,jflex.maven.plugin.jflex,JFlexMojo,108,335,18,26,21,70,17,14,0,9
 JFlex Maven Plugin,jflex.maven.plugin.jflex,SpecInfo,24,82,5,7,3,17,6,5,1,4
 JFlex Maven Plugin,jflex.maven.plugin.jflex,LexSimpleAnalyzerUtils,0,220,1,23,0,61,1,23,0,12
 JFlex Maven Plugin,jflex.maven.plugin.jflex,JFlexMojo.ExtensionPredicate,0,18,0,0,0,6,0,3,0,3
