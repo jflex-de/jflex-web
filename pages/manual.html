@@ -25,7 +25,7 @@ title: JFlex User’s Manual
 <p><img src="fig/jflex-black.png" /></p>
 <p>The Fast Lexical Analyser Generator</p>
 <p>Copyright © 1998–2020 by <a href="http://www.doclsf.de/">Gerwin Klein</a>, Steve Rowe, and <a href="http://regis.decamps.info/">Régis Décamps</a>.</p>
-Version 1.8.0, 26 February 2020
+Version 1.8.1, 28 February 2020
 </center>
 <h1 id="table-of-contents">Table of Contents</h1>
 <ul>
@@ -104,7 +104,7 @@ Version 1.8.0, 26 February 2020
 <ol type="1">
 <li>Unzip the file you downloaded into the directory you want JFlex in. If you unzipped it to say <code>C:\</code>, the following directory structure should be generated:</li>
 </ol>
-<pre><code>    C:\jflex-1.8.0\
+<pre><code>    C:\jflex-1.8.1\
         +--bin\                        (start scripts)
         +--doc\                        (FAQ and manual)
         +--examples\
@@ -130,35 +130,35 @@ Version 1.8.0, 26 February 2020
                 +--resources\          (messages and default skeleton file)
             +--test\                   (unit tests)</code></pre>
 <ol start="2" type="1">
-<li><p>Edit the file <strong><code>bin\jflex.bat</code></strong> (in the example it’s <code>C:\jflex-1.8.0\bin\jflex.bat</code>) such that</p>
+<li><p>Edit the file <strong><code>bin\jflex.bat</code></strong> (in the example it’s <code>C:\jflex-1.8.1\bin\jflex.bat</code>) such that</p>
 <ul>
 <li><p><strong><code>JAVA_HOME</code></strong> contains the directory where your Java JDK is installed (for instance <code>C:\java</code>) and</p></li>
-<li><p><strong><code>JFLEX_HOME</code></strong> the directory that contains JFlex (in the example: <code>C:\jflex-1.8.0</code>)</p></li>
+<li><p><strong><code>JFLEX_HOME</code></strong> the directory that contains JFlex (in the example: <code>C:\jflex-1.8.1</code>)</p></li>
 </ul></li>
-<li><p>Include the <code>bin\</code> directory of JFlex in your path. (the one that contains the start script, in the example: <code>C:\jflex-1.8.0\bin</code>).</p></li>
+<li><p>Include the <code>bin\</code> directory of JFlex in your path. (the one that contains the start script, in the example: <code>C:\jflex-1.8.1\bin</code>).</p></li>
 </ol>
 <h3 id="macunix-with-tar">Mac/Unix with tar</h3>
 <p>To install JFlex on a Mac or Unix system, follow these two steps:</p>
 <ul>
 <li><p>Decompress the archive into a directory of your choice with GNU tar, for instance to <code>/usr/share</code>:</p>
-<p><code>tar -C /usr/share -xvzf jflex-1.8.0.tar.gz</code></p>
+<p><code>tar -C /usr/share -xvzf jflex-1.8.1.tar.gz</code></p>
 <p>(The example is for site wide installation. You need to be root for that. User installation works exactly the same way — just choose a directory where you have write permission)</p></li>
 <li><p>Make a symbolic link from somewhere in your binary path to <code>bin/jflex</code>, for instance:</p>
-<p><code>ln -s /usr/share/jflex-1.8.0/bin/jflex /usr/bin/jflex</code></p>
+<p><code>ln -s /usr/share/jflex-1.8.1/bin/jflex /usr/bin/jflex</code></p>
 <p>If the Java interpreter is not in your binary path, you need to supply its location in the script <code>bin/jflex</code>.</p></li>
 </ul>
 <p>You can verify the integrity of the downloaded file with the SHA1 checksum available on the <a href="http://jflex.de/download.html">JFlex download page</a>. If you put the checksum file in the same directory as the archive, and run:</p>
-<p><code>shasum --check jflex-1.8.0.tar.gz.sha1</code></p>
+<p><code>shasum --check jflex-1.8.1.tar.gz.sha1</code></p>
 <p>it should tell you</p>
-<p><code>jflex-1.8.0.tar.gz: OK</code></p>
+<p><code>jflex-1.8.1.tar.gz: OK</code></p>
 <h2 id="running-jflex">Running JFlex</h2>
 <p>You run JFlex with:</p>
 <p><code>jflex &lt;options&gt; &lt;inputfiles&gt;</code></p>
-<p>It is also possible to skip the start script in <code>bin/</code> and include the file <code>lib/jflex-1.8.0.jar</code> in your <code>CLASSPATH</code> environment variable instead.</p>
+<p>It is also possible to skip the start script in <code>bin/</code> and include the file <code>lib/jflex-1.8.1.jar</code> in your <code>CLASSPATH</code> environment variable instead.</p>
 <p>Then you run JFlex with:</p>
 <p><code>java jflex.Main &lt;options&gt; &lt;inputfiles&gt;</code></p>
 <p>or with:</p>
-<p><code>java -jar jflex-1.8.0.jar &lt;options&gt; &lt;inputfiles&gt;</code></p>
+<p><code>java -jar jflex-1.8.1.jar &lt;options&gt; &lt;inputfiles&gt;</code></p>
 <p>The input files and options are in both cases optional. If you don’t provide a file name on the command line, JFlex will pop up a window to ask you for one.</p>
 <p>JFlex knows about the following options:</p>
 <p><code>-d &lt;directory&gt;</code><br />
@@ -210,7 +210,7 @@ print a help message explaining options and usage of JFlex.</p>
       &lt;plugin&gt;
         &lt;groupId&gt;de.jflex&lt;/groupId&gt;
         &lt;artifactId&gt;jflex-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.8.0&lt;/version&gt;
+        &lt;version&gt;1.8.1&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;goals&gt;
@@ -229,7 +229,7 @@ print a help message explaining options and usage of JFlex.</p>
 <pre><code>      &lt;plugin&gt;
         &lt;groupId&gt;de.jflex&lt;/groupId&gt;
         &lt;artifactId&gt;jflex-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.8.0&lt;/version&gt;
+        &lt;version&gt;1.8.1&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;goals&gt;
@@ -255,7 +255,7 @@ print a help message explaining options and usage of JFlex.</p>
 <pre><code>      &lt;plugin&gt;
         &lt;groupId&gt;de.jflex&lt;/groupId&gt;
         &lt;artifactId&gt;jflex-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.8.0&lt;/version&gt;
+        &lt;version&gt;1.8.1&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;id&gt;strict jlex&lt;/id&gt;
@@ -289,7 +289,7 @@ print a help message explaining options and usage of JFlex.</p>
 <li><a href="http://maven.apache.org/pom.html#Plugins">POM reference guide on plugins</a> for more information about using plugins in a project.</li>
 </ul>
 <h2 id="jflex-ant-task">JFlex Ant Task</h2>
-<p>JFlex can easily be integrated with the <a href="http://ant.apache.org/">Ant</a> build tool. To use JFlex with Ant, simply copy the <code>lib/jflex-1.8.0.jar</code> file to the <code>$ANT_HOME/lib/</code> directory or explicitly set the path to <code>lib/jflex-1.8.0.jar</code> in the task definition (see example below).</p>
+<p>JFlex can easily be integrated with the <a href="http://ant.apache.org/">Ant</a> build tool. To use JFlex with Ant, simply copy the <code>lib/jflex-1.8.1.jar</code> file to the <code>$ANT_HOME/lib/</code> directory or explicitly set the path to <code>lib/jflex-1.8.1.jar</code> in the task definition (see example below).</p>
 <p>The JFlex Ant Task invokes JFlex on a grammar file.</p>
 <p>To use the JFlex task, place the following line in the Ant build file:</p>
 <pre><code>&lt;taskdef classname=&quot;jflex.anttask.JFlexTask&quot; name=&quot;jflex&quot; /&gt;</code></pre>
@@ -453,7 +453,7 @@ Warn about unused macro definitions in the lexer specification.</p></li>
 <p>The second section <em>options and declarations</em> is more interesting. It consists of a set of options, code that is included inside the generated scanner class, lexical states and macro declarations. Each JFlex option must begin a line of the specification and starts with a <code>%</code>. In our example the following options are used:</p>
 <ul>
 <li><p><code>%class Lexer</code> tells JFlex to give the generated class the name <code>Lexer</code> and to write the code to a file <code>Lexer.java</code>.</p></li>
-<li><p><code>%unicode</code> defines the set of characters the scanner will work on. For scanning text files, <code>%unicode</code> should always be used. The Unicode version may be specified, e.g. <code>%unicode 4.1</code>. If no version is specified, the most recent supported Unicode version will be used - in JFlex 1.8.0, this is Unicode 12.1. See also <a href="#sec:encodings">Encodings</a> for more information on character sets, encodings, and scanning text vs. binary files.</p></li>
+<li><p><code>%unicode</code> defines the set of characters the scanner will work on. For scanning text files, <code>%unicode</code> should always be used. The Unicode version may be specified, e.g. <code>%unicode 4.1</code>. If no version is specified, the most recent supported Unicode version will be used - in JFlex 1.8.1, this is Unicode 12.1. See also <a href="#sec:encodings">Encodings</a> for more information on character sets, encodings, and scanning text vs. binary files.</p></li>
 <li><p><code>%cup</code> switches to CUP compatibility mode to interface with a CUP generated parser.</p></li>
 <li><p><code>%line</code> switches line counting on (the current line number can be accessed via the variable <code>yyline</code>)</p></li>
 <li><p><code>%column</code> switches column counting on (the current column is accessed via <code>yycolumn</code>)</p></li>
@@ -933,7 +933,7 @@ expr1                   { yybegin(A); action }
 <p>Scanning binaries is both easier and more difficult than scanning text files. It’s easier because you want the raw bytes and not their meaning, i.e. you don’t want any translation. It’s more difficult because it’s not so easy to get “no translation” when you use Java readers.</p>
 <p>The problem (for binaries) is that JFlex scanners are designed to work on text. Therefore the interface is the <code>Reader</code> class. You can still get a binary scanner when you write your own custom <code>InputStreamReader</code> class that explicitly does no translation, but just copies byte values to character codes instead. It sounds quite easy, and actually it is no big deal, but there are a few pitfalls on the way. In the scanner specification you can only enter positive character codes (for bytes that is <code>\x00</code> to <code>\xFF</code>). Java’s <code>byte</code> type on the other hand is a signed 8 bit integer (-128 to 127), so you have to convert them accordingly in your custom <code>Reader</code>. Also, you should take care when you write your lexer spec: if you use text in there, it gets interpreted by an encoding first, and what scanner you get as result might depend on which platform you run JFlex on when you generate the scanner (this is what you want for text, but for binaries it gets in the way). If you are not sure, or if the development platform might change, it’s probably best to use character code escapes in all places, since they don’t change their meaning.</p>
 <h2 id="unicoderegexconformance">Conformance with Unicode Regular Expressions UTS#18</h2>
-<p>This section gives details about JFlex 1.8.0’s conformance with the requirements for Basic Unicode Support Level 1 given in UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span>.</p>
+<p>This section gives details about JFlex 1.8.1’s conformance with the requirements for Basic Unicode Support Level 1 given in UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span>.</p>
 <h3 id="rl1.1-hex-notation">RL1.1 Hex Notation</h3>
 <blockquote>
 <p><em>To meet this requirement, an implementation shall supply a mechanism for specifying any Unicode code point (from U+0000 to U+10FFFF), using the hexadecimal code point representation.</em></p>
@@ -1346,9 +1346,9 @@ colon =  &quot;:&quot;
 ACMilano - Juventus 1:4</code></pre>
 <h1 id="Bugs">Bugs and Deficiencies</h1>
 <h2 id="deficiencies">Deficiencies</h2>
-<p>JFlex 1.8.0 conforms with Unicode Regular Expressions UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span> Basic Unicode Support Level 1, with a few exceptions - for details see <a href="#unicoderegexconformance">UTS # 18 Conformance</a>.</p>
+<p>JFlex 1.8.1 conforms with Unicode Regular Expressions UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span> Basic Unicode Support Level 1, with a few exceptions - for details see <a href="#unicoderegexconformance">UTS # 18 Conformance</a>.</p>
 <h2 id="bugs">Bugs</h2>
-<p>As of 26 February 2020, no major open problems are known for JFlex version 1.8.0.</p>
+<p>As of 28 February 2020, no major open problems are known for JFlex version 1.8.1.</p>
 <p>Please use the JFlex <a href="https://github.com/jflex-de/jflex/labels/bug">github issue tracker</a> for any problems that have been reported since then.</p>
 <h1 id="Copyright">Copying and License</h1>
 <p>JFlex is free software, published under a BSD-style license.</p>
