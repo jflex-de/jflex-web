@@ -9,9 +9,9 @@ subtitle: The Fast Scanner Generator for Java
 
 # JFlex
 
-The current stable version is [JFlex 1.8.1][9] released on Feb 28, 2020
+The current stable version is [JFlex 1.8.2][9] released on May 3, 2020
 
-The current maven jflex plugin is [version 1.8.1][9].
+The current maven jflex plugin is [version 1.8.2][9].
 
 See the [changelog](changelog.html).
 </div></div></div>
@@ -45,6 +45,8 @@ It can also be used together with other parser generators like
 ----------------------------
 
 ## News
+
+**2020-05-03:** [JFlex 1.8.2 released](changelog.html#jflex-1.8.2).
 
 **2020-02-28:** [JFlex 1.8.1 released](changelog.html#jflex-1.8.1).
 
