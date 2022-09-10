@@ -1,6 +1,3 @@
----
-title: JFlex User’s Manual
----
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
 <head>
@@ -14,6 +11,27 @@ title: JFlex User’s Manual
     span.underline{text-decoration: underline;}
     div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
   </style>
   <link rel="stylesheet" href="manual.css" />
   <!--[if lt IE 9]>
@@ -21,6 +39,9 @@ title: JFlex User’s Manual
   <![endif]-->
 </head>
 <body>
+<header id="title-block-header">
+<h1 class="title">JFlex User’s Manual</h1>
+</header>
 <center>
 <p><img src="fig/jflex-black.png" /></p>
 <p>The Fast Lexical Analyser Generator</p>
@@ -53,6 +74,12 @@ Version 1.8.2, 28 February 2020
 <li><a href="#user-code">User code</a></li>
 <li><a href="#options-and-declarations">Options and declarations</a></li>
 <li><a href="#LexRules">Lexical rules</a></li>
+</ul></li>
+<li><a href="#GeneratedJavaCode">The generated class</a>
+<ul>
+<li><a href="#GeneratedClassName">Name of the generated class</a></li>
+<li><a href="#ScanningMethod">Scanning method</a></li>
+<li><a href="#ScannerMethods">Scanner methods and fields accessible in actions (API)</a></li>
 </ul></li>
 <li><a href="#sec:encodings">Encodings, Platforms, and Unicode</a>
 <ul>
@@ -405,9 +432,9 @@ Warn about unused macro definitions in the lexer specification.</p></li>
     &lt;YYINITIAL&gt; &quot;break&quot;              { return symbol(sym.BREAK); }
 
     &lt;YYINITIAL&gt; {
-      /* identifiers */
+      /* identifiers */ 
       {Identifier}                   { return symbol(sym.IDENTIFIER); }
-
+     
       /* literals */
       {DecIntegerLiteral}            { return symbol(sym.INTEGER_LITERAL); }
       \&quot;                             { string.setLength(0); yybegin(STRING); }
@@ -419,14 +446,14 @@ Warn about unused macro definitions in the lexer specification.</p></li>
 
       /* comments */
       {Comment}                      { /* ignore */ }
-
+     
       /* whitespace */
       {WhiteSpace}                   { /* ignore */ }
     }
 
     &lt;STRING&gt; {
-      \&quot;                             { yybegin(YYINITIAL);
-                                       return symbol(sym.STRING_LITERAL,
+      \&quot;                             { yybegin(YYINITIAL); 
+                                       return symbol(sym.STRING_LITERAL, 
                                        string.toString()); }
       [^\n\r\&quot;\\]+                   { string.append( yytext() ); }
       \\t                            { string.append(&#39;\t&#39;); }
@@ -708,43 +735,43 @@ Lexical rules</code></pre>
 <p>The syntax of the <em>lexical rules</em> section is described by the following EBNF grammar (terminal symbols are enclosed in ’quotes’):</p>
 <pre><code>LexicalRules ::= (Include|Rule)+
 Include      ::= &#39;%include&#39; (&#39; &#39;|&#39;\t&#39;|&#39;\b&#39;)+ File
-Rule         ::= [StateList] [&#39;^&#39;] RegExp [LookAhead] Action
+Rule         ::= [StateList] [&#39;^&#39;] RegExp [LookAhead] Action 
                | [StateList] &#39;&lt;&lt;EOF&gt;&gt;&#39; Action
-               | StateGroup
-StateGroup   ::= StateList &#39;{&#39; Rule+ &#39;}&#39;
-StateList    ::= &#39;&lt;&#39; Identifier (&#39;,&#39; Identifier)* &#39;&gt;&#39;
+               | StateGroup 
+StateGroup   ::= StateList &#39;{&#39; Rule+ &#39;}&#39; 
+StateList    ::= &#39;&lt;&#39; Identifier (&#39;,&#39; Identifier)* &#39;&gt;&#39; 
 LookAhead    ::= &#39;$&#39; | &#39;/&#39; RegExp
 Action       ::= &#39;{&#39; JavaCode &#39;}&#39; | &#39;|&#39;
 
-RegExp       ::= RegExp &#39;|&#39; RegExp
-               | RegExp RegExp
+RegExp       ::= RegExp &#39;|&#39; RegExp 
+               | RegExp RegExp 
                | &#39;(&#39; RegExp &#39;)&#39;
                | (&#39;!&#39;|&#39;~&#39;) RegExp
                | RegExp (&#39;*&#39;|&#39;+&#39;|&#39;?&#39;)
-               | RegExp &quot;{&quot; Number [&quot;,&quot; Number] &quot;}&quot;
+               | RegExp &quot;{&quot; Number [&quot;,&quot; Number] &quot;}&quot; 
                | CharClass
-               | PredefinedClass
-               | MacroUsage
-               | &#39;&quot;&#39; StringCharacter+ &#39;&quot;&#39;
-               | Character
+               | PredefinedClass 
+               | MacroUsage 
+               | &#39;&quot;&#39; StringCharacter+ &#39;&quot;&#39; 
+               | Character 
 
 CharClass    ::= &#39;[&#39; [&#39;^&#39;] CharClassContent* &#39;]&#39;
-               | &#39;[&#39; [&#39;^&#39;] CharClassContent+
+               | &#39;[&#39; [&#39;^&#39;] CharClassContent+ 
                      CharClassOperator CharClassContent+ &#39;]&#39;
-
+                 
 CharClassContent    ::= CharClass | Character |
-                        Character&#39;-&#39;Character |
+                        Character&#39;-&#39;Character | 
                         MacroUsage | PredefinedClass
 
 CharClassOperator   ::= &#39;||&#39; | &#39;&amp;&amp;&#39; | &#39;--&#39; | &#39;~~&#39;
 
 MacroUsage          ::= &#39;{&#39; Identifier &#39;}&#39;
 
-PredefinedClass     ::= &#39;[:jletter:]&#39;
-                      | &#39;[:jletterdigit:]&#39;
-                      | &#39;[:letter:]&#39;
+PredefinedClass     ::= &#39;[:jletter:]&#39; 
+                      | &#39;[:jletterdigit:]&#39; 
+                      | &#39;[:letter:]&#39; 
                       | &#39;[:digit:]&#39;
-                      | &#39;[:uppercase:]&#39;
+                      | &#39;[:uppercase:]&#39; 
                       | &#39;[:lowercase:]&#39;
                       | &#39;\d&#39; | &#39;\D&#39;
                       | &#39;\s&#39; | &#39;\S&#39;
@@ -752,9 +779,9 @@ PredefinedClass     ::= &#39;[:jletter:]&#39;
                       | &#39;\p{&#39; UnicodePropertySpec &#39;}&#39;
                       | &#39;\P{&#39; UnicodePropertySpec &#39;}&#39;
                       | &#39;\R&#39;
-                      | &#39;.&#39;
-
-UnicodePropertySpec ::= BinaryProperty |
+                      | &#39;.&#39;          
+                            
+UnicodePropertySpec ::= BinaryProperty | 
                         EnumeratedProperty (&#39;:&#39; | &#39;=&#39;) PropertyValue
 
 BinaryProperty      ::= Identifier
@@ -841,7 +868,7 @@ an escape sequence or any unicode character that is not one of these meta charac
           \p{Connector Punctuation}\p{Join Control}]</code></pre></li>
 <li><p> <!-- FIXME: inline refs don't link properly in pdf --> <a name="unipropsyntax"></a>Unicode Properties are character classes specified by each version of the Unicode Standard. JFlex supports a subset of all defined Properties for each supported Unicode version. To see the full list of supported Properties, give the <code>–uniprops &lt;ver&gt;</code> option on the JFlex command line, where <code>&lt;ver&gt;</code> is the Unicode version. Some Properties have aliases; JFlex recognizes all aliases for all supported properties. JFlex supports loose matching of Properties: case distinctions, whitespace, hyphens, and underscores are ignored.</p>
 <p>To refer to a Unicode Property, use the <code>\p{...}</code> syntax, e.g. the Greek Block can be referred to as <code>\p{Block:Greek}</code>. To match all characters not included in a property, use the <code>\P{...}</code> syntax (note that the ’<code>P</code>’ is uppercase), e.g. to match all characters that are <strong>not</strong> letters, use <code>\P{Letter}</code>.</p>
-<p>See UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span> for a description of and links to definitions of some supported Properties. UnicodeSet <span class="citation" data-cites="UnicodeSet">(“Unicode Utilities: UnicodeSet” 2015)</span> is an online utility to show the character sets corresponding to Unicode Properties and set operations on them, but only for the most recent Unicode version.</p></li>
+<p>See UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span> for a description of and links to definitions of some supported Properties. UnicodeSet <span class="citation" data-cites="UnicodeSet">(<span>“Unicode Utilities: <span>UnicodeSet</span>”</span> 2015)</span> is an online utility to show the character sets corresponding to Unicode Properties and set operations on them, but only for the most recent Unicode version.</p></li>
 <li><p>Dot (<code>.</code>) matches <code>[^\r\n\u2028\u2029\u000B\u000C\u0085]</code>.<br />
 Use the <code>–legacydot</code> option to instead match <code>[^\n]</code>.<br />
 Note that unpaired Unicode surrogate chars <code>[\uD800-\uDFFF]</code> are not matched by <code>.</code>.</p></li>
@@ -911,6 +938,63 @@ expr1                   { yybegin(A); action }
 }</code></pre>
 <p>The first line declares two (inclusive) lexical states <code>A</code> and <code>B</code>, the second line an exclusive lexical state <code>C</code>. The default (inclusive) state <code>YYINITIAL</code> is always implicitly there and doesn’t need to be declared. The rule with <code>expr1</code> has no states listed, and is thus matched in all states but the exclusive ones, i.e. <code>A</code>, <code>B</code>, and <code>YYINITIAL</code>. In its action, the scanner is switched to state <code>A</code>. The second rule <code>expr2</code> can only match when the scanner is in state <code>YYINITIAL</code> or <code>A</code>. The rule <code>expr3</code> can only be matched in state <code>A</code> and <code>expr4</code> in states <code>A</code>, <code>B</code>, and <code>C</code>.</p></li>
 <li><p>Lexical states are declared and used as Java <code>int</code> constants in the generated class under the same name as they are used in the specification. There is no guarantee that the values of these integer constants are distinct. They are pointers into the generated DFA table, and if JFlex recognises two states as lexically equivalent (if they are used with the exact same set of regular expressions), then the two constants will get the same value.</p></li>
+</ul>
+<h1 id="GeneratedJavaCode">The generated class</h1>
+<p>JFlex generates exactly one file containing one class from the specification (unless you have declared another class in the first specification section).</p>
+<p>The generated class contains (among other things) the DFA tables, an input buffer, the lexical states of the specification, a constructor, and the scanning method with the user supplied actions.</p>
+<h2 id="GeneratedClassName">Name of the generated class</h2>
+<p>The name of the class is by default <code>Yylex</code>. The name is customisable with the <code>%class</code> directive. The input buffer of the lexer is connected with external input through the <code>java.io.Reader</code> object which is passed to the lexer in the generated constructor. If you provide your own constructor for the lexer, you should always chain-call the generated one to initialise the input buffer. The input buffer should not be accessed directly, but only through the advertised API (see also <a href="#ScannerMethods">Scanner Methods</a>). Its internal implementation may change between releases or skeleton files without notice.</p>
+<h2 id="ScanningMethod">Scanning method</h2>
+<p>The main interface to the outside world is the generated scanning method (default name <code>yylex</code>, default return type <code>Yytoken</code>). Most of its aspects are customisable (name, return type, declared exceptions etc.). If it is called, it will consume input until one of the expressions in the specification is matched or an error occurs. If an expression is matched, the corresponding action is executed. It may return a value of the specified return type (in which case the scanning method returns with this value), or, if it does not return a value, the scanner resumes consuming input until the next expression is matched. If the end of file is reached, the scanner executes the <code>EOF</code> action, and (also upon each further call to the scanning method) returns the specified <code>EOF</code> value.</p>
+<h2 id="ScannerMethods">Scanner methods and fields accessible in actions (API)</h2>
+<p>Generated methods and member fields in JFlex scanners are prefixed with <code>yy</code> to indicate that they are generated and to avoid name conflicts with user code copied into the class. Since user code is part of the same class, JFlex has no language means like the <code>private</code> modifier to indicate which members and methods are internal and which ones belong to the API. Instead, JFlex follows a naming convention: everything starting with <code>zz</code>, such as <code>zzStartRead</code>, is internal and subject to change without notice between JFlex releases. Methods and members of the generated class that do not have a <code>zz</code> prefix, such as <code>yycharat</code>, belong to the API that the scanner class provides to users in action code of the specification. They will remain stable and supported between JFlex releases as long as possible.</p>
+<p>Currently, the API consists of the following methods and member fields:</p>
+<ul>
+<li><p><code>String yytext()</code></p>
+<p>returns the matched input text region</p></li>
+<li><p><code>int yylength()</code></p>
+<p>returns the length of the matched input text region as number of Java <code>chars</code> (as opposed to Unicode code points). It is equivalent to <code>yytext().length()</code>, but faster since it does not require a <code>String</code> object to be created.</p></li>
+<li><p><code>char yycharat(int pos)</code></p>
+<p>returns the Java <code>char</code> at position <code>pos</code> from the matched text. It is equivalent to <code>yytext().charAt(pos)</code>, but faster. <code>pos</code> must be a value from <code>0</code> to <code>yylength()-1</code>.</p></li>
+<li><p><code>void yyclose()</code></p>
+<p>closes the input stream. All subsequent calls to the scanning method will return the end of file value.</p></li>
+<li><p><code>void yyreset(java.io.Reader reader)</code></p>
+<p>closes the current input stream, and resets the scanner to read from a new Reader. All internal variables are reset, the old Reader <em>cannot</em> be reused (content of the internal buffer is discarded and lost). The lexical state is set to <code>YY_INITIAL</code>. The <code>%{init</code> code is <em>not</em> included in <code>yyreset</code>, because it is assumed to run in the context of a constructor, not a normal method. If <code>%{init</code> does need to be repeated, consider constructing a new lexer object instead, or calling a custom function that performs any additional user-level state reset.</p></li>
+<li><p><code>void yypushStream(java.io.Reader reader)</code></p>
+<p>Stores the current input stream on a stack, and reads from a new stream. Lexical state, line, char, and column counting remain untouched. The current input stream can be restored with <code>yypopStream</code> (usually in an <code>&lt;&lt;EOF&gt;&gt;</code> action).</p>
+<p>A typical example for this are include files in style of the C pre-processor. The corresponding JFlex specification could look like this:</p>
+<pre><code>&quot;#include&quot; {FILE}  { yypushStream(new FileReader(getFile(yytext()))); }
+...
+&lt;&lt;EOF&gt;&gt;            { if (yymoreStreams()) yypopStream(); else return EOF; }</code></pre>
+<p>This method is only available in the skeleton file <code>skeleton.nested</code>. You can find it in the <code>src</code> directory of the JFlex distribution.</p></li>
+<li><p><code>void yypopStream()</code></p>
+<p>Closes the current input stream and continues to read from the one on top of the stream stack.</p>
+<p>This method is only available in the skeleton file <code>skeleton.nested</code>. You can find it in the <code>src</code> directory of the JFlex distribution.</p></li>
+<li><p><code>boolean yymoreStreams()</code></p>
+<p>Returns true iff there are still streams for <code>yypopStream</code> left to read from on the stream stack.</p>
+<p>This method is only available in the skeleton file <code>skeleton.nested</code>. You can find it in the <code>src</code> directory of the JFlex distribution.</p></li>
+<li><p><code>int yystate()</code></p>
+<p>returns the current lexical state of the scanner.</p></li>
+<li><p><code>void yybegin(int lexicalState)</code></p>
+<p>enters the lexical state <code>lexicalState</code></p></li>
+<li><p><code>void yypushback(int number)</code></p>
+<p>pushes <code>number</code> Java <code>char</code>s (as opposed to Unicode code points) of the matched text back into the input stream. They will be read again in the next call of the scanning method. The number of chars to be read again must not be greater than the length of the matched text. The pushed back characters will not be included in <code>yylength()</code> and <code>yytext()</code>. Note that in Java strings are unchangeable, i.e. an action code like</p>
+<pre><code>    String matched = yytext();
+    yypushback(1);
+    return matched;</code></pre>
+<p>will return the whole matched text, while</p>
+<pre><code>    yypushback(1);
+    return yytext();</code></pre>
+<p>will return the matched text minus the last character.</p>
+<p>Note that supplementary Unicode characters (i.e., those above the Basic Multilingual Plane) are represented in Java Strings by paired Unicode surrogate characters, and as a result expressions such as <code>[^]</code> (any character) and <code>\p{...}</code> (characters having a Unicode property) can match more than one <code>char</code>.</p></li>
+<li><p><code>yyatEOF()</code></p>
+<p>returns whether the scanner has reached the end of the reader it reads from, which often corresponds to the end of file.</p></li>
+<li><p><code>int yyline</code></p>
+<p>contains the current line of input (starting with 0, only active with the <code>lineCounting</code> directive)</p></li>
+<li><p><code>long yychar</code></p>
+<p>contains the current character count in the input (starting with 0, only active with the <code>charCounting</code> directive)</p></li>
+<li><p><code>int yycolumn</code></p>
+<p>contains the current column of the current line (starting with 0, only active with the <code>columnCounting</code> directive)</p></li>
 </ul>
 <h1 id="sec:encodings">Encodings, Platforms, and Unicode</h1>
 <p>This section discusses Unicode and encodings, cross platform scanning, and how to deal with binary data.</p>
@@ -993,8 +1077,8 @@ expr1                   { yybegin(A); action }
 <p>From the C/C++ flex <span class="citation" data-cites="flex">(Paxson 1995)</span> man page: <em>Getting rid of backtracking is messy and often may be an enormous amount of work for a complicated scanner.</em> Backtracking can be avoided in general by adding error rules that match those error conditions</p>
 <pre><code>&quot;av&quot;|&quot;ave&quot;|&quot;avery&quot;|&quot;averyl&quot;|..</code></pre>
 <p>While this is impractical in most scanners, there is still the possibility to add a <em>catch all</em> rule for a lengthy list of keywords</p>
-<pre><code>&quot;keyword1&quot;  { return symbol(KEYWORD1); }
-..
+<pre><code>&quot;keyword1&quot;  { return symbol(KEYWORD1); } 
+.. 
 &quot;keywordn&quot;  { return symbol(KEYWORDn); }
 [a-z]+      { error(&quot;not a keyword&quot;); }</code></pre>
 <p>Most programming language scanners already have a rule like this for some kind of variable length identifiers, which means this kind of backtracking for programming language scanners often concerns only at most a single character.</p></li>
@@ -1058,7 +1142,7 @@ user code</code></pre>
 <p>Flex offers the character classes directly supported by C, JFlex offers the ones supported by Java. These classes will sometimes have to be listed manually.</p>
 <p>In flex more special characters lose their meaning in character classes. In particular<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>:</p>
 <ul>
-<li><p>in flex <code>[][]</code> is the character class containing <code>]</code> and <code>[</code>, whereas in JFlex, the expression means “empty expression” followed by “empty expression”. To get <code>]</code> and <code>[</code> in JFlex, use for instance <code>[\]\[]</code>.</p></li>
+<li><p>in flex <code>[][]</code> is the character class containing <code>]</code> and <code>[</code>, whereas in JFlex, the expression means “empty expression” followed by “empty expression.” To get <code>]</code> and <code>[</code> in JFlex, use for instance <code>[\]\[]</code>.</p></li>
 <li><p>the classes <code>[]</code> and <code>[^]</code> are illegal in flex, but have meaning in JFlex.</p></li>
 <li><p>in flex <code>["]</code> is legal, in JFlex you need <code>[\"]</code>.</p></li>
 </ul>
@@ -1135,9 +1219,9 @@ NL  = \n | \r | \r\n
 %%
 
 /* operators */
-&quot;+&quot; |
+&quot;+&quot; | 
 ..
-&quot;(&quot; |
+&quot;(&quot; | 
 &quot;)&quot;    { return (int) yycharat(0); }
 
 /* newline */
@@ -1151,7 +1235,7 @@ NL  = \n | \r | \r\n
 <pre><code>%{
   import java.io.*;
 %}
-
+      
 %token NL          /* newline  */
 %token &lt;dval&gt; NUM  /* a number */
 
@@ -1160,11 +1244,11 @@ NL  = \n | \r | \r\n
 %left &#39;-&#39; &#39;+&#39;
 ..
 %right &#39;^&#39;         /* exponentiation */
-
+      
 %%
 
 ..
-
+      
 exp:     NUM          { $$ = $1; }
        | exp &#39;+&#39; exp  { $$ = $1 + $3; }
        ..
@@ -1201,7 +1285,7 @@ exp:     NUM          { $$ = $1; }
   /* that&#39;s how you use the parser */
   public static void main(String args[]) throws IOException {
     parser yyparser = new parser(new FileReader(args[0]));
-    yyparser.yyparse();
+    yyparser.yyparse();    
   }</code></pre>
 <p>Here, the customised part is mostly in the user code section. We create the lexer in the constructor of the parser and store a reference to it for later use in the parser’s <code>int yylex()</code> method. This <code>yylex</code> in the parser only calls <code>int yylex()</code> of the generated lexer and passes the result on. If something goes wrong, it returns -1 to indicate an error.</p>
 <p>Runnable versions of the specifications above are located in the <code>examples/byaccj</code> directory of the JFlex distribution.</p>
@@ -1218,14 +1302,14 @@ exp:     NUM          { $$ = $1; }
 <p>The following shows a small example with Jay parser specification and corresponding JFlex code. First of all the Jay code (in a file <code>MiniParser.jay</code>):</p>
 <pre><code>%{
 //
-// Prefix Code like Package declaration,
+// Prefix Code like Package declaration, 
 // imports, variables and the parser class declaration
-//
+// 
 
 import java.io.*;
 import java.util.*;
 
-public class MiniParser
+public class MiniParser 
 {
 
 %}
@@ -1355,39 +1439,39 @@ ACMilano - Juventus 1:4</code></pre>
 <p>There is <strong>NO WARRANTY</strong> for JFlex, its code and its documentation.</p>
 <p>See the file <a href="COPYRIGHT"><code>COPYRIGHT</code></a> for more information.</p>
 <h1 class="unnumbered" id="references">References</h1>
-<div id="refs" class="references hanging-indent" role="doc-bibliography">
-<div id="ref-Aho_SU_86">
-<p>Aho, Alfred V., Ravi Sethi, and Jeffrey D. Ullman. 1986. <em>Compilers – Principles, Techniques, and Tools</em>. Addison-Wesley.</p>
+<div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-Aho_SU_86" class="csl-entry" role="doc-biblioentry">
+Aho, Alfred V., Ravi Sethi, and Jeffrey D. Ullman. 1986. <em>Compilers – Principles, Techniques, and Tools</em>. Addison-Wesley.
 </div>
-<div id="ref-Appel_98">
-<p>Appel, Andrew W. 1998. <em>Modern Compiler Implementation in Java: Basic Techniques</em>. Cambridge University Press.</p>
+<div id="ref-Appel_98" class="csl-entry" role="doc-biblioentry">
+Appel, Andrew W. 1998. <em>Modern Compiler Implementation in <span>Java</span>: Basic Techniques</em>. Cambridge University Press.
 </div>
-<div id="ref-JLex">
-<p>Berk, Elliot. 1996. “JLex: A Lexical Analyzer Generator for Java.” <a href="http://www.cs.princeton.edu/~appel/modern/java/JLex/">http://www.cs.princeton.edu/~appel/modern/java/JLex/</a>.</p>
+<div id="ref-JLex" class="csl-entry" role="doc-biblioentry">
+Berk, Elliot. 1996. <span>“<span>JLex</span>: A Lexical Analyzer Generator for <span>Java</span>.”</span> <a href="http://www.cs.princeton.edu/~appel/modern/java/JLex/">http://www.cs.princeton.edu/~appel/modern/java/JLex/</a>.
 </div>
-<div id="ref-unicode_rep">
-<p>Davis, Mark, and Andy Heninger. 2013. “Unicode Regular Expressions.” <a href="http://www.unicode.org/reports/tr18/tr18-17.html">http://www.unicode.org/reports/tr18/tr18-17.html</a>.</p>
+<div id="ref-unicode_rep" class="csl-entry" role="doc-biblioentry">
+Davis, Mark, and Andy Heninger. 2013. <span>“Unicode Regular Expressions.”</span> <a href="http://www.unicode.org/reports/tr18/tr18-17.html">http://www.unicode.org/reports/tr18/tr18-17.html</a>.
 </div>
-<div id="ref-LangSpec">
-<p>Gosling, James, Bill Joy, and Guy Steele. 1996. <em>The Java Language Specification</em>. Addison-Wesley. <a href="https://docs.oracle.com/javase/specs/">https://docs.oracle.com/javase/specs/</a>.</p>
+<div id="ref-LangSpec" class="csl-entry" role="doc-biblioentry">
+Gosling, James, Bill Joy, and Guy Steele. 1996. <em>The <span>Java</span> Language Specification</em>. Addison-Wesley. <a href="https://docs.oracle.com/javase/specs/">https://docs.oracle.com/javase/specs/</a>.
 </div>
-<div id="ref-CUP">
-<p>Hudson, Scott E. 1996. “CUP LALR Parser Generator for Java.” <a href="http://www2.cs.tum.edu/projects/cup/">http://www2.cs.tum.edu/projects/cup/</a>.</p>
+<div id="ref-CUP" class="csl-entry" role="doc-biblioentry">
+Hudson, Scott E. 1996. <span>“<span>CUP</span> <span>LALR</span> Parser Generator for <span>Java</span>.”</span> <a href="http://www2.cs.tum.edu/projects/cup/">http://www2.cs.tum.edu/projects/cup/</a>.
 </div>
-<div id="ref-BYaccJ">
-<p>Jamison, Bob. n.d. “BYacc/J.” <a href="http://byaccj.sourceforge.net">http://byaccj.sourceforge.net</a>.</p>
+<div id="ref-BYaccJ" class="csl-entry" role="doc-biblioentry">
+Jamison, Bob. n.d. <span>“<span>BYacc/J</span>.”</span> <a href="http://byaccj.sourceforge.net">http://byaccj.sourceforge.net</a>.
 </div>
-<div id="ref-flex">
-<p>Paxson, Vern. 1995. “Flex - the Fast Lexical Analyzer Generator.” <a href="http://flex.sourceforge.net">http://flex.sourceforge.net</a>.</p>
+<div id="ref-flex" class="csl-entry" role="doc-biblioentry">
+Paxson, Vern. 1995. <span>“Flex - the Fast Lexical Analyzer Generator.”</span> <a href="http://flex.sourceforge.net">http://flex.sourceforge.net</a>.
 </div>
-<div id="ref-CUP2">
-<p>Petter, Michael. 2008. “CUP2 User Manual.” <a href="http://www2.in.tum.de/cup2">http://www2.in.tum.de/cup2</a>.</p>
+<div id="ref-CUP2" class="csl-entry" role="doc-biblioentry">
+Petter, Michael. 2008. <span>“<span>Cup2</span> User Manual.”</span> <a href="http://www2.in.tum.de/cup2">http://www2.in.tum.de/cup2</a>.
 </div>
-<div id="ref-Jay">
-<p>Schreiner, Axel T. 2006. “Jay Parser Generator.” <a href="http://www.cs.rit.edu/~ats/projects/lp/doc/jay/package-summary.html">http://www.cs.rit.edu/~ats/projects/lp/doc/jay/package-summary.html</a>.</p>
+<div id="ref-Jay" class="csl-entry" role="doc-biblioentry">
+Schreiner, Axel T. 2006. <span>“Jay Parser Generator.”</span> <a href="http://www.cs.rit.edu/~ats/projects/lp/doc/jay/package-summary.html">http://www.cs.rit.edu/~ats/projects/lp/doc/jay/package-summary.html</a>.
 </div>
-<div id="ref-UnicodeSet">
-<p>“Unicode Utilities: UnicodeSet.” 2015. <a href="http://unicode.org/cldr/utility/list-unicodeset.jsp">http://unicode.org/cldr/utility/list-unicodeset.jsp</a>.</p>
+<div id="ref-UnicodeSet" class="csl-entry" role="doc-biblioentry">
+<span>“Unicode Utilities: <span>UnicodeSet</span>.”</span> 2015. <a href="http://unicode.org/cldr/utility/list-unicodeset.jsp">http://unicode.org/cldr/utility/list-unicodeset.jsp</a>.
 </div>
 </div>
 <section class="footnotes" role="doc-endnotes">
