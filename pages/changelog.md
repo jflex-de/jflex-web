@@ -1,3 +1,35 @@
+## [JFlex 1.9.0](https://github.com/jflex-de/jflex/milestone/17?closed=1) (Feb 5, 2023)
+
+### New features
+
+- slight performance improvements in the scanning engine
+- add optional token limit size (#1045, #197)
+- warn for unicode escapes that are too long (#1042)
+- directives and command line switches for enabling/disabling JFlex warnings (#1020)
+- allow custom annotations such as `@SuppressWarnings` (#1027, #762)
+- increase maximum supported DFA size to about 2^32 states (#1003, #952)
+- better error reporting for character classes (#996, #888, #939)
+- allow comments after `%yylexthrow` (#794)
+- make maven build reproducible (#765)
+
+### Fixed bugs
+
+- make character classes more robust (#985, #974, #986)
+- fix NullPointerException when generating dot files (#769)
+
+### Other
+
+- update dependencies
+- more and better property-based tests (#953)
+- use SPDX license identifiers
+- avoid use of `createTempDir()` (was used in tests only)
+- migrate CI to GitHub actions
+- migrate most tests to bazel
+- improve test suite to work on non-US locales
+- fix example file name for minijava example
+- improved simple.flex example
+
+
 ## [JFlex 1.8.2](https://github.com/jflex-de/jflex/milestone/19) (May 3, 2020)
 
 - fix bug that prevented `%7bit` scanners from being generated (#756)

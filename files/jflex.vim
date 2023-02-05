@@ -2,6 +2,9 @@
 " Language:         JFlex
 " Maintainer:       Gerwin Klein <lsf@jflex.de>
 
+" Copyright 2015, Gerwin Klein
+" SPDX-License-Identifier: BSD-3-Clause
+
 " Thanks to Michael Brailsford for help and suggestions
 
 " Quit when a syntax file was already loaded	{{{
@@ -13,7 +16,7 @@ endif
 " Include java syntax {{{
 if version >= 600
 	runtime! syntax/java.vim
-	unlet b:current_syntax 
+	unlet b:current_syntax
 else
 	so $VIMRUNTIME/syntax/java.vim
 endif
@@ -25,8 +28,8 @@ syn cluster jflexRules contains=jflexRule,jflexComment,jflexActionCode,jflexRule
 " java code section
 syn region jflexStart start="/\*\|//\|import\|package\|class"me=s end="^%%"me=e-2 contains=@javaTop nextgroup=jflexOptionReg
 
-" %% 
-" options 
+" %%
+" options
 syn region jflexOptionReg matchgroup=jflexSectionSep start="^%%" end="^%%"me=e-2 contains=@jflexOptions nextgroup=jflexRulesReg
 
 syn match jflexOptionError "%\i*" contained
@@ -75,6 +78,11 @@ syn match jflexOption "^%eofthrow" contained
 syn match jflexOption "^%yylexthrow" contained
 syn match jflexOption "^%throws" contained
 syn match jflexOption "^%scannerror" contained
+syn match jflexOption "^%warn" contained
+syn match jflexOption "^%no-warn" contained
+syn match jflexOption "^%suppress" contained
+syn match jflexOption "^%no_suppress_warnings" contained
+syn match jflexOption "^%token_size_limit" contained
 
 syn match jflexMacroIdent "\I\i*\s*="me=e-1 contained nextgroup=jflexMacroRegExp
 
@@ -89,7 +97,7 @@ syn region jflexCodeInclude matchgroup=jflexCodeIncludeMark start="^%yylexthrow{
 syn region jflexCodeInclude matchgroup=jflexCodeIncludeMark start="^%eofval{" end="^%eofval}" contains=@javaTop contained
 
 " rules (end pattern shouldn't occur, if it does anyway we just stay in jflexRulesReg)
-syn region jflexRulesReg matchgroup=jflexSectionSep start="^%%" end="^%%"me=e-2 contains=@jflexRules 
+syn region jflexRulesReg matchgroup=jflexSectionSep start="^%%" end="^%%"me=e-2 contains=@jflexRules
 
 " at first everything but strings is a regexp
 syn match jflexRegExp "\([^\" \t]\|\\\"\)\+" contained

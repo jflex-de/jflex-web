@@ -42,12 +42,20 @@
 <header id="title-block-header">
 <h1 class="title">JFlex User’s Manual</h1>
 </header>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <center>
 <p><img src="fig/jflex-black.png" /></p>
 <p>The Fast Lexical Analyser Generator</p>
 <p>Copyright © 1998–2020 by <a href="http://www.doclsf.de/">Gerwin Klein</a>, Steve Rowe, and <a href="http://regis.decamps.info/">Régis Décamps</a>.</p>
-Version 1.8.2, 28 February 2020
+Version 1.9.0, 5 February 2023
 </center>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="table-of-contents">Table of Contents</h1>
 <ul>
 <li><a href="#Intro">Introduction</a>
@@ -108,6 +116,10 @@ Version 1.8.2, 28 February 2020
 <li><a href="#Copyright">Copying and License</a></li>
 <li><a href="#references">References</a></li>
 </ul>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="Intro">Introduction</h1>
 <p>JFlex is a lexical analyser generator for Java written in Java. It is also a rewrite of the tool JLex <span class="citation" data-cites="JLex">(Berk 1996)</span> which was developed by Elliot Berk at Princeton University. As Vern Paxson states for his C/C++ tool flex <span class="citation" data-cites="flex">(Paxson 1995)</span>: they do not share any code though.</p>
 <p>A lexical analyser generator takes as input a specification with a set of regular expressions and corresponding actions. It generates a program (a <em>lexer</em>) that reads input, matches the input against the regular expressions in the spec file, and runs the corresponding action if a regular expression matched. Lexers usually are the first front-end step in compilers, matching keywords, comments, operators, etc, and generating an input token stream for parsers. They can also be used for many other purposes.</p>
@@ -124,6 +136,10 @@ Version 1.8.2, 28 February 2020
 <h2 id="about-this-manual">About this manual</h2>
 <p>This manual gives a brief but complete description of the tool JFlex. It assumes that you are familiar with the topic of lexical analysis in parsing. The references <span class="citation" data-cites="Aho_SU_86">Aho, Sethi, and Ullman (1986)</span> and <span class="citation" data-cites="Appel_98">Appel (1998)</span> provide a good introduction.</p>
 <p>The next section of this manual describes <a href="#Installing">installation procedures</a> for JFlex. <a href="#Example">Working with JFlex - an example</a> runs through an example specification and explains how it works. The section on <a href="#Specifications">Lexical specifications</a> presents all JFlex options and the complete specification syntax; <a href="#sec:encodings">Encodings, Platforms, and Unicode</a> provides information about Unicode and scanning text vs. binary files. <a href="#performance">A few words on performance</a> gives tips on how to write fast scanners. The section on <a href="#Porting">porting scanners</a> shows how to port scanners from JLex, and from the <code>lex</code> and <code>flex</code> tools for C. Finally, <a href="#WorkingTog">working together</a> discusses interfacing JFlex scanners with the LALR parser generators CUP, CUP2, BYacc/J, Jay.</p>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="Installing">Installing and Running JFlex</h1>
 <h2 id="installing-jflex">Installing JFlex</h2>
 <h3 id="windows">Windows</h3>
@@ -131,61 +147,58 @@ Version 1.8.2, 28 February 2020
 <ol type="1">
 <li>Unzip the file you downloaded into the directory you want JFlex in. If you unzipped it to say <code>C:\</code>, the following directory structure should be generated:</li>
 </ol>
-<pre><code>    C:\jflex-1.8.2\
-        +--bin\                        (start scripts)
-        +--doc\                        (FAQ and manual)
+<pre><code>    C:\jflex-1.9.0\
+        +--bin\                      (start scripts)
+        +--doc\                      (manual)
         +--examples\
-            +--byaccj\                 (calculator example for BYacc/J)
-            +--cup-maven\              (calculator example for cup and maven)
-            +--interpreter\            (interpreter example for cup)
-            +--java\                   (Java lexer specification)
-            +--simple\                 (example scanner with no parser)
-            +--standalone-maven\       (a simple standalone scanner,
-                                        built with maven)
-            +--zero-reader\            (Readers that return 0 characters)
-        +--lib\                        (precompiled classes)
+            +--byaccj\               (calculator example for BYacc/J)
+            +--common\               (shared Makefile and ant build files)
+            +--cup-interpreter\      (interpreter example for cup)
+            +--cup-java\             (Java lexer specification for use with cup)
+            +--cup-java-minijava\    (example scanner from the manual)
+            +--cup-lcalc\            (calculator example for cup and maven)
+            +--simple\               (example scanner with no parser)
+            +--standalone\           (a simple standalone scanner)
+            +--zero-reader\          (Readers that return 0 characters)
+        +--lib\                      (precompiled classes)
         +--src\
             +--main\
-                +--config\             (PMD source analyzer configuration)
-                +--cup\                (JFlex parser spec)
-                +--java\
-                    +--jflex\          (source code of JFlex)
-                        +--anttask\    (source code of JFlex Ant Task)
-                        +--gui\        (source code of JFlex UI classes)
-                        +--unicode\    (source code for Unicode properties)
-                +--jflex\              (JFlex scanner spec)
-                +--resources\          (messages and default skeleton file)
-            +--test\                   (unit tests)</code></pre>
+                +--config\           (PMD source analyzer configuration)
+                +--cup\              (JFlex parser spec)
+                +--java\jflex\       (source code of JFlex)
+                +--jflex\            (JFlex scanner spec)
+                +--resources\        (messages and default skeleton file)
+            +--test\                 (unit tests)</code></pre>
 <ol start="2" type="1">
-<li><p>Edit the file <strong><code>bin\jflex.bat</code></strong> (in the example it’s <code>C:\jflex-1.8.2\bin\jflex.bat</code>) such that</p>
+<li><p>Edit the file <strong><code>bin\jflex.bat</code></strong> (in the example it’s <code>C:\jflex-1.9.0\bin\jflex.bat</code>) such that</p>
 <ul>
 <li><p><strong><code>JAVA_HOME</code></strong> contains the directory where your Java JDK is installed (for instance <code>C:\java</code>) and</p></li>
-<li><p><strong><code>JFLEX_HOME</code></strong> the directory that contains JFlex (in the example: <code>C:\jflex-1.8.2</code>)</p></li>
+<li><p><strong><code>JFLEX_HOME</code></strong> the directory that contains JFlex (in the example: <code>C:\jflex-1.9.0</code>)</p></li>
 </ul></li>
-<li><p>Include the <code>bin\</code> directory of JFlex in your path. (the one that contains the start script, in the example: <code>C:\jflex-1.8.2\bin</code>).</p></li>
+<li><p>Include the <code>bin\</code> directory of JFlex in your path. (the one that contains the start script, in the example: <code>C:\jflex-1.9.0\bin</code>).</p></li>
 </ol>
 <h3 id="macunix-with-tar">Mac/Unix with tar</h3>
 <p>To install JFlex on a Mac or Unix system, follow these two steps:</p>
 <ul>
 <li><p>Decompress the archive into a directory of your choice with GNU tar, for instance to <code>/usr/share</code>:</p>
-<p><code>tar -C /usr/share -xvzf jflex-1.8.2.tar.gz</code></p>
+<p><code>tar -C /usr/share -xvzf jflex-1.9.0.tar.gz</code></p>
 <p>(The example is for site wide installation. You need to be root for that. User installation works exactly the same way — just choose a directory where you have write permission)</p></li>
 <li><p>Make a symbolic link from somewhere in your binary path to <code>bin/jflex</code>, for instance:</p>
-<p><code>ln -s /usr/share/jflex-1.8.2/bin/jflex /usr/bin/jflex</code></p>
+<p><code>ln -s /usr/share/jflex-1.9.0/bin/jflex /usr/bin/jflex</code></p>
 <p>If the Java interpreter is not in your binary path, you need to supply its location in the script <code>bin/jflex</code>.</p></li>
 </ul>
 <p>You can verify the integrity of the downloaded file with the SHA1 checksum available on the <a href="http://jflex.de/download.html">JFlex download page</a>. If you put the checksum file in the same directory as the archive, and run:</p>
-<p><code>shasum --check jflex-1.8.2.tar.gz.sha1</code></p>
+<p><code>shasum --check jflex-1.9.0.tar.gz.sha1</code></p>
 <p>it should tell you</p>
-<p><code>jflex-1.8.2.tar.gz: OK</code></p>
+<p><code>jflex-1.9.0.tar.gz: OK</code></p>
 <h2 id="running-jflex">Running JFlex</h2>
 <p>You run JFlex with:</p>
 <p><code>jflex &lt;options&gt; &lt;inputfiles&gt;</code></p>
-<p>It is also possible to skip the start script in <code>bin/</code> and include the file <code>lib/jflex-1.8.2.jar</code> in your <code>CLASSPATH</code> environment variable instead.</p>
+<p>It is also possible to skip the start script in <code>bin/</code> and include the file <code>lib/jflex-1.9.0.jar</code> in your <code>CLASSPATH</code> environment variable instead.</p>
 <p>Then you run JFlex with:</p>
 <p><code>java jflex.Main &lt;options&gt; &lt;inputfiles&gt;</code></p>
 <p>or with:</p>
-<p><code>java -jar jflex-1.8.2.jar &lt;options&gt; &lt;inputfiles&gt;</code></p>
+<p><code>java -jar jflex-1.9.0.jar &lt;options&gt; &lt;inputfiles&gt;</code></p>
 <p>The input files and options are in both cases optional. If you don’t provide a file name on the command line, JFlex will pop up a window to ask you for one.</p>
 <p>JFlex knows about the following options:</p>
 <p><code>-d &lt;directory&gt;</code><br />
@@ -209,10 +222,10 @@ dot (<code>.</code>) meta character matches <code>[^\n]</code> instead of<br />
 display generation progress messages (enabled by default)</p>
 <p><code>--quiet</code> or <code>-q</code><br />
 display error messages only (no chatter about what JFlex is currently doing)</p>
-<p><code>--warn-unused</code><br />
-warn about unused macros (by default true in verbose mode and false in quiet mode)</p>
-<p><code>--no-warn-unused</code><br />
-do not warn about unused macros (by default true in verbose mode and false in quiet mode)</p>
+<p><code>--warn-&lt;warning&gt;</code><br />
+switch on warning type <code>&lt;warning&gt;</code>, where <code>&lt;warning&gt;</code> is one of <code>unused</code>, <code>never-match</code>, <code>empty-match</code>, <code>cupsym-after-cup</code>, <code>unicode-too-long</code>, <code>all</code>.</p>
+<p><code>--no-warn-&lt;warning&gt;</code><br />
+suppress warnings of type <code>&lt;warning&gt;</code>, where <code>&lt;warning&gt;</code> is one of <code>unused</code>, <code>never-match</code>, <code>empty-match</code>, <code>cupsym-after-cup</code>, <code>unicode-too-long</code>, <code>all</code>.</p>
 <p><code>--time</code><br />
 display time statistics about the code generation process (not very accurate)</p>
 <p><code>--version</code><br />
@@ -223,7 +236,11 @@ print system and JDK information (useful if you’d like to report a problem)</p
 print all supported properties for Unicode version <code>&lt;ver&gt;</code></p>
 <p><code>--help</code> or <code>-h</code><br />
 print a help message explaining options and usage of JFlex.</p>
-<h2 id="maven-plugin">Maven plugin</h2>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+<h2 id="jflex-maven-plugin">JFlex Maven plugin</h2>
 <p>The plugin reads JFlex grammar specification files (<code>.jflex</code>) and generates a corresponding Java parser (in <code>target/generated-source/jflex</code> by default).</p>
 <h3 id="usage">Usage</h3>
 <h4 id="minimal-configuration">Minimal configuration</h4>
@@ -237,7 +254,7 @@ print a help message explaining options and usage of JFlex.</p>
       &lt;plugin&gt;
         &lt;groupId&gt;de.jflex&lt;/groupId&gt;
         &lt;artifactId&gt;jflex-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.8.2&lt;/version&gt;
+        &lt;version&gt;1.9.0&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;goals&gt;
@@ -256,7 +273,7 @@ print a help message explaining options and usage of JFlex.</p>
 <pre><code>      &lt;plugin&gt;
         &lt;groupId&gt;de.jflex&lt;/groupId&gt;
         &lt;artifactId&gt;jflex-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.8.2&lt;/version&gt;
+        &lt;version&gt;1.9.0&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;goals&gt;
@@ -282,7 +299,7 @@ print a help message explaining options and usage of JFlex.</p>
 <pre><code>      &lt;plugin&gt;
         &lt;groupId&gt;de.jflex&lt;/groupId&gt;
         &lt;artifactId&gt;jflex-maven-plugin&lt;/artifactId&gt;
-        &lt;version&gt;1.8.2&lt;/version&gt;
+        &lt;version&gt;1.9.0&lt;/version&gt;
         &lt;executions&gt;
           &lt;execution&gt;
             &lt;id&gt;strict jlex&lt;/id&gt;
@@ -315,8 +332,12 @@ print a help message explaining options and usage of JFlex.</p>
 <li><a href="https://jflex-de.github.io/jflex-web/jflex-maven-plugin/generate-mojo.html">jflex:generate</a> for more information about the configuration options of the jflex-maven-plugin.</li>
 <li><a href="http://maven.apache.org/pom.html#Plugins">POM reference guide on plugins</a> for more information about using plugins in a project.</li>
 </ul>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h2 id="jflex-ant-task">JFlex Ant Task</h2>
-<p>JFlex can easily be integrated with the <a href="http://ant.apache.org/">Ant</a> build tool. To use JFlex with Ant, simply copy the <code>lib/jflex-1.8.2.jar</code> file to the <code>$ANT_HOME/lib/</code> directory or explicitly set the path to <code>lib/jflex-1.8.2.jar</code> in the task definition (see example below).</p>
+<p>JFlex can easily be integrated with the <a href="http://ant.apache.org/">Ant</a> build tool. To use JFlex with Ant, simply copy the <code>lib/jflex-1.9.0.jar</code> file to the <code>$ANT_HOME/lib/</code> directory or explicitly set the path to <code>lib/jflex-1.9.0.jar</code> in the task definition (see example below).</p>
 <p>The JFlex Ant Task invokes JFlex on a grammar file.</p>
 <p>To use the JFlex task, place the following line in the Ant build file:</p>
 <pre><code>&lt;taskdef classname=&quot;jflex.anttask.JFlexTask&quot; name=&quot;jflex&quot; /&gt;</code></pre>
@@ -373,11 +394,15 @@ Warn about unused macro definitions in the lexer specification.</p></li>
      destdir=&quot;build/classes/&quot;
  /&gt;</code></pre>
 <p>The same as above plus compile generated classes to <code>build/classes</code></p>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="Example">A simple Example: How to work with JFlex</h1>
 <p>To demonstrate how a lexical specification with JFlex looks like, this section presents a part of the specification for the Java language.</p>
 <p>The example does not describe the whole lexical structure of Java programs, but only a small and simplified part of it: - some keywords, - some operators, - comments - and only two kinds of literals.</p>
 <p>It also shows how to interface with the LALR parser generator CUP <span class="citation" data-cites="CUP">(Hudson 1996)</span> and therefore uses a class <code>sym</code> (generated by CUP), where integer constants for the terminal tokens of the CUP grammar are declared.</p>
-<p>You can find this example in <code>examples/cup-java-simplified</code>.</p>
+<p>You can find this example in <code>examples/cup-java-minijava</code>.</p>
 <p>The <code>examples/cup-java</code> directory also contains a <em>complete</em> JFlex specification of the lexical structure of Java programs together with the CUP parser specification for Java by C. Scott Ananian, obtained from the CUP <span class="citation" data-cites="CUP">(Hudson 1996)</span> web site (modified to interface with the JFlex scanner). Both specifications adhere to the Java Language Specification <span class="citation" data-cites="LangSpec">(Gosling, Joy, and Steele 1996)</span>.</p>
 <p>In <code>examples/standalone</code>, you can find a small standalone scanner that doesn’t need other dependencies or tools like CUP to give you working code.</p>
 <pre><code>    /* JFlex example: partial Java language lexer specification */
@@ -480,7 +505,7 @@ Warn about unused macro definitions in the lexer specification.</p></li>
 <p>The second section <em>options and declarations</em> is more interesting. It consists of a set of options, code that is included inside the generated scanner class, lexical states and macro declarations. Each JFlex option must begin a line of the specification and starts with a <code>%</code>. In our example the following options are used:</p>
 <ul>
 <li><p><code>%class Lexer</code> tells JFlex to give the generated class the name <code>Lexer</code> and to write the code to a file <code>Lexer.java</code>.</p></li>
-<li><p><code>%unicode</code> defines the set of characters the scanner will work on. For scanning text files, <code>%unicode</code> should always be used. The Unicode version may be specified, e.g. <code>%unicode 4.1</code>. If no version is specified, the most recent supported Unicode version will be used - in JFlex 1.8.2, this is Unicode 12.1. See also <a href="#sec:encodings">Encodings</a> for more information on character sets, encodings, and scanning text vs. binary files.</p></li>
+<li><p><code>%unicode</code> defines the set of characters the scanner will work on. For scanning text files, <code>%unicode</code> should always be used. The Unicode version may be specified, e.g. <code>%unicode 4.1</code>. If no version is specified, the most recent supported Unicode version will be used - in JFlex 1.9.0, this is Unicode 12.1. See also <a href="#sec:encodings">Encodings</a> for more information on character sets, encodings, and scanning text vs. binary files.</p></li>
 <li><p><code>%cup</code> switches to CUP compatibility mode to interface with a CUP generated parser.</p></li>
 <li><p><code>%line</code> switches line counting on (the current line number can be accessed via the variable <code>yyline</code>)</p></li>
 <li><p><code>%column</code> switches column counting on (the current column is accessed via <code>yycolumn</code>)</p></li>
@@ -528,6 +553,10 @@ Warn about unused macro definitions in the lexer specification.</p></li>
 <li><p>Compile the generated <code>.java</code> file and your own classes. (If you use CUP, generate your parser classes first)</p></li>
 <li><p>That’s it.</p></li>
 </ul>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="Specifications">Lexical Specifications</h1>
 <p>As shown above, a lexical specification file for JFlex consists of three parts divided by a single line starting with <code>%%</code>:</p>
 <pre><code>UserCode
@@ -558,6 +587,8 @@ Lexical rules</code></pre>
 <p>Makes the generated class final.</p></li>
 <li><p><code>%abstract</code></p>
 <p>Makes the generated class abstract.</p></li>
+<li><p><code>%no_suppress_warnings</code></p>
+<p>Do not generate any <code>@SuppressWarnings(...)</code> annotation for the generated class. This means, you can add your own <code>@SuppressWarnings(...)</code> annotation in the preamble without getting a compiler error on duplicate annotations.</p></li>
 <li><p><code>%apiprivate</code></p>
 <p>Makes all generated methods and fields of the class private. Exceptions are the constructor, user code in the specification, and, if <code>%cup</code> is present, the method <code>next_token</code>. All occurrences of <code>public</code> (one space character before and after <code>public</code>) in the skeleton file are replaced by <code>private</code> (even if a user-specified skeleton is used). Access to the generated class is expected to be mediated by user class code (see next switch).</p></li>
 <li><p><code>%{</code><br />
@@ -579,7 +610,11 @@ Lexical rules</code></pre>
 <li><p><code>%scanerror "exception"</code></p>
 <p>Causes the generated scanner to throw an instance of the specified exception in case of an internal error (default is <code>java.lang.Error</code>). Note that this exception is only for internal scanner errors. With usual specifications it should never occur (i.e. if there is an error fallback rule in the specification and only the documented scanner API is used).</p></li>
 <li><p><code>%buffer "size"</code></p>
-<p>Set the initial size of the scan buffer to the specified value (decimal, in bytes). The default value is 16384.</p></li>
+<p>Set the initial size of the scan buffer to the specified value (decimal, in bytes). The default value is 16384. The buffer will be set to the minimum of <code>%token_size_limit</code> (if provided) and <code>%buffer</code> size.</p></li>
+<li><p><code>%token_size_limit "size"</code></p>
+<p>Set the maximum size of the scan buffer to the specified size provided as a Java numeral (decimal, octal, or hex) or as a qualified identifier. If provided as identifier, the identifier can refer to a static constant or a field which can be modified at runtime in user class code. Setting <code>%token_size_limit ZZ_BUFFERSIZE</code> will limit the scan buffer to its initial size.</p>
+<p>Limiting the token size introduces an error case: when the scanner encounters a token that does not fit into the maximum buffer size, it will throw a <code>java.io.EOFException</code>. Tokens smaller than the maximum buffer size are guaranteed to match. Not that the longest-match rule applies, that is <code>a*</code> will lead to an <code>EOFException</code> on input that contains a too-long <code>a</code> sequence, even if the smaller match could be possible.</p>
+<p>The limit is inteded to be used for applications that require a memory limit on parsing untrusted input.</p></li>
 <li><p><code>%include "filename"</code></p>
 <p>Replaces the <code>%include</code> verbatim by the specified file.</p></li>
 </ul>
@@ -703,6 +738,24 @@ Lexical rules</code></pre>
 <p>Turns line counting on. The <code>int</code> member variable <code>yyline</code> contains the number of lines (starting with 0) from the beginning of input to the beginning of the current token.</p></li>
 <li><p><code>%column</code></p>
 <p>Turns column counting on. The <code>int</code> member variable <code>yycolumn</code> contains the number of characters (starting with 0) from the beginning of the current line to the beginning of the current token.</p></li>
+</ul>
+<h3 id="warnings">Warnings</h3>
+<h4 id="warning-directives">Warning directives</h4>
+<ul>
+<li><p><code>%warn &lt;warning&gt;</code></p>
+<p>switch on warning type <code>&lt;warning&gt;</code>. See below for a list of available <a href="#WarningTypes">warning types</a>.</p></li>
+<li><p><code>%suppress &lt;warning&gt;</code><br />
+<code>%no-warn &lt;warning&gt;</code></p>
+<p>suppress warnings of type <code>&lt;warning&gt;</code>. See below for a list of available <a href="#WarningTypes">warning types</a>.</p></li>
+</ul>
+<h4 id="WarningTypes">Warning Types</h4>
+<ul>
+<li><code>unused</code>: warn for macros that are declared, but not used</li>
+<li><code>never-match</code>: warn for rules that can never be matched</li>
+<li><code>empty-match</code>: warn for rules that can match the empty string</li>
+<li><code>cupsym-after-cup</code>: warn for re-declaring the <code>cup</code> symbol even though <code>%cup</code> is present</li>
+<li><code>unicode-too-long</code>: warn for unicode escape sequences that have too many digits</li>
+<li><code>all</code>: switch on/off all warnings</li>
 </ul>
 <h3 id="obsolete-jlex-options">Obsolete JLex options</h3>
 <ul>
@@ -939,6 +992,10 @@ expr1                   { yybegin(A); action }
 <p>The first line declares two (inclusive) lexical states <code>A</code> and <code>B</code>, the second line an exclusive lexical state <code>C</code>. The default (inclusive) state <code>YYINITIAL</code> is always implicitly there and doesn’t need to be declared. The rule with <code>expr1</code> has no states listed, and is thus matched in all states but the exclusive ones, i.e. <code>A</code>, <code>B</code>, and <code>YYINITIAL</code>. In its action, the scanner is switched to state <code>A</code>. The second rule <code>expr2</code> can only match when the scanner is in state <code>YYINITIAL</code> or <code>A</code>. The rule <code>expr3</code> can only be matched in state <code>A</code> and <code>expr4</code> in states <code>A</code>, <code>B</code>, and <code>C</code>.</p></li>
 <li><p>Lexical states are declared and used as Java <code>int</code> constants in the generated class under the same name as they are used in the specification. There is no guarantee that the values of these integer constants are distinct. They are pointers into the generated DFA table, and if JFlex recognises two states as lexically equivalent (if they are used with the exact same set of regular expressions), then the two constants will get the same value.</p></li>
 </ul>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="GeneratedJavaCode">The generated class</h1>
 <p>JFlex generates exactly one file containing one class from the specification (unless you have declared another class in the first specification section).</p>
 <p>The generated class contains (among other things) the DFA tables, an input buffer, the lexical states of the specification, a constructor, and the scanning method with the user supplied actions.</p>
@@ -996,6 +1053,10 @@ expr1                   { yybegin(A); action }
 <li><p><code>int yycolumn</code></p>
 <p>contains the current column of the current line (starting with 0, only active with the <code>columnCounting</code> directive)</p></li>
 </ul>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="sec:encodings">Encodings, Platforms, and Unicode</h1>
 <p>This section discusses Unicode and encodings, cross platform scanning, and how to deal with binary data.</p>
 <h2 id="the-problem">The Problem</h2>
@@ -1017,7 +1078,7 @@ expr1                   { yybegin(A); action }
 <p>Scanning binaries is both easier and more difficult than scanning text files. It’s easier because you want the raw bytes and not their meaning, i.e. you don’t want any translation. It’s more difficult because it’s not so easy to get “no translation” when you use Java readers.</p>
 <p>The problem (for binaries) is that JFlex scanners are designed to work on text. Therefore the interface is the <code>Reader</code> class. You can still get a binary scanner when you write your own custom <code>InputStreamReader</code> class that explicitly does no translation, but just copies byte values to character codes instead. It sounds quite easy, and actually it is no big deal, but there are a few pitfalls on the way. In the scanner specification you can only enter positive character codes (for bytes that is <code>\x00</code> to <code>\xFF</code>). Java’s <code>byte</code> type on the other hand is a signed 8 bit integer (-128 to 127), so you have to convert them accordingly in your custom <code>Reader</code>. Also, you should take care when you write your lexer spec: if you use text in there, it gets interpreted by an encoding first, and what scanner you get as result might depend on which platform you run JFlex on when you generate the scanner (this is what you want for text, but for binaries it gets in the way). If you are not sure, or if the development platform might change, it’s probably best to use character code escapes in all places, since they don’t change their meaning.</p>
 <h2 id="unicoderegexconformance">Conformance with Unicode Regular Expressions UTS#18</h2>
-<p>This section gives details about JFlex 1.8.2’s conformance with the requirements for Basic Unicode Support Level 1 given in UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span>.</p>
+<p>This section gives details about JFlex 1.9.0’s conformance with the requirements for Basic Unicode Support Level 1 given in UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span>.</p>
 <h3 id="rl1.1-hex-notation">RL1.1 Hex Notation</h3>
 <blockquote>
 <p><em>To meet this requirement, an implementation shall supply a mechanism for specifying any Unicode code point (from U+0000 to U+10FFFF), using the hexadecimal code point representation.</em></p>
@@ -1064,6 +1125,10 @@ expr1                   { yybegin(A); action }
 <p><em>To meet this requirement, an implementation shall handle the full range of Unicode code points, including values from U+FFFF to U+10FFFF. In particular, where UTF-16 is used, a sequence consisting of a leading surrogate followed by a trailing surrogate shall be handled as a single code point in matching.</em></p>
 </blockquote>
 <p>JFlex conforms.</p>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="performance">A few words on performance</h1>
 <p>This section gives tips on how to make your specification produce a faster scanner.</p>
 <p>In general, the regular expression matching generated by JFlex has very good performance. It is DFA-based (deterministic finite automata) and does not require backtracking over alternative as for instance perl-style regular expression matching does. In the optimal case, each character is only examined once, in some situations explained below, a small amount of backtracking is necessary to determine the longest match.</p>
@@ -1098,6 +1163,10 @@ expr1                   { yybegin(A); action }
 <li><strong>(for experts only) don’t do it yet</strong></li>
 </ol>
 <p>Some of the performance tips above contradict a readable and compact specification style. When in doubt or when requirements are not or not yet fixed: don’t use them — the specification can always be optimised in a later state of the development process.</p>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="Porting">Porting Issues</h1>
 <h2 id="porting-from-jlex">Porting from JLex</h2>
 <p>JFlex was designed to read old JLex specifications unchanged and to generate a scanner which behaves exactly the same as the one generated by JLex with the only difference of being faster.</p>
@@ -1428,11 +1497,15 @@ colon =  &quot;:&quot;
 <p>This small example reads an input like</p>
 <pre><code>Borussia - Schalke 3:2
 ACMilano - Juventus 1:4</code></pre>
+<!--
+  Copyright 2023, Gerwin Klein, Régis Décamps, Steve Rowe
+  SPDX-License-Identifier: CC-BY-SA-4.0
+-->
 <h1 id="Bugs">Bugs and Deficiencies</h1>
 <h2 id="deficiencies">Deficiencies</h2>
-<p>JFlex 1.8.2 conforms with Unicode Regular Expressions UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span> Basic Unicode Support Level 1, with a few exceptions - for details see <a href="#unicoderegexconformance">UTS # 18 Conformance</a>.</p>
+<p>JFlex 1.9.0 conforms with Unicode Regular Expressions UTS#18 <span class="citation" data-cites="unicode_rep">(Davis and Heninger 2013)</span> Basic Unicode Support Level 1, with a few exceptions - for details see <a href="#unicoderegexconformance">UTS # 18 Conformance</a>.</p>
 <h2 id="bugs">Bugs</h2>
-<p>As of 28 February 2020, no major open problems are known for JFlex version 1.8.2.</p>
+<p>As of 5 February 2023, no major open problems are known for JFlex version 1.9.0.</p>
 <p>Please use the JFlex <a href="https://github.com/jflex-de/jflex/labels/bug">github issue tracker</a> for any problems that have been reported since then.</p>
 <h1 id="Copyright">Copying and License</h1>
 <p>JFlex is free software, published under a BSD-style license.</p>
