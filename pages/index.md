@@ -9,9 +9,9 @@ subtitle: The Fast Scanner Generator for Java
 
 # JFlex
 
-The current stable version is [JFlex 1.9.0][9] released on Feb 5, 2023
+The current stable version is [JFlex 1.9.1][1] released on Mar 11, 2023
 
-The current maven jflex plugin is [version 1.9.0][9].
+The current maven jflex plugin is [version 1.9.1][1].
 
 See the [changelog](changelog.html).
 </div></div></div>
@@ -46,6 +46,8 @@ It can also be used together with other parser generators like
 
 ## News
 
+**2023-03-11:** [JFlex 1.9.1 released](changelog.html#jflex-1.9.1).
+
 **2023-02-05:** [JFlex 1.9.0 released](changelog.html#jflex-1.9.0).
 
 **2020-05-03:** [JFlex 1.8.2 released](changelog.html#jflex-1.8.2).
@@ -53,28 +55,6 @@ It can also be used together with other parser generators like
 **2020-02-28:** [JFlex 1.8.1 released](changelog.html#jflex-1.8.1).
 
 **2020-02-26:** [JFlex 1.8.0 released](changelog.html#jflex-1.8.0).
-
-**2018-10-10:** Initial release of a [rule for the Bazel build system](https://jflex-de.github.io/bazel_rules/).
-
-**2018-09-21:** [JFlex 1.7.0 released](changelog.html#jflex-1.7.0).
-
-**2015-04-06:** New website design. Enjoy!
-
-**2015-03-16:** [JFlex 1.6.1 released](changelog.html#jflex-1.6.1).
-
-**2015-02-28:** JFlex [code repository][1] and [issue tracker][2] have moved to [github][0]!
-
-**2014-06-20:** [JFlex 1.6 released](changelog.html#jflex-1.6.0).
-
-**2014-03-21:** [JFlex 1.5.1 released](changelog.html#jflex-1.5.1).
-
-**2014-01-21:** It's been a long time coming: [JFlex 1.5 released](changelog.html#jflex-1.5.0)!
-
-**2009-01-31:** [JFlex 1.4.3 released](jflex-1.4.3).
-
-**2007-10-29:** A new [JFlex Maven plugin][3] allows to generate the
-   lexer during the `generate-sources` phase of
-   [Maven](http://maven.apache.org/).
 
 ----------------------------
 
@@ -105,8 +85,4 @@ JFLex is released under a permissive open-source BSD-style license and available
 
 JFlex supports JDK 1.8 or above.
 
-[0]: https://github.com/jflex-de/
-[1]: https://github.com/jflex-de/jflex/
-[2]: https://github.com/jflex-de/jflex/issues/
-[3]: http://jflex-de.github.io/jflex-web/jflex-maven-plugin/
-[9]: /download.html
+[1]: /download.html

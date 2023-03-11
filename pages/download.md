@@ -8,7 +8,7 @@ title: Download
   JFlex + documentation
   </div></div>
   <div class="col-sm-5"><div class="xitem">
-  [jflex-1.9.0.tar.gz][targz]
+  [jflex-1.9.1.tar.gz][targz]
   </div></div>
   <div class="col-sm-2"><div class="xitem text-center">
   [asc][targzasc] /
@@ -62,6 +62,6 @@ Your email address will be kept private.
 </div></div></div></div>
 
 
-[targz]: https://github.com/jflex-de/jflex/releases/download/v1.9.0/jflex-1.9.0.tar.gz
-[targzasc]: https://github.com/jflex-de/jflex/releases/download/v1.9.0/jflex-1.9.0.tar.gz.asc
-[targzsha1]: https://github.com/jflex-de/jflex/releases/download/v1.9.0/jflex-1.9.0.tar.gz.sha1
+[targz]: https://github.com/jflex-de/jflex/releases/download/v1.9.1/jflex-1.9.1.tar.gz
+[targzasc]: https://github.com/jflex-de/jflex/releases/download/v1.9.1/jflex-1.9.1.tar.gz.asc
+[targzsha1]: https://github.com/jflex-de/jflex/releases/download/v1.9.1/jflex-1.9.1.tar.gz.sha1
