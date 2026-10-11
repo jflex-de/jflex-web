@@ -36,9 +36,6 @@ download from this page and a number of mirrors.
 
 -   Main site: [http://jflex.de/](http://jflex.de/download.html)
 
--   UNSW Sydney:
-    [http://www.cse.unsw.edu.au/\~kleing/jflex/](http://www.cse.unsw.edu.au/~kleing/jflex/download.html)
-
 -   New releases (v1.4 - current) are on the
     [Github release page](https://github.com/jflex-de/jflex/releases)
 
